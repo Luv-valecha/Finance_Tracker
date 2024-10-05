@@ -43,5 +43,59 @@ public:
         number_of_transactions = 0;
     }
 
-    void new_transaction(Transaction *transaction){}
+    void new_transaction(Transaction *transaction)
+    {
+        Transaction_node *temp = new Transaction_node(transaction);
+        (tail->prev)->next = temp;
+        temp->next = tail;
+        temp->prev = tail->prev;
+        tail->prev = temp;
+        number_of_transactions++;
+    }
+
+    bool empty()
+    {
+        return head->next == tail;
+    }
+
+    void PrintAllTransactions()
+    {
+        if (empty())
+        {
+            cout << "No Transactions Available" << endl;
+            return;
+        }
+
+        Transaction_node *curr = head->next;
+
+        while (curr != tail)
+        {
+            curr->transaction->printTransaction();
+            curr = curr->next;
+        }
+    }
+
+    void PrintNTransactions(int n)
+    {
+        if (empty() || number_of_transactions < n)
+        {
+            cout << "Invalid Number of Transactions" << endl;
+            return;
+        }
+
+        int start_printing_from = number_of_transactions - n;
+        Transaction_node *curr = head->next;
+
+        while (start_printing_from)
+        {
+            curr = curr->next;
+            start_printing_from--;
+        }
+
+        while (curr != tail)
+        {
+            curr->transaction->printTransaction();
+            curr = curr->next;
+        }
+    }
 };
