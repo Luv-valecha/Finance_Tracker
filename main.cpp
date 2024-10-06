@@ -1,16 +1,18 @@
-#include<bits/stdc++.h>
-using namespace std;
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Button.H>
+#include <iostream>
+#include "GUI.h" // Include your GUI header
 
-/*Project Structure in C++:
-Data Structures:
+int main() {
+    // Create the main window for the Finance Tracker application
+    // You can create an instance of your GUI class
+    FinanceTrackerGUI gui; // Assuming your GUI class constructor sets up the window
+    gui.show(); // Show the GUI window
 
--unordered_map for categorizing and summarizing expenses.
--Doubly Linked List for transaction history.
--priority_queue for budget recommendations.
+    std::cout << "Starting Finance Tracker GUI..." << std::endl;
 
-Classes:
-
--Transaction: Stores individual transaction details.
--TransactionHistory: Implements the doubly linked list for storing transactions.
--FinanceTracker: The main class responsible for managing the categorization of expenses, budget tracking, and report generation.
-*/
+    // Run the FLTK event loop
+    return Fl::run(); // This will enter the FLTK event loop
+}

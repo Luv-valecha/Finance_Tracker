@@ -1,24 +1,17 @@
 #include <bits/stdc++.h>
+#include "Transactions.h"
 using namespace std;
 
-// This class represents individual transactions, with attributes such as date, amount, category, and description.
-class Transaction{
-public:
-    string date; // DD-MM-YYYY
-    double amount;
-    string category;
-    string description;
+// Transaction::Transaction(string date, double amount, string category)
+//     : date(date), amount(amount), category(category), description("") {
+// }
 
-    //add category after converting the string in lowercase
-    Transaction(const string &date, double amount, const string &cat)
-        : date(date), amount(amount), category(cat), description("") {};
+Transaction::Transaction(string date, double amount, string category, string description)
+    : date(date), amount(amount), category(category), description(description) {
+}
 
-    Transaction(const string &date, double amount, const string &cat, const string &desc)
-        : date(date), amount(amount), category(cat), description(desc) {};
 
-    // Helper to display a transaction
-    void printTransaction() const{
+void Transaction:: printTransaction() const{
         cout << "Date: " << date << ", Amount: " << amount << "INR"
                   << ", Category: " << category << ", Description: " << description << endl;
     }
-};
