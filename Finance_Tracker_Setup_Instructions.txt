@@ -1,0 +1,78 @@
+
+Instructions to Run the Personal Finance Tracker Project
+
+1. Install Windows Subsystem for Linux (WSL)
+
+   1. Open PowerShell as Administrator:
+      - Right-click on the Start button and select Windows PowerShell (Admin).
+
+   2. Install WSL:
+      - Run the following command:
+        wsl --install
+      - This command will install WSL along with the default Linux distribution (usually Ubuntu). 
+
+   3. Restart Your Computer:
+      - After the installation is complete, you will need to restart your computer.
+
+   4. Set Up Your Linux Distribution:
+      - Once your computer restarts, open the installed Linux distribution from the Start menu (e.g., Ubuntu).
+      - Follow the prompts to set up your user account and password.
+
+2. Install Required Dependencies
+
+Once your WSL is set up and you are in the terminal of your Linux distribution, follow these steps to install the necessary dependencies:
+
+   1. Update Package Lists:
+      sudo apt update
+
+   2. Install Build Essentials:
+      - This includes g++, make, and other tools required for compiling C++ programs.
+      sudo apt install build-essential
+
+   3. Install FLTK (Fast, Light Toolkit):
+      - FLTK is a cross-platform C++ GUI toolkit needed for the project.
+      sudo apt install libfltk1.3-dev
+
+   4. Install Any Other Necessary Libraries:
+      - If your project requires additional libraries (e.g., for file handling, etc.), you may install them here. Common ones include:
+      sudo apt install libstdc++-dev
+
+3. Clone the Project Repository
+
+   1. Install Git (if not already installed):
+      sudo apt install git
+
+   2. Clone the Project Repository:
+      - Replace <repository_url> with the URL of your project’s repository.
+      git clone <repository_url>
+
+   3. Navigate to the Project Directory:
+      cd <project_directory>
+
+4. Compile the Project
+
+   1. Compile Your Code:
+      - Run the following commands in the terminal
+      g++ main.cpp Transactions.cpp Transhist.cpp GUI.cpp -o finance_tracker -lfltk -lfltk_images -lfltk_forms -lpthread -lX11
+
+   2. Check for Compilation Errors:
+      - Ensure that the compilation completes without errors. If there are errors, fix them before proceeding.
+
+5. Run the Application
+
+   1. Run the Compiled Executable:
+      ./finance_tracker
+
+6. Create a User Account and Add Transactions
+
+   - Use the GUI to add, view, and filter transactions as required.
+
+Additional Notes
+
+- Ensure that you have the necessary permissions to read/write files in the directory where you are running the application, especially for saving transaction data.
+- You may need to adjust file paths or configurations based on your specific project setup.
+
+Troubleshooting
+
+- If you encounter any issues, check that all dependencies are correctly installed.
+- Refer to any error messages during compilation for guidance on missing libraries or issues in your code.
