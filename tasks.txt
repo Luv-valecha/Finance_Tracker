@@ -1,2 +1,12 @@
--add piechart summarization
+-add piechart summarization (to be displayed by default at the home page)
 -add budget recommendations(priority_queue)
+
+-Create a login page
+    |-> Registeration page
+    |-> Login page
+    |
+    |-> A txt file to store usernames and pwd and authenticate
+
+-Store each user's data
+    |-> Store the data in a txt file
+    |-> As the user logins load their data in a DLL 
