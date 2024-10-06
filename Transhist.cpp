@@ -98,4 +98,23 @@ public:
             curr = curr->next;
         }
     }
+
+    void PrintCategoryWise(string target){
+        if(empty()){
+            cout<<"No Transactions Available" << endl;
+            return;
+        }
+
+        int nothing_printed=1;
+        Transaction_node* curr=head->next;
+        while(curr!=tail){
+            if(curr->transaction->category==target){
+                curr->transaction->printTransaction();
+                nothing_printed=0;
+            }
+            curr=curr->next;
+        }
+
+        if(nothing_printed) cout<<"No Transactions Available" << endl;
+    }
 };
