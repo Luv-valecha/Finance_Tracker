@@ -11,6 +11,7 @@
 #include <bits/stdc++.h>
 #include "Transactions.h"
 #include "Transhist.h"
+#include "Login_system.h"
 using namespace std;
 
 class FinanceTrackerGUI {
@@ -31,6 +32,15 @@ private:
     Fl_Input *todayInput;   
     Fl_Input *tomonthInput;     
     Fl_Input *toyearInput;   
+    Fl_Input *usernameInput;
+    Fl_Input *passwordInput;
+    Fl_Button *loginButton;
+    Fl_Button *registerButton;
+    Fl_Box *statusBox;
+    LoginSystem* loginSystem;
+    // static void loginCallback(Fl_Widget* widget, void* data);
+    // static void registerCallback(Fl_Widget* widget, void* data);
+    void initializeFinanceTracker();
     Transaction_history* history;
 
 public:
@@ -39,6 +49,9 @@ public:
     static void printNTransactionsCallback(Fl_Widget* widget, void* data);
     static void printCategoryTransactionsCallback(Fl_Widget* widget, void* data);
     static void printDateRangeTransactionsCallback(Fl_Widget* widget, void* data);
+    static void loginCallback(Fl_Widget* widget, void* data);
+    static void registerCallback(Fl_Widget* widget, void* data);
+    void displayStatus(const char* message, Fl_Color color = FL_WHITE);
     static void quitCallback(Fl_Widget* widget, void* data); // Declare the quit callback function
     void show();
 };

@@ -23,7 +23,47 @@ bool isValidDate(int day, int month, int year)
 }
 
 // Constructor
-FinanceTrackerGUI::FinanceTrackerGUI()
+FinanceTrackerGUI::FinanceTrackerGUI() {
+    loginSystem= new LoginSystem();
+    window = new Fl_Window(600, 400, "Login");
+
+    // Username Input
+    usernameInput = new Fl_Input(200, 100, 200, 30, "Username:");
+    usernameInput->box(FL_BORDER_BOX);
+
+    // Password Input
+    passwordInput = new Fl_Input(200, 150, 200, 30, "Password:");
+    passwordInput->type(FL_SECRET_INPUT);  // Hide input characters for password
+    passwordInput->box(FL_BORDER_BOX);
+
+    // Login Button
+    loginButton = new Fl_Button(200, 200, 100, 30, "Login");
+    loginButton->callback(loginCallback, this);
+
+    // Register Button
+    registerButton = new Fl_Button(320, 200, 100, 30, "Register");
+    registerButton->callback(registerCallback, this);
+
+    // Status Box (to display feedback messages)
+    statusBox = new Fl_Box(200, 250, 300, 30);
+    statusBox->box(FL_NO_BOX);
+    statusBox->labelsize(16);
+    statusBox->labelcolor(FL_WHITE);
+    statusBox->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);  // Align text inside the box
+
+    window->end();
+    window->show();
+}
+
+// Function to display a status message with optional color
+void FinanceTrackerGUI::displayStatus(const char* message, Fl_Color color) {
+    statusBox->labelcolor(color);
+    statusBox->label(message);
+    window->redraw();  // Redraw the window to reflect changes
+}
+
+
+void FinanceTrackerGUI::initializeFinanceTracker()
 {
     history = new Transaction_history();
     window = new Fl_Window(1800, 800, "Personal Finance Tracker");
@@ -352,4 +392,46 @@ void FinanceTrackerGUI::quitCallback(Fl_Widget *widget, void *data)
 void FinanceTrackerGUI::show()
 {
     Fl::run();
+}
+
+// Callback for Login
+void FinanceTrackerGUI::loginCallback(Fl_Widget* widget, void* data) {
+    FinanceTrackerGUI* gui = static_cast<FinanceTrackerGUI*>(data);
+    std::string username = gui->usernameInput->value();
+    std::string password = gui->passwordInput->value();
+
+    if (username.empty() || password.empty()) {
+        gui->displayStatus("Please enter both username and password", FL_RED);
+        return;
+    }
+
+    // Assuming we have a function like `loginUser(username, password)`
+    if (gui->loginSystem->loginUser(username, password)) {
+        gui->displayStatus("Login successful!", FL_GREEN);
+
+        // Show the main finance tracker window after successful login
+        gui->initializeFinanceTracker();
+    } else {
+        // Show error message in the login window GUI
+        gui->displayStatus("Invalid username or password", FL_RED);
+    }
+}
+
+// Callback for Register
+void FinanceTrackerGUI::registerCallback(Fl_Widget* widget, void* data) {
+    FinanceTrackerGUI* gui = static_cast<FinanceTrackerGUI*>(data);
+    std::string username = gui->usernameInput->value();
+    std::string password = gui->passwordInput->value();
+
+    if (username.empty() || password.empty()) {
+        gui->displayStatus("Please enter both username and password", FL_RED);
+        return;
+    }
+
+    // Assuming we have a function like `registerUser(username, password)`
+    if (gui->loginSystem->registerUser(username, password)) {
+        gui->displayStatus("User registered successfully!", FL_GREEN);
+    } else {
+        gui->displayStatus("User already exists!", FL_RED);
+    }
 }
