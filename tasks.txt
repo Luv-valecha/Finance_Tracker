@@ -1,0 +1,5 @@
+1. Create a piechart display of category wise spent till now (Hash map)
+   |-->Total Spend
+2. Create option to set category wise budget and give recommendations (Priority queue)
+   |->Recommend to give budget from less spent category to more spent category
+   |->Monthly category wise spend track
