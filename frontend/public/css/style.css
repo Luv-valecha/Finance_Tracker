@@ -130,7 +130,8 @@ li {
 }
 
 #transactionForm,
-#filterForm {
+#filterForm,
+#setBudgetForm {
     margin-bottom: 20px;
 
 }

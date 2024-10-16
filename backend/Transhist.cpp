@@ -280,3 +280,52 @@ vector<string> Transaction_history::PrintDateRange(string from, string to,string
         transactions.push_back("No Transactions Available");
     return transactions;
 }
+
+void Transaction_history::setbudget(string username,unordered_map<string,double>& budget){
+    string directory="user_transaction_details";
+    string filename = directory + "/" + username + "budget.txt";
+    std::cout << "opening file: " << filename;
+    std::ofstream file(filename, std::ios_base::app); 
+    for(auto it: budget){
+        file << it.first << " " << it.second << "\n";
+    }
+    file.close();
+}
+
+unordered_map<string,double> Transaction_history::getbudget(string username){
+    unordered_map<string,double> budget;
+    string directory="user_transaction_details";
+    string filename = directory + "/" + username + "budget.txt";
+    std::cout << "opening file: " << filename;
+    std::ifstream file(filename);
+    if (!file.is_open())
+        return {};
+        string category;
+        double budgetamount;
+    while(file>>category>>budgetamount){
+        budget[category]=budgetamount;
+    }
+    file.close();
+    return budget;
+}
+
+priority_queue<pair<double,string>> Transaction_history::create_recommender(unordered_map<string,double> budget,string username){
+    priority_queue<pair<double,string>> recommend;
+    unordered_map<string,double> spend=piechartvalues(username);
+    for(auto it: budget){
+        recommend.push(make_pair(it.second-spend[it.first],it.first));
+    }
+}
+
+vector<string> Transaction_history::give_recommendation(string username){
+    unordered_map<string,double> budget=getbudget(username);
+    priority_queue<pair<double,string>> recommender=create_recommender(budget,username);
+    vector<string> recommendations;
+    while(!recommender.empty() && recommender.top().first>0){
+        double over=recommender.top().first;
+        string category=recommender.top().second;
+        recommendations.emplace_back("You have overspent in "+category+" by "+to_string(over));
+        recommender.pop();
+    }
+    return recommendations;
+}

@@ -181,7 +181,7 @@ if (addTransactionForm) {
 }
 
 // Automatically load transactions when the page loads
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
   loadTransactions();
   fetchCategorySpendData();
 });
@@ -201,9 +201,9 @@ function fetchCategorySpendData() {
 
 // Create a pie chart using the fetched data
 function createPieChart(data) {
-  console.log(data.transactions); 
+  console.log(data.transactions);
   const ctx = document.getElementById('categorySpendChart').getContext('2d');
-  
+
   const labels = Object.keys(data);
   const values = Object.values(data);
 
@@ -352,17 +352,86 @@ document.addEventListener('click', () => {
 // Get buttons and form elements
 const showTransactionFormButton = document.getElementById('showTransactionForm');
 const showGetTransactionsFormButton = document.getElementById('showGetTransactionsForm');
+const showSetBudgetFormButton = document.getElementById('showSetBudgetForm');
+
 const transactionForm = document.getElementById('transactionForm');
 const getTransactionsForm = document.getElementById('getTransactionsForm');
+const budgetForm = document.getElementById('budgetForm');
 
 // Show Add Transaction Form on button click
 showTransactionFormButton.addEventListener('click', () => {
   transactionForm.classList.toggle('hidden');
   getTransactionsForm.classList.add('hidden'); // Hide the other form
+  budgetForm.classList.add('hidden');
 });
 
 // Show Get Transactions Form on button click
 showGetTransactionsFormButton.addEventListener('click', () => {
   getTransactionsForm.classList.toggle('hidden');
   transactionForm.classList.add('hidden'); // Hide the other form
+  budgetForm.classList.add('hidden');
 });
+
+showSetBudgetFormButton.addEventListener('click', () => {
+  budgetForm.classList.toggle('hidden');
+  transactionForm.classList.add('hidden');
+  getTransactionsForm.classList.add('hidden');
+});
+
+const setBudgetForm = document.getElementById('setBudgetForm');
+  if (setBudgetForm) {
+    setBudgetForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = getUsername(); // Assume this function returns the current user's username
+      const categoryName = document.getElementById('budgetCategory').value;
+      const budgetAmount = parseFloat(document.getElementById('budgetAmount').value);
+      // Validation to ensure category and amount are valid
+      if (!categoryName) {
+        alert('Please select a category');
+        return;
+      }
+      if (isNaN(budgetAmount) || budgetAmount <= 0) {
+        alert('Please enter a valid budget amount');
+        return;
+      }
+      // Construct budget object with category and amount
+      const budget = {};
+      budget[categoryName] = budgetAmount;
+      // Call setBudget function to send the data to the server
+      setBudget(username, budget);
+    });
+  }
+
+
+// Set budget function
+function setBudget(username, budget) {
+  console.log('Sending username:', username);
+  console.log('Sending budget:', budget);
+
+  // Send the data as JSON in the request body
+  fetch(`/api/setbudget`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, budget }),  // Correctly structure the JSON body
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not OK');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response from server:', data);
+      if (data.message) {
+        alert(data.message);
+      } else {
+        alert('Unexpected response format');
+      }
+    })
+    .catch(error => {
+      console.error('Error setting budget:', error);
+      alert('Failed to set budget, please try again');
+    });
+}

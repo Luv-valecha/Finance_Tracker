@@ -217,6 +217,43 @@ app.get('/api/categorywisespend', (req,res)=>{
   })
 })
 
+app.post('/api/setbudget', (req, res) => {
+  const { username, budget } = req.body;  // Ensure data is extracted from req.body
+  
+  console.log('Received request to set budget for:', username);
+  console.log('Budget data:', budget);
+
+  if (!username || !budget) {
+    return res.status(400).json({ error: 'Username and budget are required' });
+  }
+
+  const execPath = path.resolve(__dirname, '../backend/finance_tracker');
+  let command = `"${execPath}" set_budget "${username}"`;
+
+  // Add the categories and amounts to the command
+  for (const [category, amount] of Object.entries(budget)) {
+    command += ` "${category}" "${amount}"`;
+  }
+
+  // Log the command being executed
+  console.log('Command to execute:', command);
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Exec error: ${error.message}`);
+      return res.status(500).json({ error: error.message });
+    }
+    if (stderr) {
+      console.error(`Stderr: ${stderr}`);
+      return res.status(500).json({ error: stderr });
+    }
+
+    console.log(`stdout: ${stdout}`);
+    res.json({ message: "Budget set successfully" });
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

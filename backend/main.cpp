@@ -127,16 +127,40 @@ int main(int argc, char *argv[])
             cout << transaction << "\n";
         }
     }
-    else if (command == "get_piechart_values"){
-        if(argc!=3){
+    else if (command == "get_piechart_values")
+    {
+        if (argc != 3)
+        {
             cout << "Invalid number of arguments for get_piechart_values" << endl;
             return 1;
         }
-        string username= argv[2];
-        unordered_map<string,double> piechartvals= transactionHistory.piechartvalues(username);
-        for(const auto &it: piechartvals){
-            cout<<it.first<<" "<<it.second<<endl;
+        string username = argv[2];
+        unordered_map<string, double> piechartvals = transactionHistory.piechartvalues(username);
+        for (const auto &it : piechartvals)
+        {
+            cout << it.first << " " << it.second << endl;
         }
+    }
+    else if (command == "set_budget")
+    {
+        if (argc < 4)
+        {
+            std::cerr << "Usage: " << argv[0] << " set_budget <username> <category1> <amount1> [<category2> <amount2> ...]\n";
+            return 1;
+        }
+
+        std::string username = argv[2];
+        std::unordered_map<std::string, double> budget;
+
+        for (int i = 3; i < argc; i += 2)
+        {
+            std::string category = argv[i];
+            double amount = std::stod(argv[i + 1]);
+            budget[category] = amount;
+        }
+
+        transactionHistory.setbudget(username, budget);
+        std::cout << "Budget set successfully for user: " << username << "\n";
     }
 
     else
