@@ -181,13 +181,69 @@ if (addTransactionForm) {
 }
 
 // Automatically load transactions when the page loads
-document.addEventListener('DOMContentLoaded', loadTransactions);
+document.addEventListener('DOMContentLoaded', ()=>{
+  loadTransactions();
+  fetchCategorySpendData();
+});
 
+// Fetch category spend data and create the pie chart
+function fetchCategorySpendData() {
+  const username = getUsername();
+  fetch(`/api/categorywisespend?username=${username}`)
+    .then(response => response.json())
+    .then(data => {
+      createPieChart(data);
+    })
+    .catch(error => {
+      console.error('Error fetching category spend data:', error);
+    });
+}
+
+// Create a pie chart using the fetched data
+function createPieChart(data) {
+  console.log(data.transactions); 
+  const ctx = document.getElementById('categorySpendChart').getContext('2d');
+  
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+
+  const chartData = {
+    labels: labels,
+    datasets: [{
+      data: values,
+      backgroundColor: [
+        '#FF6384',
+        '#36A2EB',
+        '#FFCE56',
+        '#FF5733',
+        '#C70039',
+        '#900C3F',
+        '#581845'
+      ],
+    }]
+  };
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: chartData,
+    options: {
+      responsive: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: 'aliceblue' // Change legend text color to aliceblue
+          }
+        }
+      }
+    }
+  });
+}
 
 
 // Load transactions when the main app page loads
 if (window.location.pathname === '/app') {
   loadTransactions();
+  // fetchCategorySpendData();
 }
 
 // Logout functionality

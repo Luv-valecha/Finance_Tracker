@@ -30,7 +30,16 @@ Transaction_history::Transaction_history()
     tail = new Transaction_node(new Transaction("", -1, "", ""));
     head->next = tail;
     tail->prev = head;
-    number_of_transactions = 0;
+    // number_of_transactions = 0;
+    categoryspend={
+        {"Food",0},
+        {"Shopping",0},
+        {"Entertainment",0},
+        {"Personal",0},
+        {"Health",0},
+        {"Travel",0},
+        {"Miscellaneous",0}
+    };
 }
 
 void Transaction_history::new_transaction(Transaction *transaction, string username)
@@ -41,7 +50,8 @@ void Transaction_history::new_transaction(Transaction *transaction, string usern
     temp->prev = tail->prev;
     (tail->prev)->next = temp;
     (tail->prev) = temp;
-    number_of_transactions++;
+    // number_of_transactions++;
+    categoryspend[transaction->category]+=transaction->amount;
     std::string directory = "user_transaction_details";
     // Create the directory if it doesn't exist
     #ifdef _WIN32
@@ -92,6 +102,26 @@ bool Transaction_history::bringtransactions(string username) {
     return true;
 }
 
+unordered_map<string,double> Transaction_history::piechartvalues(string username) {
+    string directory = "user_transaction_details";
+    string filename = directory + "/" + username + ".txt";
+    std::ifstream file(filename);
+    if (!file.is_open())
+        return {};
+
+    string date, category;
+    double amount;
+    std::string description;
+
+    while (file >> date >> amount >> category) {
+        // Read the remaining line as the description
+        std::getline(file >> std::ws, description); // Read the rest of the line including spaces
+        categoryspend[category]+=amount;
+    }
+    file.close();
+    return categoryspend;
+}
+
 
 vector<string> Transaction_history::PrintAllTransactions(string username)
 {
@@ -119,35 +149,35 @@ vector<string> Transaction_history::PrintAllTransactions(string username)
     return transactions;
 }
 
-vector<string> Transaction_history::PrintNTransactions(int n)
-{
-    vector<string> transactions;
-    if (empty() || number_of_transactions < n)
-    {
-        transactions.push_back("Invalid Number of Transactions");
-        return transactions;
-    }
+// vector<string> Transaction_history::PrintNTransactions(int n)
+// {
+//     vector<string> transactions;
+//     if (empty() || number_of_transactions < n)
+//     {
+//         transactions.push_back("Invalid Number of Transactions");
+//         return transactions;
+//     }
 
-    int start_printing_from = number_of_transactions - n;
-    Transaction_node *curr = head->next;
+//     int start_printing_from = number_of_transactions - n;
+//     Transaction_node *curr = head->next;
 
-    while (start_printing_from)
-    {
-        curr = curr->next;
-        start_printing_from--;
-    }
+//     while (start_printing_from)
+//     {
+//         curr = curr->next;
+//         start_printing_from--;
+//     }
 
-    while (curr != tail)
-    {
-        stringstream ss;
-        ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
-           << " INR, Category: " << curr->transaction->category
-           << ", Description: " << curr->transaction->description;
-        transactions.push_back(ss.str());
-        curr = curr->next;
-    }
-    return transactions;
-}
+//     while (curr != tail)
+//     {
+//         stringstream ss;
+//         ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
+//            << " INR, Category: " << curr->transaction->category
+//            << ", Description: " << curr->transaction->description;
+//         transactions.push_back(ss.str());
+//         curr = curr->next;
+//     }
+//     return transactions;
+// }
 
 vector<string> Transaction_history::PrintCategoryWise(string target,string username)
 {

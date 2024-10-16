@@ -127,6 +127,17 @@ int main(int argc, char *argv[])
             cout << transaction << "\n";
         }
     }
+    else if (command == "get_piechart_values"){
+        if(argc!=3){
+            cout << "Invalid number of arguments for get_piechart_values" << endl;
+            return 1;
+        }
+        string username= argv[2];
+        unordered_map<string,double> piechartvals= transactionHistory.piechartvalues(username);
+        for(const auto &it: piechartvals){
+            cout<<it.first<<" "<<it.second<<endl;
+        }
+    }
 
     else
     {

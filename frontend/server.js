@@ -192,6 +192,30 @@ app.get('/api/daterangetransactions', (req, res) => {
   });
 });
 
+app.get('/api/categorywisespend', (req,res)=>{
+  const {username}=req.query;
+  const execPath = path.resolve(__dirname, '../backend/finance_tracker');
+  exec(`"${execPath}" get_piechart_values "${username}"`, (error, stdout, stderr) =>{
+    if (error) {
+      console.error(`Exec error: ${error.message}`);
+      return res.status(500).json({ error: error.message });
+    }
+    if (stderr) {
+      console.error(`Stderr: ${stderr}`);
+      return res.status(500).json({ error: stderr });
+    }
+    console.log(`stdout: ${stdout}`);
+    
+    const lines = stdout.split('\n').filter(line => line.trim() !== '');
+    const categorySpend = {};
+    lines.forEach(line => {
+      const [category, amount] = line.split(' ');
+      categorySpend[category] = parseFloat(amount);
+    });
+
+    res.json(categorySpend);
+  })
+})
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

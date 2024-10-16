@@ -22,7 +22,8 @@ class Transaction_history {
 private:
     Transaction_node *head;
     Transaction_node *tail;
-    int number_of_transactions;
+    unordered_map<string,double> categoryspend;
+    // int number_of_transactions;
 
 public:
     Transaction_history();
@@ -36,6 +37,7 @@ public:
     vector<int> extract(string currdate);
     bool bringtransactions(string username);
     void makedll(Transaction* transaction);
+    unordered_map<string,double> piechartvalues(string username);
 };
 
 #endif // TRANSHIST_H

@@ -3,8 +3,20 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #0e1c1f;  /* Deep emerald */
+    /* background-color: #0e1c1f; */
+    /* Deep emerald */
     color: #3a3a3a;
+    background: url("images/bgimage.jpg") #0e1c1f no-repeat center center fixed;
+    /* background-position: center; */
+    background-size: cover;
+}
+
+a {
+    color: #877bb1;
+}
+
+p {
+    color: #c7cbc7;
 }
 
 .container {
@@ -13,8 +25,10 @@ body {
     padding: 20px;
 }
 
-h1, h2 {
-    color: #c7cbc7;
+h1,
+h2 {
+    color: aliceblue;
+    text-align: center;
 }
 
 button {
@@ -39,8 +53,10 @@ button:hover {
 }
 
 /* Left and Right Columns */
-.left-column, .right-column {
-    width: 48%; /* Half of the width for each side */
+.left-column,
+.right-column {
+    width: 48%;
+    /* Half of the width for each side */
 }
 
 /* Initially hide forms */
@@ -96,9 +112,128 @@ li {
     margin-bottom: 5px;
 }
 
+.left-column,
+.right-column {
+    flex: 1;
+    padding: 20px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#categorySpendChart {
+    margin-top: 20px;
+    max-width: 100%;
+}
+
+#transactionForm,
+#filterForm {
+    margin-bottom: 20px;
+
+}
+
+input,
+select,
+button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+}
+
+button {
+    cursor: pointer;
+}
+
+#transactionList {
+    margin-top: 20px;
+}
+
+#transactions {
+    list-style-type: none;
+    padding: 0;
+}
+
+.hidden {
+    display: none;
+}
+
 #logoutButton {
-    width: 80px;
     position: absolute;
     top: 10px;
     right: 10px;
+    width: 90px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logoutButton:hover {
+    background-color: #45a049;
+}
+
+#logincontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    /* background: rgba(16, 16, 16, 0.6); */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    min-width: 300px;
+    max-width: 500px;
+    padding: 20px;
+    width: 40%;
+    background-color: #181c1d;
+    border: #c7bbbb solid 1px;
+}
+
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    min-width: 300px;
+    max-width: 500px;
+    padding: 20px;
+    width: 40%;
+    background-color: #181c1d;
+    border: #c7bbbb solid 1px;
+}
+
+#loginForm input, #loginForm button{
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #252e30;
+}
+
+#registerForm input, #registerForm button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #252e30;
+}
+
+#registerroute {
+    color: aliceblue;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#registerroute a {
+    color: #4CAF50;
 }
