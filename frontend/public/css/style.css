@@ -50,6 +50,12 @@ button:hover {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0.6px);
+    -webkit-backdrop-filter: blur(0.6px);
+    border: 1px solid rgba(255, 255, 255, 0.44);
 }
 
 /* Left and Right Columns */
@@ -80,6 +86,10 @@ select {
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
+}
+
+#login_input {
+    color: white;
 }
 
 button {
@@ -180,7 +190,8 @@ button {
 #logincontainer {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
+    align-items: center;
+    /* Center content horizontally */
     /* background: rgba(16, 16, 16, 0.6); */
     padding: 20px;
     border-radius: 10px;
@@ -192,28 +203,31 @@ button {
 #loginForm {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
+    /* align-items: center; Center content horizontally */
     min-width: 300px;
     max-width: 500px;
     padding: 20px;
     width: 40%;
-    background-color: #181c1d;
+    background-color: rgba(24, 28, 29, 0.7);
     border: #c7bbbb solid 1px;
+    border-radius: 12px;
 }
 
 #registerForm {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
+    /* align-items: center; Center content horizontally */
     min-width: 300px;
     max-width: 500px;
     padding: 20px;
     width: 40%;
-    background-color: #181c1d;
+    background-color: rgba(24, 28, 29, 0.7);
     border: #c7bbbb solid 1px;
+    border-radius: 12px;
 }
 
-#loginForm input, #loginForm button{
+#loginForm input,
+#loginForm button {
     width: 100%;
     margin: 10px 0;
     padding: 10px;
@@ -221,7 +235,8 @@ button {
     background-color: #252e30;
 }
 
-#registerForm input, #registerForm button {
+#registerForm input,
+#registerForm button {
     width: 100%;
     margin: 10px 0;
     padding: 10px;
@@ -237,4 +252,9 @@ button {
 
 #registerroute a {
     color: #4CAF50;
+}
+
+#loginheader {
+    margin-bottom: -5px;
+    margin-left: 4px;
 }

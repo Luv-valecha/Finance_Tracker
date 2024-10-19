@@ -283,7 +283,7 @@ vector<string> Transaction_history::PrintDateRange(string from, string to,string
 
 void Transaction_history::setbudget(string username,unordered_map<string,double>& budget){
     string directory="user_transaction_details";
-    string filename = directory + "/" + username + "budget.txt";
+    string filename = directory + "/" + username + "_budget.txt";
     std::cout << "opening file: " << filename;
     std::ofstream file(filename, std::ios_base::app); 
     for(auto it: budget){

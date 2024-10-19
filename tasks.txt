@@ -1,23 +1,25 @@
-1. Create the transaction class and the DLL to store elements                       DONE
-   |->Storing                                                                       DONE
-   |->Display all                                                                   DONE
-   |->Display category wise                                                         DONE
-   |->Display date wise                                                             DONE
+1. Create the transaction class and the DLL to store elements                                                      DONE
+   |->Storing                                                                                                      DONE
+   |->Display all                                                                                                  DONE
+   |->Display category wise                                                                                        DONE
+   |->Display date wise                                                                                            DONE
 
-2. Create the frontend html css                                                     DONE
-   |->Login page                                                                    DONE
-   |->Register page                                                                 DONE
-   |->Main dashboard                                                                DONE
+2. Create the frontend html css                                                                                    DONE
+   |->Login page                                                                                                   DONE
+   |->Register page                                                                                                DONE
+   |->Main dashboard                                                                                               DONE
 
-3. Create the app.js file for frontend                                              DONE
+3. Create the app.js file for frontend                                                                             DONE
 
-4. Create a expressjs server to connect backend and frontend                        DONE
-   |->Create main.cpp in the backend as the entry point of the server               DONE
+4. Create a expressjs server to connect backend and frontend                                                       DONE
+   |->Create main.cpp in the backend as the entry point of the server                                              DONE
 
-. Create a pie chart display of category wise spent till now (Hash map)             DONE
+5. Create a pie chart display of category wise spent till now (Hash map)                                           DONE
 
-. Create option to set category wise budget and give recommendations (Priority queue)
+6. Create option to set category wise budget and give recommendations (Priority queue)
    |->Recommend to give budget from less spent category to more spent category
    |->Monthly category wise spend track
 
-. Create option to delete a transaction
+7. Create option to edit or delete a transaction
+
+8. Add styling

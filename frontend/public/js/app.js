@@ -169,17 +169,6 @@ function loadTransactions() {
 //     });
 // }
 
-
-// Add transaction form submission
-const addTransactionForm = document.getElementById('addTransactionForm');
-if (addTransactionForm) {
-  addTransactionForm.addEventListener('submit', (event) => {
-    handleSubmit(event, '/api/add-transaction', () => {
-      loadTransactions();
-    });
-  });
-}
-
 // Automatically load transactions when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   loadTransactions();
@@ -239,6 +228,16 @@ function createPieChart(data) {
   });
 }
 
+// Add transaction form submission
+const addTransactionForm = document.getElementById('addTransactionForm');
+if (addTransactionForm) {
+  addTransactionForm.addEventListener('submit', (event) => {
+    handleSubmit(event, '/api/add-transaction', () => {
+      loadTransactions();
+      location.reload();
+    });
+  });
+}
 
 // Load transactions when the main app page loads
 if (window.location.pathname === '/app') {
