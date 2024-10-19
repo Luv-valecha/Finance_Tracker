@@ -30,20 +30,20 @@ private:
 public:
     Transaction_history();
 
-    void new_transaction(Transaction *transaction,string username);
+    void new_transaction(Transaction *transaction,std::string username);
     bool empty();
-    vector<string> PrintAllTransactions(string username);
+    vector<string> PrintAllTransactions(std::string username);
     // vector<string> PrintNTransactions(int n);
-    vector<string> PrintCategoryWise(string target,string username);
-    vector<string> PrintDateRange(string from, string to, string username);
-    vector<int> extract(string currdate);
-    bool bringtransactions(string username);
+    vector<string> PrintCategoryWise(std::string target,std::string username);
+    vector<string> PrintDateRange(std::string from, std::string to, std::string username);
+    vector<int> extract(std::string currdate);
+    bool bringtransactions(std::string username);
     void makedll(Transaction* transaction);
-    unordered_map<string,double> piechartvalues(string username);
-    unordered_map<string,double> getbudget(string username);
-    priority_queue<pair<double,string>> create_recommender(unordered_map<string,double> budget,string username);
-    void setbudget(string username,unordered_map<string,double>& budget);
-    vector<string> give_recommendation(string username);
+    unordered_map<string,double> piechartvalues(std::string username);
+    unordered_map<string,double> getbudget(std::string username);
+    priority_queue<pair<double,string>> create_recommender(unordered_map<string,double> budget,std::string username);
+    void setbudget(std::string username,unordered_map<string,double>& budget);
+    vector<string> give_recommendation(std::string username);
 };
 
 #endif // TRANSHIST_H

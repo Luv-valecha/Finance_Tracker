@@ -253,6 +253,26 @@ app.post('/api/setbudget', (req, res) => {
   });
 });
 
+app.get('/api/getrecommendation', (req, res) => {
+  const { username } = req.query;
+  console.log("getting recommendations.......");
+  console.log(`recommendation username: ${username}`);
+  const execPath = path.resolve(__dirname, '../backend/finance_tracker');
+  exec(`"${execPath}" fetch_recommendation "${username}"`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Exec error: ${error.message} stdout: ${stdout}`);
+      return res.status(500).json({ error: error.message });
+    }
+    if (stderr) {
+      console.error(`Stderr: ${stderr}`);
+      return res.status(500).json({ error: stderr });
+    }
+    const recommendations = stdout.split('\n').filter(line => line.trim() !== '');
+    res.json({ recommendation: recommendations });
+  });
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

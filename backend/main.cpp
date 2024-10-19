@@ -162,6 +162,25 @@ int main(int argc, char *argv[])
         transactionHistory.setbudget(username, budget);
         std::cout << "Budget set successfully for user: " << username << "\n";
     }
+    else if (command == "fetch_recommendation")
+    {
+        // std::cout<<"Command started";
+        if (argc != 3)
+        {
+            std::cerr << "Usage: " << argv[0] << " fetch_recommendation <username>";
+            return 1;
+        }
+
+        std::string username = argv[2];
+        // std::cout << "Fetching recommendations for: " << username << std::endl;
+        // Ensure the function to get recommendations is correctly called
+        vector<string> recommendations = transactionHistory.give_recommendation(username);
+        // std::cout<<"main test1 ";
+        for (const auto &it : recommendations)
+        {
+            std::cout << it << endl;
+        }
+    }
 
     else
     {

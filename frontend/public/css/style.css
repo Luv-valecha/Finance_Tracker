@@ -258,3 +258,7 @@ button {
     margin-bottom: -5px;
     margin-left: 4px;
 }
+
+#recommendations{
+    color: red;
+}

@@ -173,6 +173,7 @@ function loadTransactions() {
 document.addEventListener('DOMContentLoaded', () => {
   loadTransactions();
   fetchCategorySpendData();
+  get_recommendations();
 });
 
 // Fetch category spend data and create the pie chart
@@ -234,6 +235,7 @@ if (addTransactionForm) {
   addTransactionForm.addEventListener('submit', (event) => {
     handleSubmit(event, '/api/add-transaction', () => {
       loadTransactions();
+      get_recommendations();
       location.reload();
     });
   });
@@ -242,6 +244,7 @@ if (addTransactionForm) {
 // Load transactions when the main app page loads
 if (window.location.pathname === '/app') {
   loadTransactions();
+  // get_recommendations();
   // fetchCategorySpendData();
 }
 
@@ -378,28 +381,28 @@ showSetBudgetFormButton.addEventListener('click', () => {
 });
 
 const setBudgetForm = document.getElementById('setBudgetForm');
-  if (setBudgetForm) {
-    setBudgetForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const username = getUsername(); // Assume this function returns the current user's username
-      const categoryName = document.getElementById('budgetCategory').value;
-      const budgetAmount = parseFloat(document.getElementById('budgetAmount').value);
-      // Validation to ensure category and amount are valid
-      if (!categoryName) {
-        alert('Please select a category');
-        return;
-      }
-      if (isNaN(budgetAmount) || budgetAmount <= 0) {
-        alert('Please enter a valid budget amount');
-        return;
-      }
-      // Construct budget object with category and amount
-      const budget = {};
-      budget[categoryName] = budgetAmount;
-      // Call setBudget function to send the data to the server
-      setBudget(username, budget);
-    });
-  }
+if (setBudgetForm) {
+  setBudgetForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const username = getUsername(); // Assume this function returns the current user's username
+    const categoryName = document.getElementById('budgetCategory').value;
+    const budgetAmount = parseFloat(document.getElementById('budgetAmount').value);
+    // Validation to ensure category and amount are valid
+    if (!categoryName) {
+      alert('Please select a category');
+      return;
+    }
+    if (isNaN(budgetAmount) || budgetAmount <= 0) {
+      alert('Please enter a valid budget amount');
+      return;
+    }
+    // Construct budget object with category and amount
+    const budget = {};
+    budget[categoryName] = budgetAmount;
+    // Call setBudget function to send the data to the server
+    setBudget(username, budget);
+  });
+}
 
 
 // Set budget function
@@ -431,6 +434,61 @@ function setBudget(username, budget) {
     })
     .catch(error => {
       console.error('Error setting budget:', error);
-      alert('Failed to set budget, please try again');
+      // alert('Failed to set budget, please try again');
+    });
+    location.reload();
+}
+
+function get_recommendations() {
+  const recommendationListForm = document.getElementById("recommendationList");
+  const recommendationList = document.getElementById("recommendations");
+  const username = getUsername();
+
+  if (ShowingRecommendations) recommendationListForm.classList.remove("hidden");
+
+  fetch(`/api/getrecommendation?username=${username}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not OK');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const dataarray = data.recommendation || [];
+      recommendationList.innerHTML = '';
+      if (dataarray.length != 0) {
+        anyrecommendation = true;
+        data.recommendation.forEach(recommendation => {
+          // Split the recommendation string to extract the amount
+          const parts = recommendation.split(" by "); // Split by " by "
+          const amount = parseFloat(parts[1]); // Get the amount part    
+          // Format the amount to two decimal places
+          const formattedAmount = amount.toFixed(2);  
+          // Create a new recommendation string with the formatted amount
+          const updatedRecommendation = `${parts[0]} by ${formattedAmount}`;
+          // Create a list item for the updated recommendation
+          const li = document.createElement('li');
+          li.textContent = updatedRecommendation; // Use the updated recommendation text
+          recommendationList.appendChild(li);
+        });
+      }
+      else anyrecommendation = false;
+      console.log(dataarray.length);
+      if (anyrecommendation) HideRecommendationButton.classList.remove("hidden");
+      else HideRecommendationButton.classList.add("hidden")
+    })
+    .catch(error => {
+      console.error('Error fetching recommendations:', error);
     });
 }
+
+var ShowingRecommendations = true;
+var anyrecommendation = false;
+const HideRecommendationButton = document.getElementById("ShowRecommendations");
+
+HideRecommendationButton.addEventListener("click", () => {
+  const recommendationListForm = document.getElementById("recommendationList");
+  ShowingRecommendations = !ShowingRecommendations;
+  recommendationListForm.classList.toggle("hidden", !ShowingRecommendations);
+  HideRecommendationButton.innerText = ShowingRecommendations ? "Hide Recommendations" : "Show Recommendations";
+});
