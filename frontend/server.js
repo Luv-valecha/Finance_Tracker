@@ -93,7 +93,7 @@ app.post('/api/login', (req, res) => {
       return res.status(500).json({ error: stderr });
     }
     const firstLine = stdout.split('\n')[0].trim();  // Get the first line of stdout and trim it
-    console.log(`First line of stdout: ${firstLine}`);
+    // console.log(`First line of stdout: ${firstLine}`);
     
     if (firstLine === "Login successful") {
       return res.json({ message: "Login successful", username: username, redirect: `/app?username=${username}` });
@@ -148,7 +148,7 @@ app.get('/api/transactions', (req, res) => {
       console.error(`Stderr: ${stderr}`);
       return res.status(500).json({ error: stderr });
     }
-    console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
+    // console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
     const transactions = stdout.split('\n').filter(line => line.trim() !== '');
     res.json({ transactions: transactions });
   });
@@ -167,7 +167,7 @@ app.get('/api/cattransactions', (req, res) => {
       console.error(`Stderr: ${stderr}`);
       return res.status(500).json({ error: stderr });
     }
-    console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
+    // console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
     const transactions = stdout.split('\n').filter(line => line.trim() !== '');
     res.json({ transactions: transactions });
   });
@@ -186,7 +186,7 @@ app.get('/api/daterangetransactions', (req, res) => {
       console.error(`Stderr: ${stderr}`);
       return res.status(500).json({ error: stderr });
     }
-    console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
+    // console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
     const transactions = stdout.split('\n').filter(line => line.trim() !== '');
     res.json({ transactions: transactions });
   });
@@ -204,7 +204,7 @@ app.get('/api/categorywisespend', (req,res)=>{
       console.error(`Stderr: ${stderr}`);
       return res.status(500).json({ error: stderr });
     }
-    console.log(`stdout: ${stdout}`);
+    // console.log(`stdout: ${stdout}`);
     
     const lines = stdout.split('\n').filter(line => line.trim() !== '');
     const categorySpend = {};
@@ -221,7 +221,7 @@ app.post('/api/setbudget', (req, res) => {
   const { username, budget } = req.body;  // Ensure data is extracted from req.body
   
   console.log('Received request to set budget for:', username);
-  console.log('Budget data:', budget);
+  // console.log('Budget data:', budget);
 
   if (!username || !budget) {
     return res.status(400).json({ error: 'Username and budget are required' });
@@ -236,7 +236,7 @@ app.post('/api/setbudget', (req, res) => {
   }
 
   // Log the command being executed
-  console.log('Command to execute:', command);
+  // console.log('Command to execute:', command);
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
@@ -248,7 +248,7 @@ app.post('/api/setbudget', (req, res) => {
       return res.status(500).json({ error: stderr });
     }
 
-    console.log(`stdout: ${stdout}`);
+    // console.log(`stdout: ${stdout}`);
     res.json({ message: "Budget set successfully" });
   });
 });

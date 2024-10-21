@@ -88,6 +88,10 @@ function getUsername() {
   return username || "";  // Return empty string if username is not found
 }
 
+const userHeader=document.getElementById("User_detail_heading");
+const username=getUsername();
+userHeader.innerText=`User: ${username}`;
+
 //   // Use this function instead of getUsername if extracting from URL
 //   const username = getUsernameFromURL();
 
@@ -113,7 +117,7 @@ function loadTransactions() {
   fetch(`/api/transactions?username=${username}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data.transactions);  // Log fetched transactions for debugging
+      // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
       transactionList.innerHTML = ''; // Clear previous transactions
       if (data.transactions.length === 0) {
@@ -121,13 +125,14 @@ function loadTransactions() {
       } else {
         if (!showingall) {
           const transactionsToDisplay = data.transactions.length > 5
-            ? data.transactions.slice(-5) // Get the last 5 transactions
+            ? data.transactions.slice(-6) // Get the last 5 transactions
             : data.transactions; // If 5 or fewer, display all
 
           // Render the transactions
           transactionsToDisplay.forEach(transaction => {
+            const transactionparams=transaction.split(',');
             const li = document.createElement('li');
-            li.textContent = transaction;  // Adjust based on how your transaction data is structured
+            li.innerHTML = transactionparams.join('<br>');  // Adjust based on how your transaction data is structured
             transactionList.appendChild(li);
           });
         }
@@ -362,6 +367,9 @@ const budgetForm = document.getElementById('budgetForm');
 
 // Show Add Transaction Form on button click
 showTransactionFormButton.addEventListener('click', () => {
+  document.getElementById("left-column").classList.remove("hidden");
+  document.getElementById("right-column").classList.remove("hidden");
+  aboutpage.classList.add("hidden");
   transactionForm.classList.toggle('hidden');
   getTransactionsForm.classList.add('hidden'); // Hide the other form
   budgetForm.classList.add('hidden');
@@ -369,12 +377,18 @@ showTransactionFormButton.addEventListener('click', () => {
 
 // Show Get Transactions Form on button click
 showGetTransactionsFormButton.addEventListener('click', () => {
+  document.getElementById("left-column").classList.remove("hidden");
+  document.getElementById("right-column").classList.remove("hidden");
+  aboutpage.classList.add("hidden");
   getTransactionsForm.classList.toggle('hidden');
   transactionForm.classList.add('hidden'); // Hide the other form
   budgetForm.classList.add('hidden');
 });
 
 showSetBudgetFormButton.addEventListener('click', () => {
+  document.getElementById("left-column").classList.remove("hidden");
+  document.getElementById("right-column").classList.remove("hidden");
+  aboutpage.classList.add("hidden");
   budgetForm.classList.toggle('hidden');
   transactionForm.classList.add('hidden');
   getTransactionsForm.classList.add('hidden');
@@ -492,3 +506,11 @@ HideRecommendationButton.addEventListener("click", () => {
   recommendationListForm.classList.toggle("hidden", !ShowingRecommendations);
   HideRecommendationButton.innerText = ShowingRecommendations ? "Hide Recommendations" : "Show Recommendations";
 });
+
+const aboutButton=document.getElementById("aboutButton");
+const aboutpage=document.getElementById("page-about");
+aboutButton.addEventListener(("click"),()=>{
+  document.getElementById("left-column").classList.toggle("hidden");
+  document.getElementById("right-column").classList.toggle("hidden");
+  aboutpage.classList.toggle("hidden");
+})

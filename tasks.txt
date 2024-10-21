@@ -20,6 +20,8 @@
    |->Recommend to give budget from less spent category to more spent category                                     DONE
    |->Monthly category wise spend track                                                                           ON HOLD
 
-7. Create option to edit or delete a transaction
+7. Give some statistics (Last month total spend, Monthly avg spend, Yesterday total spend, Daily avg spend)
 
-8. Add styling
+8. Create option to edit or delete a transaction
+
+9. Add styling

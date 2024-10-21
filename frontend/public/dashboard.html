@@ -10,18 +10,29 @@
 </head>
 
 <body>
-    <div class="container">
+    <header>
         <h1>Finance Tracker</h1>
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><button id="showTransactionForm">Add Transaction</button></li>
+                <li><button id="showGetTransactionsForm">Get Transactions</button></li>
+                <li><button id="showSetBudgetForm">Set Budget</button></li>
+                <li><button id="aboutButton">About</button></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
         <button id="logoutButton">Logout</button>
 
         <!-- Main content section with two halves: forms and transaction list -->
         <div class="main-content">
 
             <!-- Left Half: Add Transaction and Filter Forms -->
-            <div class="left-column">
-                <button id="showTransactionForm">Add Transaction</button>
+            <div class="left-column" id="left-column">
+                <h3 id="User_detail_heading">User: </h3>
+                <!-- <button id="showTransactionForm">Add Transaction</button>
                 <button id="showGetTransactionsForm">Get Transactions</button>
-                <button id="showSetBudgetForm">Set Budget</button>
+                <button id="showSetBudgetForm">Set Budget</button> -->
 
                 <!-- Hidden Add Transaction Form -->
                 <div id="transactionForm" class="form-container hidden">
@@ -90,7 +101,7 @@
             </div>
 
             <!-- Right Half: Transaction List -->
-            <div class="right-column">
+            <div class="right-column" id="right-column">
                 <div id="transactionList">
                     <h2>Transactions</h2>
                     <ul id="transactions"></ul>
@@ -100,6 +111,9 @@
                     <ul id="recommendations"></ul>
                 </div>
                 <button id="ShowRecommendations" class="hidden">Hide Recommendations</button>
+            </div>
+            <div class="About hidden" id="page-about">
+                <p>This is about</p>
             </div>
         </div>
     </div>

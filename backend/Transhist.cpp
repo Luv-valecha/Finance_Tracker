@@ -44,12 +44,12 @@ Transaction_history::Transaction_history()
 void Transaction_history::new_transaction(Transaction *transaction, std::string username)
 {
     Transaction_node *temp = new Transaction_node(transaction); // Creating a new node
-    // Ensure correct linking
-    temp->next = tail;
-    temp->prev = tail->prev;
-    (tail->prev)->next = temp;
-    (tail->prev) = temp;
-    // number_of_transactions++;
+    // // Ensure correct linking
+    // temp->next = tail;
+    // temp->prev = tail->prev;
+    // (tail->prev)->next = temp;
+    // (tail->prev) = temp;
+    // // number_of_transactions++;
     categoryspend[transaction->category] += transaction->amount;
     std::string directory = "user_transaction_details";
 // Create the directory if it doesn't exist
@@ -61,8 +61,58 @@ void Transaction_history::new_transaction(Transaction *transaction, std::string 
 
     std::string filename = directory + "/" + username + ".txt";
     std::cout << "opening file: " << filename;
-    std::ofstream file(filename, std::ios_base::app);
-    file << transaction->date << " " << transaction->amount << " " << transaction->category << " " << transaction->description << "\n";
+
+    // store the transaction arranged in order of transaction date
+    bringtransactions(username);
+    Transaction_node *curr = head->next;
+    vector<int> tdate = extract(transaction->date);
+    while (curr != tail)
+    {
+        vector<int> cdate = extract(curr->transaction->date);
+
+        // Compare year
+        if (cdate[2] > tdate[2])
+            break;
+        if (cdate[2] < tdate[2])
+        {
+            curr = curr->next;
+            continue;
+        }
+
+        // Compare month
+        if (cdate[1] > tdate[1])
+            break;
+        if (cdate[1] < tdate[1])
+        {
+            curr = curr->next;
+            continue;
+        }
+
+        // Compare day
+        if (cdate[0] > tdate[0])
+            break;
+        if (cdate[0] < tdate[0])
+        {
+            curr = curr->next;
+            continue;
+        }
+
+        curr = curr->next;
+    }
+
+    temp->next = curr;
+    (curr->prev)->next = temp;
+    temp->prev = curr->prev;
+    temp->next = curr;
+    curr->prev = temp;
+    std::ofstream file(filename);
+    Transaction_node *node = head->next;
+    while (node != tail)
+    {
+        file << node->transaction->date << " " << node->transaction->amount << " "
+             << node->transaction->category << " " << node->transaction->description << "\n";
+        node = node->next;
+    }
     file.close();
 }
 
@@ -287,26 +337,30 @@ void Transaction_history::setbudget(std::string username, std::unordered_map<std
 {
     std::string directory = "user_transaction_details";
     std::string filename = directory + "/" + username + "_budget.txt";
-    
+
     std::cout << "Opening file: " << filename << std::endl;
 
     std::unordered_map<std::string, double> oldbudget = getbudget(username);
-    
+
     // Open the file for writing (overwrites existing content)
     std::ofstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         std::cerr << "Error: Could not open file for writing: " << filename << std::endl;
         return; // Exit if file can't be opened
     }
 
     // Write the new budget entries
-    for (const auto& it : budget) {
+    for (const auto &it : budget)
+    {
         file << it.first << " " << it.second << "\n";
     }
 
     // Write any old budget entries that aren't in the new budget
-    for (const auto& it : oldbudget) {
-        if (budget.find(it.first) == budget.end()) {
+    for (const auto &it : oldbudget)
+    {
+        if (budget.find(it.first) == budget.end())
+        {
             file << it.first << " " << it.second << "\n";
         }
     }
@@ -322,14 +376,16 @@ std::unordered_map<std::string, double> Transaction_history::getbudget(std::stri
     std::string filename = directory + "/" + username + "_budget.txt";
 
     std::ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         std::cerr << "Error: Could not open file: " << filename << std::endl;
         return {}; // Returning empty budget if file is not found
     }
 
     std::string category;
     double budgetamount;
-    while (file >> category >> budgetamount) {
+    while (file >> category >> budgetamount)
+    {
         budget[category] = budgetamount;
     }
 
@@ -374,7 +430,7 @@ vector<string> Transaction_history::give_recommendation(std::string username)
     while (!recommender.empty() && recommender.top().first > 0)
     {
         double over = recommender.top().first;
-        std:: string category=recommender.top().second;
+        std::string category = recommender.top().second;
         recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over));
         recommender.pop();
     }

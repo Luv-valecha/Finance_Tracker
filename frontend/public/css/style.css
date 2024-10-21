@@ -135,7 +135,7 @@ li {
 }
 
 #categorySpendChart {
-    margin-top: 20px;
+    margin-top: 80px;
     max-width: 100%;
 }
 
@@ -261,4 +261,81 @@ button {
 
 #recommendations{
     color: red;
+}
+
+#transactions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+li {
+    background: rgb(36, 39, 39,0.8);
+    color: aliceblue;
+    padding: 10px;
+    margin: 5px;
+    flex: 1 1 45%; /* Each item takes up approximately 45% of the row */
+    box-sizing: border-box;
+    border: 2px solid rgb(94, 84, 65)
+}
+
+@media (max-width: 600px) {
+    #transactions li {
+        flex: 1 1 100%; /* Stack items on smaller screens */
+    }
+}
+
+#recommendations li{
+    background: rgb(36, 39, 39);
+    color: rgb(254, 5, 5);
+} 
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: -2%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0.6px);
+    -webkit-backdrop-filter: blur(0.6px);
+    border: 1px solid rgba(255, 255, 255, 0.44);
+}
+
+.nav-list{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-list li{
+    background: none;
+    border: none;
+}
+
+.nav-list li button{
+    white-space: nowrap;
+    background: none;
+    border: none;
+    color:whitesmoke;
+    font-weight: bold;
+    font-size: large;
+}
+
+.rightNav{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10%;
+}
+
+h1{
+    margin-top: 5%;
+}
+
+#User_detail_heading{
+    margin-left: -77%;
+    margin-top: -2%;
+    color:aliceblue;
 }
