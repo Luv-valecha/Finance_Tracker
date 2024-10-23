@@ -255,8 +255,8 @@ app.post('/api/setbudget', (req, res) => {
 
 app.get('/api/getrecommendation', (req, res) => {
   const { username } = req.query;
-  console.log("getting recommendations.......");
-  console.log(`recommendation username: ${username}`);
+  // console.log("getting recommendations.......");
+  // console.log(`recommendation username: ${username}`);
   const execPath = path.resolve(__dirname, '../backend/finance_tracker');
   exec(`"${execPath}" fetch_recommendation "${username}"`, (error, stdout, stderr) => {
     if (error) {

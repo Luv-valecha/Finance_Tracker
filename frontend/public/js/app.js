@@ -88,9 +88,9 @@ function getUsername() {
   return username || "";  // Return empty string if username is not found
 }
 
-const userHeader=document.getElementById("User_detail_heading");
-const username=getUsername();
-userHeader.innerText=`User: ${username}`;
+const userHeader = document.getElementById("User_detail_heading");
+const username = getUsername();
+userHeader.innerHTML = `<p> <i class="fa-solid fa-user"></i> User: ${username}</p>`;
 
 //   // Use this function instead of getUsername if extracting from URL
 //   const username = getUsernameFromURL();
@@ -130,7 +130,7 @@ function loadTransactions() {
 
           // Render the transactions
           transactionsToDisplay.forEach(transaction => {
-            const transactionparams=transaction.split(',');
+            const transactionparams = transaction.split(',');
             const li = document.createElement('li');
             li.innerHTML = transactionparams.join('<br>');  // Adjust based on how your transaction data is structured
             transactionList.appendChild(li);
@@ -143,7 +143,8 @@ function loadTransactions() {
             transactionList.appendChild(li);
           });
         }
-        showallbutton.textContent = showingall ? 'Show Less' : 'Show More';
+        showallbutton.innerHTML = showingall ? '<p><i class="fa-regular fa-eye-slash"></i> Show Less</p>'
+          : '<p><i class="fa-regular fa-eye"></i> Show More</p>';
       }
     })
     .catch(error => {
@@ -450,7 +451,7 @@ function setBudget(username, budget) {
       console.error('Error setting budget:', error);
       // alert('Failed to set budget, please try again');
     });
-    location.reload();
+  location.reload();
 }
 
 function get_recommendations() {
@@ -477,7 +478,7 @@ function get_recommendations() {
           const parts = recommendation.split(" by "); // Split by " by "
           const amount = parseFloat(parts[1]); // Get the amount part    
           // Format the amount to two decimal places
-          const formattedAmount = amount.toFixed(2);  
+          const formattedAmount = amount.toFixed(2);
           // Create a new recommendation string with the formatted amount
           const updatedRecommendation = `${parts[0]} by ${formattedAmount}`;
           // Create a list item for the updated recommendation
@@ -504,13 +505,28 @@ HideRecommendationButton.addEventListener("click", () => {
   const recommendationListForm = document.getElementById("recommendationList");
   ShowingRecommendations = !ShowingRecommendations;
   recommendationListForm.classList.toggle("hidden", !ShowingRecommendations);
-  HideRecommendationButton.innerText = ShowingRecommendations ? "Hide Recommendations" : "Show Recommendations";
+  HideRecommendationButton.innerHTML = ShowingRecommendations ? '<p> <i class="fa-regular fa-eye-slash"></i> Hide Recommendations </p>'
+    : '<p><i class="fa-regular fa-eye"></i> Show Recommendations</p>';
 });
 
-const aboutButton=document.getElementById("aboutButton");
-const aboutpage=document.getElementById("page-about");
-aboutButton.addEventListener(("click"),()=>{
+const aboutButton = document.getElementById("aboutButton");
+const aboutpage = document.getElementById("page-about");
+aboutButton.addEventListener(("click"), () => {
   document.getElementById("left-column").classList.toggle("hidden");
   document.getElementById("right-column").classList.toggle("hidden");
   aboutpage.classList.toggle("hidden");
 })
+
+//to display the calendar to pick date if we click anywhere on the input block instead of just the right corner
+const dateinput1 = document.getElementById("date");
+dateinput1.addEventListener('click', function () {
+  dateinput1.showPicker(); // Show the date picker
+});
+const dateinput2 = document.getElementById("fromDate");
+dateinput2.addEventListener('click', function () {
+  dateinput2.showPicker(); // Show the date picker
+});
+const dateinput3 = document.getElementById("toDate");
+dateinput3.addEventListener('click', function () {
+  dateinput3.showPicker(); // Show the date picker
+});

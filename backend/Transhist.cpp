@@ -427,11 +427,13 @@ vector<string> Transaction_history::give_recommendation(std::string username)
     // std::cout << "Recommender created with " << recommender.size() << " entries" << std::endl;
 
     vector<string> recommendations;
-    while (!recommender.empty() && recommender.top().first > 0)
+    while (!recommender.empty() && recommender.top().first > -100)
     {
         double over = recommender.top().first;
         std::string category = recommender.top().second;
-        recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over));
+        if(over>0) recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over));
+        else if(over<0) recommendations.emplace_back("You are close to the budget limit in " + category + " by " + std::to_string(abs(over)));
+        else recommendations.emplace_back("You have reached the budeget limit in " + category);
         recommender.pop();
     }
 

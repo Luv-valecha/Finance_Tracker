@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Tracker</title>
+    <title>Financely</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
     <header>
-        <h1>Finance Tracker</h1>
+        <h1><i class="fa-solid fa-wallet"></i> Financely</h1>
         <nav class="navbar">
             <ul class="nav-list">
                 <li><button id="showTransactionForm">Add Transaction</button></li>
@@ -38,8 +39,11 @@
                 <div id="transactionForm" class="form-container hidden">
                     <h2>Add Transaction</h2>
                     <form id="addTransactionForm">
+                        <label for="date"><i class="fa-regular fa-calendar"></i> Select a date:</label>
                         <input type="date" id="date" name="date" required>
-                        <input type="number" id="amount" name="amount" placeholder="Amount" required>
+                        <label for="amount"><i class="fa-solid fa-money-bill"></i> Transaction Amount</label>
+                        <input type="number" id="amount" name="amount" step="any" placeholder="Enter Amount" required>
+                        <label for="category"><i class="fa-regular fa-rectangle-list"></i> Transaction Category</label>
                         <select id="category" name="category" required>
                             <option value="" disabled selected>Select a category</option>
                             <option value="Food">Food</option>
@@ -50,6 +54,7 @@
                             <option value="Travel">Travel</option>
                             <option value="Miscellaneous">Miscellaneous</option>
                         </select>
+                        <label for="description"><i class="fa-regular fa-comment"></i> Short Description</label>
                         <input type="text" id="description" name="description" placeholder="Description" required>
                         <button type="submit">Add Transaction</button>
                     </form>
@@ -59,6 +64,7 @@
                 <div id="getTransactionsForm" class="form-container hidden">
                     <h2>Get Category-Wise Transactions</h2>
                     <form id="categoryForm">
+                        <label for="category"><i class="fa-regular fa-rectangle-list"></i> Transaction Category</label>
                         <select id="categoryinput" name="category" required>
                             <option value="" disabled selected>Select a category</option>
                             <option value="Food">Food</option>
@@ -74,7 +80,9 @@
 
                     <h2>Get Date Range Transactions</h2>
                     <form id="dateRangeForm">
+                        <label for="date"><i class="fa-regular fa-calendar"></i> Select Starting Date:</label>
                         <input type="date" id="fromDate" name="fromDate" required>
+                        <label for="date"><i class="fa-regular fa-calendar"></i> Select Ending Date:</label>
                         <input type="date" id="toDate" name="toDate" required>
                         <button type="submit">Get Transactions</button>
                     </form>
@@ -83,6 +91,7 @@
                 <div id="budgetForm" class="form-container hidden">
                     <h2>Set Budget</h2>
                     <form id="setBudgetForm">
+                        <label for="budgetCategory"><i class="fa-regular fa-rectangle-list"></i> Transaction Category</label>
                         <select id="budgetCategory" name="category" required>
                             <option value="" disabled selected>Select a category</option>
                             <option value="Food">Food</option>
@@ -93,10 +102,12 @@
                             <option value="Travel">Travel</option>
                             <option value="Miscellaneous">Miscellaneous</option>
                         </select>
-                        <input type="number" id="budgetAmount" name="amount" placeholder="Amount" required>
+                        <label for="budgetAmount"><i class="fa-solid fa-money-bill"></i> Transaction Amount</label>
+                        <input type="number" id="budgetAmount" name="amount" step="any" placeholder="Amount" required>
                         <button type="submit">Set Budget</button>
                     </form>
                 </div>
+                <label for="categorySpendChart" id="piechartlabel">Your Total Spend</label>
                 <canvas id="categorySpendChart" width="500" height="500"></canvas>
             </div>
 
@@ -106,16 +117,46 @@
                     <h2>Transactions</h2>
                     <ul id="transactions"></ul>
                 </div>
-                <button id="ShowFullList">Show More</button>
+                <button id="ShowFullList"><p><i class="fa-regular fa-eye"></i> Show More</button>
                 <div id="recommendationList" class="hidden">
                     <ul id="recommendations"></ul>
                 </div>
-                <button id="ShowRecommendations" class="hidden">Hide Recommendations</button>
+                <button id="ShowRecommendations" class="hidden"><i class="fa-regular fa-eye-slash"></i> Hide Recommendations</button>
             </div>
-            <div class="About hidden" id="page-about">
-                <p>This is about</p>
+            <div class="About hidden" id="page-about" style="padding: 15px;">
+                <h1 style="text-align: left; color: aliceblue; margin-top: -1.5px;">About Our Expense Tracker</h1><br>
+                <p style="text-align: left; color: aliceblue;">
+                    Welcome to Financely, your reliable companion for managing and tracking your personal finances efficiently. 
+                    Our platform empowers users to take control of their spending habits, allowing for better financial planning and organization 
+                    through an easy-to-use interface. <br><br>
+                    
+                    <h2 style="text-align: left; color: aliceblue; margin-top: -1.5px;">Why Financely?</h2><br>
+                    In today's fast-paced world, keeping track of daily expenses can be challenging. 
+                    Whether you're managing a household budget or tracking personal finances, 
+                    Financely simplifies the process by offering a user-friendly way to log, categorize, 
+                    and analyze your financial transactions.<br><br>
+                    
+                    <h2 style="text-align: left; color: aliceblue;">Key Features:</h2><br>
+                    <span style="font-weight: bold;"><u>User Registration and Secure Login:</u></span> Create an account to safely store your transactions and track your expenses over time.
+                    Add, View, and Manage Transactions: Easily add new transactions, including the date, amount, category, and description. View your transaction history in one place.<br>
+                    <br><span style="font-weight: bold;"><u>Categorized Transactions:</u></span> Organize expenses into categories like food, travel, utilities, and more for better insight into where your money is going.<br>
+                    <br><span style="font-weight: bold;"><u>Date Range and Category Filtering:</u></span> Find transactions based on custom date ranges or specific categories.<br>
+                    <br><span style="font-weight: bold;"><u>View Transaction Summaries:</u></span> Get summaries of the last few transactions or based on specific categories, making it easier to monitor spending trends.<br>
+                    <br><br>
+                    <h2 style="text-align: left; color: aliceblue; margin-bottom: -1.5px;">Technology Stack:</h2><br>
+                    <br><span style="font-weight: bold;"><u>Frontend:</u></span> The intuitive and dynamic user interface is built using modern web technologies like HTML, CSS, and JavaScript, delivering a seamless experience across devices.<br>
+                    <br><span style="font-weight: bold;"><u>Backend:</u></span> Our backend system is powered by C++, offering optimized performance for managing user authentication and transaction data. It's connected to the frontend using Express.js, a fast and flexible web framework for handling API requests.<br>
+                    <br><span style="font-weight: bold;"><u>Database:</u></span> User and transaction data is securely stored and managed using file-based storage in the backend, with plans to integrate more scalable solutions in future updates.<br>
+                    <br><span style="font-weight: bold;"><u>Authentication:</u></span> We ensure user security with a login system that protects your credentials and data, offering a smooth and secure experience.<br>
+                    <br><br>
+                    At Financely, we believe in simplicity and efficiency, helping you keep your finances organized without the hassle. Whether you're saving for a big goal or just trying to stay on top of daily spending, our platform is here to support you.
+                    
+                    <br><br>Start managing your expenses with Financely today, and take the first step toward financial freedom!
+                    <br><br>
+                    <a href="https://github.com/Luv-valecha/Finance_Tracker" target="_blank"><i class="fa-brands fa-github fa-2x"></i></a>
+                </p>
             </div>
-        </div>
+            
     </div>
     <script src="/js/app.js"></script>
 </body>

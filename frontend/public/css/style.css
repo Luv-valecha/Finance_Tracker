@@ -5,7 +5,8 @@ body {
     padding: 0;
     /* background-color: #0e1c1f; */
     /* Deep emerald */
-    color: #3a3a3a;
+    /* color: #3a3a3a; */
+    color: aliceblue;
     background: url("images/bgimage.jpg") #0e1c1f no-repeat center center fixed;
     /* background-position: center; */
     background-size: cover;
@@ -17,6 +18,7 @@ a {
 
 p {
     color: #c7cbc7;
+    font-size: 18px;
 }
 
 .container {
@@ -72,9 +74,15 @@ button:hover {
 
 /* Form styles */
 form {
-    background: #fff;
+    /* background: #fff; */
     padding: 20px;
     margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0.6px);
+    -webkit-backdrop-filter: blur(0.6px);
+    border: 1px solid rgba(255, 255, 255, 0.44);
 }
 
 input[type="text"],
@@ -84,8 +92,16 @@ input[type="date"],
 select {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0.6px);
+    -webkit-backdrop-filter: blur(0.6px);
+    border: 1px solid rgba(255, 255, 255, 0.44);
+    color:aliceblue;
+    height: 50px;
 }
 
 #login_input {
@@ -103,6 +119,7 @@ button {
 }
 
 button:hover {
+    transition: background-color 0.3s ease ;
     background: #555;
 }
 
@@ -332,10 +349,38 @@ li {
 
 h1{
     margin-top: 5%;
+    font-family: Garamond, serif;
+    font-size: 36px;
 }
 
 #User_detail_heading{
     margin-left: -77%;
-    margin-top: -2%;
+    margin-top: -4%;
     color:aliceblue;
 }
+
+label{
+    color:aliceblue;
+    margin-left: 1.8%;
+}
+
+button p{
+    color:aliceblue;
+    margin-top: -0.2px;
+    margin-bottom: -0.2px;
+}
+
+#piechartlabel{
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: -30px;
+    margin-top: 5px;
+}
+
+.github-icon {
+    background-color: black;
+    padding: 10px;
+    border-radius: 50%; /* Makes it circular */
+    color: white; /* Changes the icon color */
+  }
+  
