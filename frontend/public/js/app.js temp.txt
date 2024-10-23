@@ -1,0 +1,5 @@
+data.transactions.forEach(transaction => {
+            const li = document.createElement('li');
+            li.textContent = transaction;
+            transactionList.appendChild(li);
+          });

@@ -119,10 +119,21 @@ function loadTransactions() {
     .then(data => {
       // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
+      const alltransactionList = document.getElementById('alltransactions');
       transactionList.innerHTML = ''; // Clear previous transactions
+      alltransactionList.innerHTML = '';
       if (data.transactions.length === 0) {
         transactionList.innerHTML = '<li>No Transactions Available</li>';
-      } else {
+      }
+      else if (displayalltransactions) {
+        data.transactions.forEach(transaction => {
+          const transactionparams = transaction.split(',');
+          const li = document.createElement('li');
+          li.innerHTML = transactionparams.join('<br>');
+          alltransactionList.appendChild(li);
+        });
+      }
+      else {
         if (!showingall) {
           const transactionsToDisplay = data.transactions.length > 5
             ? data.transactions.slice(-6) // Get the last 5 transactions
@@ -132,14 +143,20 @@ function loadTransactions() {
           transactionsToDisplay.forEach(transaction => {
             const transactionparams = transaction.split(',');
             const li = document.createElement('li');
-            li.innerHTML = transactionparams.join('<br>');  // Adjust based on how your transaction data is structured
+            li.innerHTML = transactionparams.join('<br>');
             transactionList.appendChild(li);
           });
         }
         else {
-          data.transactions.forEach(transaction => {
+          const transactionsToDisplay = data.transactions.length > 5
+            ? data.transactions.slice(-12) // Get the last 5 transactions
+            : data.transactions; // If 5 or fewer, display all
+
+          // Render the transactions
+          transactionsToDisplay.forEach(transaction => {
+            const transactionparams = transaction.split(',');
             const li = document.createElement('li');
-            li.textContent = transaction;
+            li.innerHTML = transactionparams.join('<br>');  // Adjust based on how your transaction data is structured
             transactionList.appendChild(li);
           });
         }
@@ -374,6 +391,11 @@ showTransactionFormButton.addEventListener('click', () => {
   transactionForm.classList.toggle('hidden');
   getTransactionsForm.classList.add('hidden'); // Hide the other form
   budgetForm.classList.add('hidden');
+  if (!allTransactionspage.classList.contains("hidden")) {
+    allTransactionspage.classList.toggle("hidden");
+    displayalltransactions = false;
+    loadTransactions();
+  }
 });
 
 // Show Get Transactions Form on button click
@@ -382,6 +404,11 @@ showGetTransactionsFormButton.addEventListener('click', () => {
   document.getElementById("right-column").classList.remove("hidden");
   aboutpage.classList.add("hidden");
   getTransactionsForm.classList.toggle('hidden');
+  if (!allTransactionspage.classList.contains("hidden")) {
+    allTransactionspage.classList.toggle("hidden");
+    displayalltransactions = false;
+    loadTransactions();
+  }
   transactionForm.classList.add('hidden'); // Hide the other form
   budgetForm.classList.add('hidden');
 });
@@ -391,6 +418,11 @@ showSetBudgetFormButton.addEventListener('click', () => {
   document.getElementById("right-column").classList.remove("hidden");
   aboutpage.classList.add("hidden");
   budgetForm.classList.toggle('hidden');
+  if (!allTransactionspage.classList.contains("hidden")) {
+    allTransactionspage.classList.toggle("hidden");
+    displayalltransactions = false;
+    loadTransactions();
+  }
   transactionForm.classList.add('hidden');
   getTransactionsForm.classList.add('hidden');
 });
@@ -512,9 +544,16 @@ HideRecommendationButton.addEventListener("click", () => {
 const aboutButton = document.getElementById("aboutButton");
 const aboutpage = document.getElementById("page-about");
 aboutButton.addEventListener(("click"), () => {
-  document.getElementById("left-column").classList.toggle("hidden");
-  document.getElementById("right-column").classList.toggle("hidden");
   aboutpage.classList.toggle("hidden");
+  if (!allTransactionspage.classList.contains("hidden")) {
+    allTransactionspage.classList.toggle("hidden");
+    displayalltransactions = false;
+    loadTransactions();
+  }
+  else {
+    document.getElementById("left-column").classList.toggle("hidden");
+    document.getElementById("right-column").classList.toggle("hidden");
+  }
 })
 
 //to display the calendar to pick date if we click anywhere on the input block instead of just the right corner
@@ -530,3 +569,17 @@ const dateinput3 = document.getElementById("toDate");
 dateinput3.addEventListener('click', function () {
   dateinput3.showPicker(); // Show the date picker
 });
+
+const showAllTransactionsButton = document.getElementById("showAllTransactions");
+const allTransactionspage = document.getElementById("all-transactions");
+var displayalltransactions = false;
+showAllTransactionsButton.addEventListener(("click"), () => {
+  if (!(aboutpage.classList.contains("hidden"))) aboutpage.classList.toggle("hidden");
+  else {
+    document.getElementById("left-column").classList.toggle("hidden");
+    document.getElementById("right-column").classList.toggle("hidden");
+  }
+  allTransactionspage.classList.toggle("hidden");
+  displayalltransactions = !displayalltransactions;
+  loadTransactions();
+})

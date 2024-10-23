@@ -15,6 +15,7 @@
         <h1><i class="fa-solid fa-wallet"></i> Financely</h1>
         <nav class="navbar">
             <ul class="nav-list">
+                <li><button id="showAllTransactions">Show History</button></li>
                 <li><button id="showTransactionForm">Add Transaction</button></li>
                 <li><button id="showGetTransactionsForm">Get Transactions</button></li>
                 <li><button id="showSetBudgetForm">Set Budget</button></li>
@@ -123,6 +124,13 @@
                 </div>
                 <button id="ShowRecommendations" class="hidden"><i class="fa-regular fa-eye-slash"></i> Hide Recommendations</button>
             </div>
+            <div class="AllTransactions hidden" id="all-transactions" style="padding: 15px;">
+                <div id="AlltransactionList">
+                    <h2 style="text-align: center;">Transactions</h2>
+                    <ul id="alltransactions"></ul>
+                </div>
+            </div>
+
             <div class="About hidden" id="page-about" style="padding: 15px;">
                 <h1 style="text-align: left; color: aliceblue; margin-top: -1.5px;">About Our Expense Tracker</h1><br>
                 <p style="text-align: left; color: aliceblue;">
@@ -153,7 +161,7 @@
                     
                     <br><br>Start managing your expenses with Financely today, and take the first step toward financial freedom!
                     <br><br>
-                    <a href="https://github.com/Luv-valecha/Finance_Tracker" target="_blank"><i class="fa-brands fa-github fa-2x"></i></a>
+                    <a href="https://github.com/Luv-valecha/Finance_Tracker" target="_blank"><i class="fa-brands fa-github fa-2x" style="color: black;"></i></a>
                 </p>
             </div>
             

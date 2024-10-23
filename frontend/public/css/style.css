@@ -100,7 +100,7 @@ select {
     backdrop-filter: blur(0.6px);
     -webkit-backdrop-filter: blur(0.6px);
     border: 1px solid rgba(255, 255, 255, 0.44);
-    color:aliceblue;
+    color: aliceblue;
     height: 50px;
 }
 
@@ -119,7 +119,7 @@ button {
 }
 
 button:hover {
-    transition: background-color 0.3s ease ;
+    transition: background-color 0.3s ease;
     background: #555;
 }
 
@@ -276,7 +276,7 @@ button {
     margin-left: 4px;
 }
 
-#recommendations{
+#recommendations {
     color: red;
 }
 
@@ -286,27 +286,29 @@ button {
 }
 
 li {
-    background: rgb(36, 39, 39,0.8);
+    background: rgb(36, 39, 39, 0.8);
     color: aliceblue;
     padding: 10px;
     margin: 5px;
-    flex: 1 1 45%; /* Each item takes up approximately 45% of the row */
+    flex: 1 1 45%;
+    /* Each item takes up approximately 45% of the row */
     box-sizing: border-box;
-    border: 2px solid rgb(94, 84, 65)
+    border: 2px solid rgb(94, 84, 65);
 }
 
 @media (max-width: 600px) {
     #transactions li {
-        flex: 1 1 100%; /* Stack items on smaller screens */
+        flex: 1 1 100%;
+        /* Stack items on smaller screens */
     }
 }
 
-#recommendations li{
+#recommendations li {
     background: rgb(36, 39, 39);
     color: rgb(254, 5, 5);
-} 
+}
 
-.navbar{
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -322,55 +324,55 @@ li {
     border: 1px solid rgba(255, 255, 255, 0.44);
 }
 
-.nav-list{
+.nav-list {
     display: flex;
     justify-content: space-between;
 }
 
-.nav-list li{
+.nav-list li {
     background: none;
     border: none;
 }
 
-.nav-list li button{
+.nav-list li button {
     white-space: nowrap;
     background: none;
     border: none;
-    color:whitesmoke;
+    color: whitesmoke;
     font-weight: bold;
     font-size: large;
 }
 
-.rightNav{
+.rightNav {
     display: flex;
     justify-content: space-between;
     margin-right: 10%;
 }
 
-h1{
+h1 {
     margin-top: 5%;
     font-family: Garamond, serif;
     font-size: 36px;
 }
 
-#User_detail_heading{
+#User_detail_heading {
     margin-left: -77%;
     margin-top: -4%;
-    color:aliceblue;
+    color: aliceblue;
 }
 
-label{
-    color:aliceblue;
+label {
+    color: aliceblue;
     margin-left: 1.8%;
 }
 
-button p{
-    color:aliceblue;
+button p {
+    color: aliceblue;
     margin-top: -0.2px;
     margin-bottom: -0.2px;
 }
 
-#piechartlabel{
+#piechartlabel {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: -30px;
@@ -380,7 +382,26 @@ button p{
 .github-icon {
     background-color: black;
     padding: 10px;
-    border-radius: 50%; /* Makes it circular */
-    color: white; /* Changes the icon color */
-  }
-  
+    border-radius: 50%;
+    color: white;
+}
+
+#alltransactions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#alltransactions li {
+    padding: 15px;
+    text-align: center;
+}
+
+#all-transactions{
+    margin-left: 10%;
+}
