@@ -22,6 +22,14 @@
 
 7. Give some statistics (Last month total spend, Monthly avg spend, Yesterday total spend, Daily avg spend)
 
-8. Create option to edit or delete a transaction
+8. Recurring transactions set up and reminder
 
-9. Add styling
+9. Create option to edit or delete a transaction
+
+10. Add styling
+
+
+MAJOR FEATURE CHANGES (Optional):
+
+1. Add credit tracking
+2. Pie chart and bar graphs for daily,weekly,monthly and yearly options
