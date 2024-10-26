@@ -28,8 +28,22 @@ function handleSubmit(event, url, successCallback) {
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('An error occurred. Please try again. Details: ' + error.message);
+      showError('An error occurred. Please try again. Details: ' + error.message);
     });
+}
+
+function showError(message) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Error...',
+    text: message,
+    width: 400,
+    height: 300,
+    padding: '1em',
+    confirmButtonText: 'Ok',
+    timer: 1800,
+    timerProgressBar: true, 
+  });
 }
 
 // Registration form submission
@@ -40,7 +54,9 @@ if (registerForm) {
       if (result.message === "User registered successfully") {
         alert(result.message);
       } else {
-        alert(result.error || "Error registering");
+        // alert(result.error || "Error registering");
+        // Example usage
+        showError(result.error);
       }
     });
   });
@@ -55,7 +71,7 @@ if (loginForm) {
         sessionStorage.setItem('username', result.username);  // Store username in session storage
         window.location.href = result.redirect;
       } else {
-        alert(result.message || "Error Logging in");
+        showError("Invalid username or password");
       }
     });
   });
@@ -223,12 +239,12 @@ if (logoutButton) {
     fetch('/api/logout')
       .then(response => response.json())
       .then(result => {
-        alert(result.message);
+        // alert(result.message);
         window.location.href = '/login';
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred during logout. Please try again.');
+        showError('An error occurred during logout. Please try again.');
       });
   });
 }
@@ -381,11 +397,11 @@ if (setBudgetForm) {
     const budgetAmount = parseFloat(document.getElementById('budgetAmount').value);
     // Validation to ensure category and amount are valid
     if (!categoryName) {
-      alert('Please select a category');
+      showError('Please select a category');
       return;
     }
     if (isNaN(budgetAmount) || budgetAmount <= 0) {
-      alert('Please enter a valid budget amount');
+      showError('Please enter a valid budget amount');
       return;
     }
     // Construct budget object with category and amount
@@ -419,9 +435,9 @@ function setBudget(username, budget) {
     .then(data => {
       console.log('Response from server:', data);
       if (data.message) {
-        alert(data.message);
+        showError(data.message);
       } else {
-        alert('Unexpected response format');
+        showError('Unexpected response format');
       }
     })
     .catch(error => {
