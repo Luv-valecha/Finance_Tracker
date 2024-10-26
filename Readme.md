@@ -4,10 +4,10 @@ A full-stack personal finance management application combining a C++ backend wit
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss1.jpg?raw=true)
-![Screenshot 2](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss2.jpg?raw=true)
-![Screenshot 3](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss3.jpg?raw=true)
-![Screenshot 4](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss4.jpg?raw=true)
+![Screenshot 1](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss1.png?raw=true)
+![Screenshot 2](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss2.png?raw=true)
+![Screenshot 3](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss3.png?raw=true)
+![Screenshot 4](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss4.png?raw=true)
 
 ## Navigation
 - [Features](#features)
