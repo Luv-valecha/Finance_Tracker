@@ -59,7 +59,7 @@ A full-stack personal finance management application combining a C++ backend wit
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/financetracker.git
+git clone https://github.com/Luv-valecha/Finance_Tracker.git
 cd financetracker
 ```
 
@@ -70,7 +70,7 @@ npm install
 
 3. Compile C++ backend
 ```bash
-cd backend
+cd .\backend\
 g++ -o finance_tracker main.cpp Login_system.cpp Transactions.cpp post_data.cpp get_data.cpp BudgetNRecommender.cpp
 ```
 
