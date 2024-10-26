@@ -175,36 +175,6 @@ unordered_map<string, double> Transaction_history::piechartvalues(string usernam
     return categoryspend;
 }
 
-// vector<string> Transaction_history::PrintNTransactions(int n)
-// {
-//     vector<string> transactions;
-//     if (empty() || number_of_transactions < n)
-//     {
-//         transactions.push_back("Invalid Number of Transactions");
-//         return transactions;
-//     }
-
-//     int start_printing_from = number_of_transactions - n;
-//     Transaction_node *curr = head->next;
-
-//     while (start_printing_from)
-//     {
-//         curr = curr->next;
-//         start_printing_from--;
-//     }
-
-//     while (curr != tail)
-//     {
-//         stringstream ss;
-//         ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
-//            << " INR, Category: " << curr->transaction->category
-//            << ", Description: " << curr->transaction->description;
-//         transactions.push_back(ss.str());
-//         curr = curr->next;
-//     }
-//     return transactions;
-// }
-
 vector<int> Transaction_history::extract(string currdate)
 {
     int date = 0, month = 0, year = 0;
@@ -212,65 +182,4 @@ vector<int> Transaction_history::extract(string currdate)
     month = (currdate[5] - '0') * 10 + (currdate[6] - '0');
     year = (currdate[0] - '0') * 1000 + (currdate[1] - '0') * 100 + (currdate[2] - '0') * 10 + (currdate[3] - '0');
     return {date, month, year};
-}
-
-void Transaction_history::setbudget(std::string username, std::unordered_map<std::string, double> &budget)
-{
-    std::string directory = "user_transaction_details";
-    std::string filename = directory + "/" + username + "_budget.txt";
-
-    std::cout << "Opening file: " << filename << std::endl;
-
-    std::unordered_map<std::string, double> oldbudget = getbudget(username);
-
-    // Open the file for writing (overwrites existing content)
-    std::ofstream file(filename);
-    if (!file.is_open())
-    {
-        std::cerr << "Error: Could not open file for writing: " << filename << std::endl;
-        return; // Exit if file can't be opened
-    }
-
-    // Write the new budget entries
-    for (const auto &it : budget)
-    {
-        file << it.first << " " << it.second << "\n";
-    }
-
-    // Write any old budget entries that aren't in the new budget
-    for (const auto &it : oldbudget)
-    {
-        if (budget.find(it.first) == budget.end())
-        {
-            file << it.first << " " << it.second << "\n";
-        }
-    }
-
-    file.close();
-    std::cout << "Budget successfully set for user: " << username << std::endl;
-}
-
-std::unordered_map<std::string, double> Transaction_history::getbudget(std::string username)
-{
-    std::unordered_map<std::string, double> budget;
-    std::string directory = "user_transaction_details";
-    std::string filename = directory + "/" + username + "_budget.txt";
-
-    std::ifstream file(filename);
-    if (!file.is_open())
-    {
-        std::cerr << "Error: Could not open file: " << filename << std::endl;
-        return {}; // Returning empty budget if file is not found
-    }
-
-    std::string category;
-    double budgetamount;
-    while (file >> category >> budgetamount)
-    {
-        budget[category] = budgetamount;
-    }
-
-    file.close();
-    // std::cout << "Budget loaded for user: " << username << std::endl;
-    return budget;
 }

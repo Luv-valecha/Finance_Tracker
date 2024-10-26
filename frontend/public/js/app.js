@@ -32,25 +32,6 @@ function handleSubmit(event, url, successCallback) {
     });
 }
 
-// function getUsername() {
-//     const name = "username=";
-//     const decodedCookie = decodeURIComponent(document.cookie);
-//     console.log(`Decoded cookies: ${decodedCookie}`); // Log all decoded cookies
-//     const ca = decodedCookie.split(';');
-//     for (let i = 0; i < ca.length; i++) {
-//       let c = ca[i].trim();
-//       console.log(`Processing cookie: ${c}`);  // Log each cookie being processed
-//       if (c.indexOf(name) === 0) {
-//         const username = c.substring(name.length, c.length);
-//         console.log(`Retrieved username from cookie: ${username}`);  // Log the retrieved username
-//         return username;
-//       }
-//     }
-//     console.log("Username not found in cookies");  // Log if username is not found
-//     return "";  // Return an empty string if username is not found
-//   }
-
-
 // Registration form submission
 const registerForm = document.getElementById('registerForm');
 if (registerForm) {
@@ -59,7 +40,7 @@ if (registerForm) {
       if (result.message === "User registered successfully") {
         alert(result.message);
       } else {
-        alert(result.message || "Error registering");
+        alert(result.error || "Error registering");
       }
     });
   });
@@ -92,19 +73,6 @@ const userHeader = document.getElementById("User_detail_heading");
 const username = getUsername();
 userHeader.innerHTML = `<p> <i class="fa-solid fa-user"></i> User: ${username}</p>`;
 
-//   // Use this function instead of getUsername if extracting from URL
-//   const username = getUsernameFromURL();
-
-
-// // Add transaction form submission
-// const addTransactionForm = document.getElementById('addTransactionForm');
-// if (addTransactionForm) {
-//   addTransactionForm.addEventListener('submit', (event) => {
-//     handleSubmit(event, '/api/add-transaction', () => {
-//       loadTransactions();
-//     });
-//   });
-// }
 var showingall = false;
 const showallbutton = document.getElementById('ShowFullList');
 showallbutton.addEventListener('click', () => {
@@ -168,29 +136,6 @@ function loadTransactions() {
       console.error('Error fetching transactions:', error);
     });
 }
-
-// function loadAllTransactions() {
-//   const username = getUsername();
-//   fetch(`/api/transactions?username=${username}`)
-//     .then(response => response.json())
-//     .then(data => {
-//       console.log(data.transactions);  // Log fetched transactions for debugging
-//       const transactionList = document.getElementById('transactions');
-//       transactionList.innerHTML = ''; // Clear previous transactions
-//       if (data.transactions.length === 0) {
-//         transactionList.innerHTML = '<li>No Transactions Available</li>';
-//       } else {
-//         data.transactions.forEach(transaction => {
-//           const li = document.createElement('li');
-//           li.textContent = transaction;
-//           transactionList.appendChild(li);
-//         });
-//       }
-//     })
-//     .catch(error => {
-//       console.error('Error fetching transactions:', error);
-//     });
-// }
 
 // Automatically load transactions when the page loads
 document.addEventListener('DOMContentLoaded', () => {
