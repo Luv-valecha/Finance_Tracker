@@ -24,7 +24,7 @@ p {
 .container {
     width: 80%;
     margin: auto;
-    padding: 20px;
+    padding: 10px;
 }
 
 h1,
@@ -217,6 +217,26 @@ button {
     margin-right: 30%;
 }
 
+#visibilityIcon {
+    /* visibility: hidden; */
+    position: absolute;
+    /* right: 10px; */
+    /* top: 50%; */
+    transform: translateY(80%);
+    background-color: black;
+    padding: 7px;
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+    color: white;
+    cursor: pointer;
+}
+
+#visibilityIcon i {
+    font-size: 20px;
+    padding: 0px;
+}
+
 #loginForm {
     display: flex;
     flex-direction: column;
@@ -310,7 +330,7 @@ li {
 
 .navbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: -2%;
     margin-left: 10%;
@@ -327,6 +347,7 @@ li {
 .nav-list {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .nav-list li {

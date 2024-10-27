@@ -11,14 +11,15 @@
 
 <body>
     <div class="container">
-        <h1 style="color: aliceblue; margin-top: 10%;">Financely</h1>
+        <h1 style="color: aliceblue;">Financely</h1>
         <div id="logincontainer">
             <form id="registerForm">
                 <h2>Register</h2>
                 <p id="loginheader"><i class="fa-regular fa-user"></i> Username</p>
                 <input id="login_input" type="text" id="username" name="username" placeholder="Enter Username" required>
                 <p id="loginheader"><i class="fa-solid fa-lock"></i> Password</p>
-                <input id="login_input" type="password" id="password" name="password" placeholder="Enter Password" required>
+                <input  type="password" id="password" name="password" placeholder="Enter Password" required>
+                <span id="visibilityIcon" onclick=togglePasswordVisibility() style="position: absolute; right: 10%; top: 60%;  cursor: pointer;"><i class="fa-solid fa-eye"></i></span>
                 <button type="submit">Register</button>
             </form>
         </div>
