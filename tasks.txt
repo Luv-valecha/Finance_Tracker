@@ -20,9 +20,11 @@
    |->Recommend to give budget from less spent category to more spent category                                     DONE
    |->Monthly category wise spend track                                                                           ON HOLD
 
-7. Give some statistics (Last month total spend, Monthly avg spend, Yesterday total spend, Daily avg spend)
+7. Give some statistics (Last month total spend, Monthly avg spend, Yesterday total spend, Daily avg spend)        DONE
 
 8. Recurring transactions set up and reminder
+   |-> Recurring transaction form
+   |-> Reminder area
 
 9. Create option to edit or delete a transaction
 
@@ -32,4 +34,3 @@
 MAJOR FEATURE CHANGES (Optional):
 
 1. Add credit tracking
-2. Pie chart and bar graphs for daily,weekly,monthly and yearly options

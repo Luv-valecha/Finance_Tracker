@@ -42,7 +42,7 @@ function showError(message) {
     padding: '1em',
     confirmButtonText: 'Ok',
     timer: 1800,
-    timerProgressBar: true, 
+    timerProgressBar: true,
   });
 }
 
@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTransactions();
   fetchCategorySpendData();
   get_recommendations();
+  create_bar_graph();
 });
 
 // Fetch category spend data and create the pie chart
@@ -544,3 +545,149 @@ showAllTransactionsButton.addEventListener(("click"), () => {
   displayalltransactions = !displayalltransactions;
   loadTransactions();
 })
+
+async function getmonthlygraphvalues(fromDate, toDate) {
+  //getting transactions
+  const username = getUsername();
+  let totalspend = 0;
+  console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
+  try {
+    const response = await fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`);
+    const data = await response.json();
+
+    data.transactions.forEach(transaction => {
+      if (transaction.trim() === "No Transactions Available") return;
+      const amountMatch = transaction.match(/Amount:\s([\d\.]+)\sINR/);
+
+      if (amountMatch) {
+        const amount = parseFloat(amountMatch[1]); // Convert matched string to a float
+        totalspend += amount; // Accumulate the total spend
+      } else {
+        console.warn("Pattern not matched in transaction:", transaction);
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+  }
+  return totalspend;
+}
+
+
+function daysInMonth(month, year) {
+  return new Date(year, month, 0).getDate(); // Correctly returns the last day of the month
+}
+
+function getMonthName(monthNumber) {
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  if (monthNumber < 1 || monthNumber > 12) {
+    return "Invalid month number";
+  }
+  return monthNames[monthNumber - 1];
+}
+
+async function create_bar_graph() {
+  const now = new Date();
+
+  // Current date and time
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // +1 because months are zero-indexed
+  const bargraphvalues = [];
+
+  for (let i = 0; i < 5; i++) {
+    const currentMonth = month - i;
+    let currentYear = year;
+
+    // Adjust the year and month if the month goes below 1
+    if (currentMonth <= 0) {
+      currentYear -= 1; // Go to the previous year
+      currentMonth += 12; // Wrap around to December
+    }
+
+    const fromDate = `${currentYear}-${String(currentMonth).padStart(2, '0')}-01`; // Ensure month is two digits
+    const days = daysInMonth(currentMonth, currentYear); // Pass the correct month and year
+    const toDate = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${days}`; // Ensure month is two digits
+
+    let totalspend = await getmonthlygraphvalues(fromDate, toDate); // Await the async function
+    bargraphvalues.push({ month: `${getMonthName(currentMonth)}`, spend: totalspend });
+  }
+
+  const months = bargraphvalues.map(data => data.month);
+  const amounts = bargraphvalues.map(data => data.spend);
+
+  // Creating graph
+  const ctx = document.getElementById("averageBarGraph").getContext("2d");
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Monthly Expenditure',
+        data: amounts,
+        backgroundColor: 'rgba(185, 28, 28,0.9)',
+        borderColor: 'rgba(255, 223, 0,0.7)',
+        borderWidth: 2,
+        hoverBackgroundColor: 'red', // Hover color
+        hoverBorderColor: 'gold'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Amount (INR)',
+            font: {
+              size: 14,
+            },
+            color: 'aliceblue'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0)',
+            lineWidth: 1
+          },
+          ticks: {
+            color: 'aliceblue',
+            font: {
+              size: 12
+            }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Month',
+            font: {
+              size: 14,
+            },
+            color: 'aliceblue'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0)',
+            lineWidth: 1
+          },
+          ticks: {
+            color: 'aliceblue',
+            font: {
+              size: 12
+            }
+          }
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: 'aliceblue',
+            font: {
+              size: 16
+            }
+          }
+        }
+      }
+    }
+  });
+}
