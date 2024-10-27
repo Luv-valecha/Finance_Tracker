@@ -77,6 +77,21 @@ if (loginForm) {
   });
 }
 
+//function to toggle the visibility of the password
+function togglePasswordVisibility() {
+  const passwordInput = document.getElementById('password');
+  const visibilityIcon = document.getElementById('visibilityIcon').children[0];
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    visibilityIcon.classList.add('fa-eye-slash');
+    visibilityIcon.classList.remove('fa-eye');
+  } else {
+    passwordInput.type = 'password';
+    visibilityIcon.classList.add('fa-eye');
+    visibilityIcon.classList.remove('fa-eye-slash');
+  }
+}
+
 // Function to extract username from URL
 function getUsername() {
   const urlParams = new URLSearchParams(window.location.search);

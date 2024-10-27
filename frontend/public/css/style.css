@@ -217,6 +217,26 @@ button {
     margin-right: 30%;
 }
 
+#visibilityIcon {
+    /* visibility: hidden; */
+    position: absolute;
+    /* right: 10px; */
+    /* top: 50%; */
+    transform: translateY(80%);
+    background-color: black;
+    padding: 7px;
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+    color: white;
+    cursor: pointer;
+}
+
+#visibilityIcon i {
+    font-size: 20px;
+    padding: 0px;
+}
+
 #loginForm {
     display: flex;
     flex-direction: column;
