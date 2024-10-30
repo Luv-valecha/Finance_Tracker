@@ -217,5 +217,30 @@ router.get('/getrecommendation', (req, res) => {
     });
 });
 
+router.get('/getstats', (req,res)=>{
+    const {username, month, year}=req.query;
+    console.log(`received month: ${month} year: ${year}`);
+    const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
+    exec(`"${execPath}" get_statistics "${username}" "${month}" "${year}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Exec error: ${error.message}`);
+            return res.status(500).json({ error: error.message });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ error: stderr });
+        }
+        const stats={};
+        const details = stdout.split('\n');
+        details.forEach(deet=>{
+            // console.log(`deet: ${deet}`);
+            currdeet=deet.split(" ");
+            stats[currdeet[0]]=parseFloat(currdeet[1]);
+            // console.log(`Value for ${currdeet[0]} is ${currdeet[1]}`);
+        })
+        res.json(stats);
+    });
+})
+
 
 module.exports = router;

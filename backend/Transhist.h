@@ -2,6 +2,9 @@
 #define TRANSHIST_H
 
 #include <bits/stdc++.h>
+#include <chrono>
+#include <iomanip>
+#include <regex>
 #include <fstream>
 #include "Transactions.h" 
 using namespace std;
@@ -24,7 +27,7 @@ private:
     Transaction_node *tail;
     unordered_map<string,double> categoryspend;
     unordered_map<string,double> budget;
-    priority_queue<pair<double,string>> recommender; 
+    priority_queue<pair<double,string>> recommender;
     // int number_of_transactions;
 
 public:
@@ -44,6 +47,17 @@ public:
     priority_queue<pair<double,string>> create_recommender(unordered_map<string,double> budget,std::string username);
     void setbudget(std::string username,unordered_map<string,double>& budget);
     vector<string> give_recommendation(std::string username);
+
+    std::vector<int> computeLPSArray(std::string& pattern);
+    int KMPSearch(std::string& text, std::string& pattern);
+    double extractAmountHelper(std::string& transaction);
+    vector<double> extract_amount(vector<std::string>& transaction_data);
+    double getTotalSpend(vector<std::string>& transaction_data);
+    double getSD(vector<std::string>& transaction_data);
+    unordered_map<std::string,double> extract_categories(vector<std::string>& transaction_data);
+    pair<int,int> getCurrentMonthYear();
+    int getDaysInMonth(int month, int year);
+    unordered_map<string,double> monthlysummary(int month,int year,string username);
 };
 
 #endif // TRANSHIST_H

@@ -409,3 +409,16 @@ button p {
 #averageBarGraph{
     margin-top:5%;
 }
+
+#user-stats-subdiv {
+    display: flex;
+}
+
+#statBarGraph{
+    margin-left: 15%;
+}
+
+#statBarGraph-div{
+    width: 600px;
+    height: 500px;
+}

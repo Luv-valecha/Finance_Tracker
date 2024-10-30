@@ -181,6 +181,24 @@ int main(int argc, char *argv[])
             std::cout << it << endl;
         }
     }
+    else if (command == "get_statistics")
+    {
+        // std::cout<<"Command started";
+        if (argc != 5)
+        {
+            std::cerr << "Usage: " << argv[0] << " fetch_recommendation <username> <month> <year>";
+            return 1;
+        }
+
+        std::string username = argv[2];
+        int month= stoi(argv[3]);
+        int year= stoi(argv[4]);
+        unordered_map<std::string,double> stats= transactionHistory.monthlysummary(month,year,username);
+        for (const auto &it : stats)
+        {
+            std::cout << it.first << " " <<  it.second << endl;
+        }
+    }
 
     else
     {

@@ -71,7 +71,7 @@ npm install
 3. Compile C++ backend
 ```bash
 cd .\backend\
-g++ -o finance_tracker main.cpp Login_system.cpp Transactions.cpp post_data.cpp get_data.cpp BudgetNRecommender.cpp
+g++ -o finance_tracker main.cpp Login_system.cpp Transactions.cpp post_data.cpp get_data.cpp BudgetNRecommender.cpp Statistics.cpp
 ```
 
 4. Create environment file

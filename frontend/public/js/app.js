@@ -358,6 +358,7 @@ showTransactionFormButton.addEventListener('click', () => {
     displayalltransactions = false;
     loadTransactions();
   }
+  else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
 });
 
 // Show Get Transactions Form on button click
@@ -371,6 +372,7 @@ showGetTransactionsFormButton.addEventListener('click', () => {
     displayalltransactions = false;
     loadTransactions();
   }
+  else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
   transactionForm.classList.add('hidden'); // Hide the other form
   budgetForm.classList.add('hidden');
 });
@@ -385,6 +387,7 @@ showSetBudgetFormButton.addEventListener('click', () => {
     displayalltransactions = false;
     loadTransactions();
   }
+  else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
   transactionForm.classList.add('hidden');
   getTransactionsForm.classList.add('hidden');
 });
@@ -512,6 +515,7 @@ aboutButton.addEventListener(("click"), () => {
     displayalltransactions = false;
     loadTransactions();
   }
+  else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
   else {
     document.getElementById("left-column").classList.toggle("hidden");
     document.getElementById("right-column").classList.toggle("hidden");
@@ -537,6 +541,7 @@ const allTransactionspage = document.getElementById("all-transactions");
 var displayalltransactions = false;
 showAllTransactionsButton.addEventListener(("click"), () => {
   if (!(aboutpage.classList.contains("hidden"))) aboutpage.classList.toggle("hidden");
+  else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
   else {
     document.getElementById("left-column").classList.toggle("hidden");
     document.getElementById("right-column").classList.toggle("hidden");
@@ -690,4 +695,156 @@ async function create_bar_graph() {
       }
     }
   });
+}
+
+const statpage = document.getElementById("user-stats");
+const statpageButton = document.getElementById("showStats");
+statpageButton.addEventListener(("click"), () => {
+  statpage.classList.toggle("hidden");
+  if (!allTransactionspage.classList.contains("hidden")) {
+    allTransactionspage.classList.toggle("hidden");
+    displayalltransactions = false;
+    loadTransactions();
+  }
+  else if (!aboutpage.classList.contains("hidden")) {
+    aboutpage.classList.toggle("hidden");
+    displayalltransactions = false;
+    loadTransactions();
+  }
+  else {
+    document.getElementById("left-column").classList.toggle("hidden");
+    document.getElementById("right-column").classList.toggle("hidden");
+  }
+})
+
+const statdateRangeForm = document.getElementById('statdateRangeForm');
+if (statdateRangeForm) {
+  statdateRangeForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    console.log('Date range form submitted'); // Log form submission
+    const month = document.getElementById('monthinput').value;
+    const now = new Date();
+    const year = now.getFullYear();
+    loadStatistics(month, year);
+  });
+}
+
+let statBarGraph;
+function loadStatistics(month, year) {
+  const username = getUsername();
+  console.log("Loadin statistics....");
+  fetch(`/api/getstats?username=${username}&month=${month}&year=${year}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not OK');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const statList = document.getElementById("stat-list");
+
+      // Clear previous list items
+      statList.innerHTML = "";
+      const catvalues = [];
+      // Iterate over each key-value pair in data
+      Object.entries(data).forEach(([key, value]) => {
+        // Create a new list item
+        const listItem = document.createElement("li");
+        // console.log(key);
+        if (key == "Total_Spend" || key == "Month_Average" || key == "Month_Standard_Deviation") {
+          // Set the text content to key-value pairs
+          listItem.textContent = `${key.replace(/_/g, ' ')}: ${value}`;
+
+          // Append the list item to the UL
+          statList.appendChild(listItem);
+        }
+        else if (key) {
+          catvalues.push({ cat: key, spend: value });
+        }
+      });
+
+      if (statBarGraph) {
+        statBarGraph.destroy(); // Destroy the existing chart
+      }
+
+      const category = catvalues.map(data => data.cat);
+      const amounts = catvalues.map(data => data.spend);
+
+      // Creating graph
+      const ctx = document.getElementById("statBarGraph").getContext("2d");
+      statBarGraph = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: category,
+          datasets: [{
+            label: 'Category Expenditure',
+            data: amounts,
+            backgroundColor: 'rgba(185, 28, 28,0.9)',
+            borderColor: 'rgba(255, 223, 0,0.7)',
+            borderWidth: 2,
+            hoverBackgroundColor: 'red', // Hover color
+            hoverBorderColor: 'gold'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Amount (INR)',
+                font: {
+                  size: 14,
+                },
+                color: 'aliceblue'
+              },
+              grid: {
+                color: 'rgba(255,255,255,0)',
+                lineWidth: 1
+              },
+              ticks: {
+                color: 'aliceblue',
+                font: {
+                  size: 12
+                }
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Category',
+                font: {
+                  size: 14,
+                },
+                color: 'aliceblue'
+              },
+              grid: {
+                color: 'rgba(255,255,255,0)',
+                lineWidth: 1
+              },
+              ticks: {
+                color: 'aliceblue',
+                font: {
+                  size: 12
+                }
+              }
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: 'aliceblue',
+                font: {
+                  size: 16
+                }
+              }
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching recommendations:', error);
+    });
 }

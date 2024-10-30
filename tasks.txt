@@ -30,6 +30,11 @@
 
 10. Add styling
 
+11. Statistics tab                                                                                                DONE
+    |-> Current month,past month,custom date range,yearly                                                        DROPPED
+    |-> Total spend, Average day spend, Spend SD, Max spent category, Min spent category                          DONE
+    |-> Export data to csv                                                                                       ON HOLD
+
 
 MAJOR FEATURE CHANGES (Optional):
 

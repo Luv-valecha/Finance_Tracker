@@ -7,7 +7,9 @@
     <title>Financely</title>
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -19,6 +21,7 @@
                 <li><button id="showTransactionForm">Add Transaction</button></li>
                 <li><button id="showGetTransactionsForm">Get Transactions</button></li>
                 <li><button id="showSetBudgetForm">Set Budget</button></li>
+                <li><button id="showStats">Statistics</button></li>
                 <li><button id="aboutButton">About</button></li>
             </ul>
         </nav>
@@ -92,7 +95,8 @@
                 <div id="budgetForm" class="form-container hidden">
                     <h2>Set Budget</h2>
                     <form id="setBudgetForm">
-                        <label for="budgetCategory"><i class="fa-regular fa-rectangle-list"></i> Transaction Category</label>
+                        <label for="budgetCategory"><i class="fa-regular fa-rectangle-list"></i> Transaction
+                            Category</label>
                         <select id="budgetCategory" name="category" required>
                             <option value="" disabled selected>Select a category</option>
                             <option value="Food">Food</option>
@@ -119,53 +123,107 @@
                     <h2>Transactions</h2>
                     <ul id="transactions"></ul>
                 </div>
-                <button id="ShowFullList"><p><i class="fa-regular fa-eye"></i> Show More</button>
+                <button id="ShowFullList">
+                    <p><i class="fa-regular fa-eye"></i> Show More
+                </button>
                 <div id="recommendationList" class="hidden">
                     <ul id="recommendations"></ul>
                 </div>
-                <button id="ShowRecommendations" class="hidden"><i class="fa-regular fa-eye-slash"></i> Hide Recommendations</button>
+                <button id="ShowRecommendations" class="hidden"><i class="fa-regular fa-eye-slash"></i> Hide
+                    Recommendations</button>
             </div>
+
             <div class="AllTransactions hidden" id="all-transactions" style="padding: 15px;">
                 <div id="AlltransactionList">
                     <h2 style="text-align: center;">Transactions</h2>
                     <ul id="alltransactions"></ul>
                 </div>
             </div>
-
             <div class="About hidden" id="page-about" style="padding: 15px;">
                 <h1 style="text-align: left; color: aliceblue; margin-top: -1.5px;">About Our Expense Tracker</h1><br>
                 <p style="text-align: left; color: aliceblue;">
-                    Welcome to Financely, your reliable companion for managing and tracking your personal finances efficiently. 
-                    Our platform empowers users to take control of their spending habits, allowing for better financial planning and organization 
+                    Welcome to Financely, your reliable companion for managing and tracking your personal finances
+                    efficiently.
+                    Our platform empowers users to take control of their spending habits, allowing for better financial
+                    planning and organization
                     through an easy-to-use interface. <br><br>
-                    
-                    <h2 style="text-align: left; color: aliceblue; margin-top: -1.5px;">Why Financely?</h2><br>
-                    In today's fast-paced world, keeping track of daily expenses can be challenging. 
-                    Whether you're managing a household budget or tracking personal finances, 
-                    Financely simplifies the process by offering a user-friendly way to log, categorize, 
-                    and analyze your financial transactions.<br><br>
-                    
-                    <h2 style="text-align: left; color: aliceblue;">Key Features:</h2><br>
-                    <span style="font-weight: bold;"><u>User Registration and Secure Login:</u></span> Create an account to safely store your transactions and track your expenses over time.
-                    Add, View, and Manage Transactions: Easily add new transactions, including the date, amount, category, and description. View your transaction history in one place.<br>
-                    <br><span style="font-weight: bold;"><u>Categorized Transactions:</u></span> Organize expenses into categories like food, travel, utilities, and more for better insight into where your money is going.<br>
-                    <br><span style="font-weight: bold;"><u>Date Range and Category Filtering:</u></span> Find transactions based on custom date ranges or specific categories.<br>
-                    <br><span style="font-weight: bold;"><u>View Transaction Summaries:</u></span> Get summaries of the last few transactions or based on specific categories, making it easier to monitor spending trends.<br>
-                    <br><br>
-                    <h2 style="text-align: left; color: aliceblue; margin-bottom: -1.5px;">Technology Stack:</h2><br>
-                    <br><span style="font-weight: bold;"><u>Frontend:</u></span> The intuitive and dynamic user interface is built using modern web technologies like HTML, CSS, and JavaScript, delivering a seamless experience across devices.<br>
-                    <br><span style="font-weight: bold;"><u>Backend:</u></span> Our backend system is powered by C++, offering optimized performance for managing user authentication and transaction data. It's connected to the frontend using Express.js, a fast and flexible web framework for handling API requests.<br>
-                    <br><span style="font-weight: bold;"><u>Database:</u></span> User and transaction data is securely stored and managed using file-based storage in the backend, with plans to integrate more scalable solutions in future updates.<br>
-                    <br><span style="font-weight: bold;"><u>Authentication:</u></span> We ensure user security with a login system that protects your credentials and data, offering a smooth and secure experience.<br>
-                    <br><br>
-                    At Financely, we believe in simplicity and efficiency, helping you keep your finances organized without the hassle. Whether you're saving for a big goal or just trying to stay on top of daily spending, our platform is here to support you.
-                    
-                    <br><br>Start managing your expenses with Financely today, and take the first step toward financial freedom!
-                    <br><br>
-                    <a href="https://github.com/Luv-valecha/Finance_Tracker" target="_blank"><i class="fa-brands fa-github fa-2x" style="color: black;"></i></a>
+
+                <h2 style="text-align: left; color: aliceblue; margin-top: -1.5px;">Why Financely?</h2><br>
+                In today's fast-paced world, keeping track of daily expenses can be challenging.
+                Whether you're managing a household budget or tracking personal finances,
+                Financely simplifies the process by offering a user-friendly way to log, categorize,
+                and analyze your financial transactions.<br><br>
+
+                <h2 style="text-align: left; color: aliceblue;">Key Features:</h2><br>
+                <span style="font-weight: bold;"><u>User Registration and Secure Login:</u></span> Create an account to
+                safely store your transactions and track your expenses over time.
+                Add, View, and Manage Transactions: Easily add new transactions, including the date, amount, category,
+                and description. View your transaction history in one place.<br>
+                <br><span style="font-weight: bold;"><u>Categorized Transactions:</u></span> Organize expenses into
+                categories like food, travel, utilities, and more for better insight into where your money is going.<br>
+                <br><span style="font-weight: bold;"><u>Date Range and Category Filtering:</u></span> Find transactions
+                based on custom date ranges or specific categories.<br>
+                <br><span style="font-weight: bold;"><u>View Transaction Summaries:</u></span> Get summaries of the last
+                few transactions or based on specific categories, making it easier to monitor spending trends.<br>
+                <br><br>
+                <h2 style="text-align: left; color: aliceblue; margin-bottom: -1.5px;">Technology Stack:</h2><br>
+                <br><span style="font-weight: bold;"><u>Frontend:</u></span> The intuitive and dynamic user interface is
+                built using modern web technologies like HTML, CSS, and JavaScript, delivering a seamless experience
+                across devices.<br>
+                <br><span style="font-weight: bold;"><u>Backend:</u></span> Our backend system is powered by C++,
+                offering optimized performance for managing user authentication and transaction data. It's connected to
+                the frontend using Express.js, a fast and flexible web framework for handling API requests.<br>
+                <br><span style="font-weight: bold;"><u>Database:</u></span> User and transaction data is securely
+                stored and managed using file-based storage in the backend, with plans to integrate more scalable
+                solutions in future updates.<br>
+                <br><span style="font-weight: bold;"><u>Authentication:</u></span> We ensure user security with a login
+                system that protects your credentials and data, offering a smooth and secure experience.<br>
+                <br><br>
+                At Financely, we believe in simplicity and efficiency, helping you keep your finances organized without
+                the hassle. Whether you're saving for a big goal or just trying to stay on top of daily spending, our
+                platform is here to support you.
+
+                <br><br>Start managing your expenses with Financely today, and take the first step toward financial
+                freedom!
+                <br><br>
+                <a href="https://github.com/Luv-valecha/Finance_Tracker" target="_blank"><i
+                        class="fa-brands fa-github fa-2x" style="color: black;"></i></a>
                 </p>
             </div>
-            
+            <div class="statBoard hidden" id="user-stats" style="padding: 15px;">
+                <div id="user-stats-subdiv">
+                    <div id="left-side-stat-page" style="margin-right: 5%;">
+                        <h2>Get Statistics</h2>
+                        <form id="statdateRangeForm">
+                            <label for="monthinput"><i class="fa-regular fa-calendar"></i> Select Month:</label>
+                            <select id="monthinput" name="month" required>
+                                <option value="" disabled selected>Select a month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <button type="submit">Get Statistics</button>
+                        </form>
+                    </div>
+                    <div id="right-side-stat-page">
+                        <ul id="stat-list" style="padding-top: 18%;">
+                        </ul>
+                    </div>
+                    <div id="statBarGraph-div">
+                        <canvas id="statBarGraph" width="500" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="/js/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
