@@ -312,9 +312,8 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: -2%;
-    margin-left: 10%;
-    margin-right: 10%;
+    padding-left: 1.8%;
+    padding-right: 2.5%;
     height: 60px;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 16px;
@@ -322,11 +321,35 @@ li {
     backdrop-filter: blur(0.6px);
     -webkit-backdrop-filter: blur(0.6px);
     border: 1px solid rgba(255, 255, 255, 0.44);
+    margin-bottom: -2%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .nav-list {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-list button {
+    background: transparent;
+    color: whitesmoke;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: background 0.3s;
+    white-space: nowrap;    
+    font-weight: bold;
+    font-size: large;
+}
+
+.nav-list button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
 }
 
 .nav-list li {
@@ -334,14 +357,14 @@ li {
     border: none;
 }
 
-.nav-list li button {
+/* .nav-list li button {
     white-space: nowrap;
     background: none;
     border: none;
     color: whitesmoke;
     font-weight: bold;
     font-size: large;
-}
+} */
 
 .rightNav {
     display: flex;
@@ -407,7 +430,7 @@ button p {
 }
 
 #averageBarGraph{
-    margin-top:5%;
+    margin-top: 5%;
 }
 
 #user-stats-subdiv {

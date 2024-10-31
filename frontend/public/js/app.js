@@ -3,7 +3,7 @@ function handleSubmit(event, url, successCallback) {
   const formData = new FormData(event.target);
   if (url !== '/api/register' && url !== '/api/login') {
     const username = getUsername();
-    console.log(`Appending username to form data: ${username}`);  // Log the username being appended
+    // console.log(`Appending username to form data: ${username}`);  // Log the username being appended
     formData.append('username', username);
   }
   const data = Object.fromEntries(formData.entries());
@@ -81,7 +81,7 @@ if (loginForm) {
 function getUsername() {
   const urlParams = new URLSearchParams(window.location.search);
   const username = urlParams.get('username');
-  console.log(`Retrieved username from URL: ${username}`);
+  // console.log(`Retrieved username from URL: ${username}`);
   return username || "";  // Return empty string if username is not found
 }
 
@@ -176,7 +176,7 @@ function fetchCategorySpendData() {
 
 // Create a pie chart using the fetched data
 function createPieChart(data) {
-  console.log(data.transactions);
+  // console.log(data.transactions);
   const ctx = document.getElementById('categorySpendChart').getContext('2d');
 
   const labels = Object.keys(data);
@@ -255,9 +255,9 @@ const categoryForm = document.getElementById('categoryForm');
 if (categoryForm) {
   categoryForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log('Category form submitted'); // Log form submission
+    // console.log('Category form submitted'); // Log form submission
     const category = document.getElementById('categoryinput').value;
-    console.log(`Category: ${category}`); // Log category value
+    // console.log(`Category: ${category}`); // Log category value
     loadCategoryTransactions(category);
   });
 }
@@ -265,25 +265,28 @@ if (categoryForm) {
 // Function to fetch category-wise transactions
 function loadCategoryTransactions(category) {
   const username = getUsername();
-  console.log(`Fetching transactions for category: ${category}`); // Log category fetch
+  // console.log(`Fetching transactions for category: ${category}`); // Log category fetch
   fetch(`/api/cattransactions?username=${username}&category=${category}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data.transactions);  // Log fetched transactions for debugging
+      // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
       transactionList.innerHTML = ''; // Clear previous transactions
       if (data.transactions.length === 0) {
         transactionList.innerHTML = '<li>No Transactions Available</li>';
       } else {
-        const transactionsToDisplay = data.transactions.length > 5
-          ? data.transactions.slice(-5) // Get the last 5 transactions
-          : data.transactions; // If 5 or fewer, display all
-
+        let transactionsToDisplay=data.transactions;
+        if(!showingall){
+        transactionsToDisplay = data.transactions.length > 6
+          ? data.transactions.slice(-6) // Get the last 6 transactions
+          : data.transactions; // If 6 or fewer, display all
+        }
         // Render the transactions
         transactionsToDisplay.forEach(transaction => {
-          const li = document.createElement('li');
-          li.textContent = transaction;  // Adjust based on how your transaction data is structured
-          transactionList.appendChild(li);
+          const transactionparams = transaction.split(',');
+            const li = document.createElement('li');
+            li.innerHTML = transactionparams.join('<br>');
+            transactionList.appendChild(li);
         });
       }
     })
@@ -298,10 +301,10 @@ const dateRangeForm = document.getElementById('dateRangeForm');
 if (dateRangeForm) {
   dateRangeForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log('Date range form submitted'); // Log form submission
+    // console.log('Date range form submitted'); // Log form submission
     const fromDate = document.getElementById('fromDate').value;
     const toDate = document.getElementById('toDate').value;
-    console.log(`From Date: ${fromDate}, To Date: ${toDate}`); // Log dates
+    // console.log(`From Date: ${fromDate}, To Date: ${toDate}`); // Log dates
     loadDateRangeTransactions(fromDate, toDate);
   });
 }
@@ -309,11 +312,11 @@ if (dateRangeForm) {
 // Function to fetch transactions within a date range
 function loadDateRangeTransactions(fromDate, toDate) {
   const username = getUsername();
-  console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
+  // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
   fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data.transactions);  // Log fetched transactions for debugging
+      // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
       transactionList.innerHTML = ''; // Clear previous transactions
       if (data.transactions.length === 0) {
@@ -419,8 +422,8 @@ if (setBudgetForm) {
 
 // Set budget function
 function setBudget(username, budget) {
-  console.log('Sending username:', username);
-  console.log('Sending budget:', budget);
+  // console.log('Sending username:', username);
+  // console.log('Sending budget:', budget);
 
   // Send the data as JSON in the request body
   fetch(`/api/setbudget`, {
@@ -437,7 +440,7 @@ function setBudget(username, budget) {
       return response.json();
     })
     .then(data => {
-      console.log('Response from server:', data);
+      // console.log('Response from server:', data);
       if (data.message) {
         showError(data.message);
       } else {
@@ -485,7 +488,7 @@ function get_recommendations() {
         });
       }
       else anyrecommendation = false;
-      console.log(dataarray.length);
+      // console.log(dataarray.length);
       if (anyrecommendation) HideRecommendationButton.classList.remove("hidden");
       else HideRecommendationButton.classList.add("hidden")
     })
@@ -555,7 +558,7 @@ async function getmonthlygraphvalues(fromDate, toDate) {
   //getting transactions
   const username = getUsername();
   let totalspend = 0;
-  console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
+  // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
   try {
     const response = await fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`);
     const data = await response.json();
@@ -618,7 +621,7 @@ async function create_bar_graph() {
     let totalspend = await getmonthlygraphvalues(fromDate, toDate); // Await the async function
     bargraphvalues.push({ month: `${getMonthName(currentMonth)}`, spend: totalspend });
   }
-
+  bargraphvalues.reverse();
   const months = bargraphvalues.map(data => data.month);
   const amounts = bargraphvalues.map(data => data.spend);
 
@@ -721,7 +724,7 @@ const statdateRangeForm = document.getElementById('statdateRangeForm');
 if (statdateRangeForm) {
   statdateRangeForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log('Date range form submitted'); // Log form submission
+    // console.log('Date range form submitted'); // Log form submission
     const month = document.getElementById('monthinput').value;
     const now = new Date();
     const year = now.getFullYear();
@@ -732,7 +735,7 @@ if (statdateRangeForm) {
 let statBarGraph;
 function loadStatistics(month, year) {
   const username = getUsername();
-  console.log("Loadin statistics....");
+  // console.log("Loadin statistics....");
   fetch(`/api/getstats?username=${username}&month=${month}&year=${year}`)
     .then(response => {
       if (!response.ok) {

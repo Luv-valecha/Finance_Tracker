@@ -219,7 +219,7 @@ router.get('/getrecommendation', (req, res) => {
 
 router.get('/getstats', (req,res)=>{
     const {username, month, year}=req.query;
-    console.log(`received month: ${month} year: ${year}`);
+    // console.log(`received month: ${month} year: ${year}`);
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_statistics "${username}" "${month}" "${year}"`, (error, stdout, stderr) => {
         if (error) {

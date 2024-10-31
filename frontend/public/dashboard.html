@@ -21,7 +21,7 @@
                 <li><button id="showTransactionForm">Add Transaction</button></li>
                 <li><button id="showGetTransactionsForm">Get Transactions</button></li>
                 <li><button id="showSetBudgetForm">Set Budget</button></li>
-                <li><button id="showStats">Statistics</button></li>
+                <li><button id="showStats">Monthly Summary</button></li>
                 <li><button id="aboutButton">About</button></li>
             </ul>
         </nav>
@@ -95,7 +95,7 @@
                 <div id="budgetForm" class="form-container hidden">
                     <h2>Set Budget</h2>
                     <form id="setBudgetForm">
-                        <label for="budgetCategory"><i class="fa-regular fa-rectangle-list"></i> Transaction
+                        <label for="budgetCategory"><i class="fa-regular fa-rectangle-list"></i> Budget
                             Category</label>
                         <select id="budgetCategory" name="category" required>
                             <option value="" disabled selected>Select a category</option>
@@ -107,7 +107,7 @@
                             <option value="Travel">Travel</option>
                             <option value="Miscellaneous">Miscellaneous</option>
                         </select>
-                        <label for="budgetAmount"><i class="fa-solid fa-money-bill"></i> Transaction Amount</label>
+                        <label for="budgetAmount"><i class="fa-solid fa-money-bill"></i> Budget Amount</label>
                         <input type="number" id="budgetAmount" name="amount" step="any" placeholder="Amount" required>
                         <button type="submit">Set Budget</button>
                     </form>
@@ -193,8 +193,8 @@
             <div class="statBoard hidden" id="user-stats" style="padding: 15px;">
                 <div id="user-stats-subdiv">
                     <div id="left-side-stat-page" style="margin-right: 5%;">
-                        <h2>Get Statistics</h2>
-                        <form id="statdateRangeForm">
+                        <h2 style="margin-left: 50px;">Get Statistics</h2>
+                        <form id="statdateRangeForm" style="margin-left: 50px;">
                             <label for="monthinput"><i class="fa-regular fa-calendar"></i> Select Month:</label>
                             <select id="monthinput" name="month" required>
                                 <option value="" disabled selected>Select a month</option>
