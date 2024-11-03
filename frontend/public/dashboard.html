@@ -112,7 +112,7 @@
                         <button type="submit">Set Budget</button>
                     </form>
                 </div>
-                <label for="categorySpendChart" id="piechartlabel">Your Total Spend</label>
+                <figcaption id="piechartlabel">Your Total Spend</figcaption>
                 <canvas id="categorySpendChart" width="500" height="500"></canvas>
                 <canvas id="averageBarGraph" width="400" height="200"></canvas>
             </div>
@@ -122,6 +122,19 @@
                 <div id="transactionList">
                     <h2>Transactions</h2>
                     <ul id="transactions"></ul>
+                </div>
+                <div id="MainPagePaginationControls" class="hidden">
+                    <div id="paginationControls" class="pagination-controls hidden">
+                        <button id="MainFirstPage" title="First Page" onclick="changePage(-1e9)"><i
+                                class="fa-solid fa-angles-left"></i></button>
+                        <button id="MainPrevPage" title="Prev Page" onclick="changePage(-1)"><i
+                                class="fa-solid fa-angle-left"></i></button>
+                        <span id="MainPageInfo">Page 1</span>
+                        <button id="MainNextPage" title="Next Page" onclick="changePage(1)"><i
+                                class="fa-solid fa-angle-right"></i></button>
+                        <button id="MainLastPage" title="Last Page" onclick="changePage(1e9)"><i
+                                class="fa-solid fa-angles-right"></i></button>
+                    </div>
                 </div>
                 <button id="ShowFullList">
                     <p><i class="fa-regular fa-eye"></i> Show More
@@ -135,8 +148,28 @@
 
             <div class="AllTransactions hidden" id="all-transactions" style="padding: 15px;">
                 <div id="AlltransactionList">
+                    <div id="TPP">
+                        <label for="transactionPerPage">Transactions per page</label>
+                        <select id="transactionPerPage" name="transactionPerPage">
+                            <option value="8">8</option>
+                            <option value="16" selected="selected">16</option>
+                            <option value="24">24</option>
+                            <option value="32">32</option>
+                        </select>
+                    </div>
                     <h2 style="text-align: center;">Transactions</h2>
                     <ul id="alltransactions"></ul>
+                </div>
+                <div id="paginationControls" class="pagination-controls">
+                    <button id="FirstPage" title="First Page" onclick="changePage(-1e9)"><i
+                            class="fa-solid fa-angles-left"></i></button>
+                    <button id="prevPage" title="Prev Page" onclick="changePage(-1)"><i
+                            class="fa-solid fa-angle-left"></i></button>
+                    <span id="pageInfo">Page 1</span>
+                    <button id="nextPage" title="Next Page" onclick="changePage(1)"><i
+                            class="fa-solid fa-angle-right"></i></button>
+                    <button id="LastPage" title="Last Page" onclick="changePage(1e9)"><i
+                            class="fa-solid fa-angles-right"></i></button>
                 </div>
             </div>
             <div class="About hidden" id="page-about" style="padding: 15px;">

@@ -7,6 +7,7 @@ const execPath = path.resolve(__dirname, '../../../backend/finance_tracker');
 // Handle user registration
 router.post('/register', (req, res) => {
     const { username, password } = req.body;
+    console.log(`Registering user: ${username}`);
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" register "${username}" "${password}"`, (error, stdout, stderr) => {
         if (error) {
@@ -43,6 +44,7 @@ router.post('/login', (req, res) => {
         // console.log(`First line of stdout: ${firstLine}`);
 
         if (firstLine === "Login successful") {
+            console.log(`${username} logged in`);
             return res.json({ message: "Login successful", username: username, redirect: `/app?username=${username}` });
         } else {
             console.log("Unexpected output:", firstLine);
@@ -53,6 +55,7 @@ router.post('/login', (req, res) => {
 
 // Handle logout
 router.get('/logout', (req, res) => {
+    console.log("Logging out user");
     req.session.destroy((err) => {
         if (err) {
             res.status(500).json({ error: "Could not log out" });
@@ -75,6 +78,7 @@ router.post('/add-transaction', (req, res) => {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ error: stderr });
         }
+        console.log(`New Transaction added for user: ${username}`);
         res.json({ message: stdout.trim() });
     });
 });
@@ -241,6 +245,5 @@ router.get('/getstats', (req,res)=>{
         res.json(stats);
     });
 })
-
 
 module.exports = router;

@@ -445,3 +445,66 @@ button p {
     width: 600px;
     height: 500px;
 }
+
+#TPP{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+#transactionPerPage{
+    width: 70px;
+}
+
+/* Pagination Controls Container */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    font-family: Arial, sans-serif;
+}
+
+/* Page Number Info */
+#pageInfo {
+    font-size: 1.2rem;
+    margin: 0 15px;
+    color: aliceblue;
+}
+
+/* Pagination Buttons */
+.pagination-controls button {
+    background: transparent;
+    width: 30px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Hover Effect for Buttons */
+.pagination-controls button:hover {
+    background-color: #45a049;
+}
+
+/* Disabled Button Style */
+.pagination-controls button:disabled {
+    background: transparent;
+    cursor: not-allowed;
+}
+
+/* Responsive Design: Stack pagination controls on smaller screens */
+@media (max-width: 600px) {
+    .pagination-controls {
+        flex-direction: column;
+    }
+
+    .pagination-controls button {
+        width: 100px;
+        margin: 5px 0;
+    }
+
+    #pageInfo {
+        font-size: 1rem;
+    }
+}

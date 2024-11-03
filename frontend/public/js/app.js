@@ -93,10 +93,53 @@ var showingall = false;
 const showallbutton = document.getElementById('ShowFullList');
 showallbutton.addEventListener('click', () => {
   showingall = !showingall;
-  loadTransactions();
+  document.getElementById("MainPagePaginationControls").classList.toggle("hidden");
+  if (dateRangePaginationCall) loadDateRangeTransactions(document.getElementById('fromDate').value, document.getElementById('toDate').value);
+  else if (catWisePaginationCall) loadCategoryTransactions(document.getElementById('categoryinput').value);
+  else loadTransactions();
 })
 
+//pagination for all transactions page
+const transactionPerPageButton = document.getElementById("transactionPerPage");
+let transactionsPerPage = transactionPerPageButton.value;
+transactionPerPageButton.addEventListener("change", () => {
+  transactionsPerPage = transactionPerPageButton.value;
+  loadTransactions();
+})
+let totalTransactions = 0;
+let currentPage = 1;
+let dateRangePaginationCall = false;
+let catWisePaginationCall = false;
+
+function updatePaginationControls(totalTransactions) {
+  const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
+  document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+  document.getElementById("MainPageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+
+  // Enable or disable pagination buttons based on the current page
+  document.getElementById("MainNextPage").disabled = currentPage === totalPages;
+  document.getElementById("MainPrevPage").disabled = currentPage === 1;
+  document.getElementById("prevPage").disabled = currentPage === 1;
+  document.getElementById("nextPage").disabled = currentPage === totalPages;
+}
+
+function changePage(direction) {
+  const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
+  // Update current page within range
+  currentPage += direction;
+  if (currentPage < 1) currentPage = 1;
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  // Re-render transactions for the new page
+  if (dateRangePaginationCall) loadDateRangeTransactions(document.getElementById('fromDate').value, document.getElementById('toDate').value);
+  else if (catWisePaginationCall) loadCategoryTransactions(document.getElementById('categoryinput').value);
+  else loadTransactions();
+}
+
+
 function loadTransactions() {
+  dateRangePaginationCall = false;
+  catWisePaginationCall = false;
   const username = getUsername();
   fetch(`/api/transactions?username=${username}`)
     .then(response => response.json())
@@ -106,22 +149,30 @@ function loadTransactions() {
       const alltransactionList = document.getElementById('alltransactions');
       transactionList.innerHTML = ''; // Clear previous transactions
       alltransactionList.innerHTML = '';
+      totalTransactions = data.transactions.length;
       if (data.transactions.length === 0) {
         transactionList.innerHTML = '<li>No Transactions Available</li>';
       }
       else if (displayalltransactions) {
-        data.transactions.forEach(transaction => {
+        const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        const startIndex = (parseInt(currentPage) - 1) * parseInt(transactionsPerPage);
+        const endIndex = startIndex + parseInt(transactionsPerPage);
+        const paginatedTransactions = data.transactions.slice(startIndex, endIndex);
+        paginatedTransactions.forEach(transaction => {
           const transactionparams = transaction.split(',');
           const li = document.createElement('li');
           li.innerHTML = transactionparams.join('<br>');
           alltransactionList.appendChild(li);
         });
+        updatePaginationControls(data.transactions.length);
       }
       else {
         if (!showingall) {
           const transactionsToDisplay = data.transactions.length > 5
-            ? data.transactions.slice(-6) // Get the last 5 transactions
-            : data.transactions; // If 5 or fewer, display all
+            ? data.transactions.slice(-6) // Get the last 6 transactions
+            : data.transactions; // If 6 or fewer, display all
 
           // Render the transactions
           transactionsToDisplay.forEach(transaction => {
@@ -132,17 +183,19 @@ function loadTransactions() {
           });
         }
         else {
-          const transactionsToDisplay = data.transactions.length > 5
-            ? data.transactions.slice(-12) // Get the last 5 transactions
-            : data.transactions; // If 5 or fewer, display all
-
-          // Render the transactions
-          transactionsToDisplay.forEach(transaction => {
+          const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
+          if (currentPage < 1) currentPage = 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+          const startIndex = (parseInt(currentPage) - 1) * parseInt(transactionsPerPage);
+          const endIndex = startIndex + parseInt(transactionsPerPage);
+          const paginatedTransactions = data.transactions.slice(startIndex, endIndex);
+          paginatedTransactions.forEach(transaction => {
             const transactionparams = transaction.split(',');
             const li = document.createElement('li');
-            li.innerHTML = transactionparams.join('<br>');  // Adjust based on how your transaction data is structured
+            li.innerHTML = transactionparams.join('<br>');
             transactionList.appendChild(li);
           });
+          updatePaginationControls(data.transactions.length);
         }
         showallbutton.innerHTML = showingall ? '<p><i class="fa-regular fa-eye-slash"></i> Show Less</p>'
           : '<p><i class="fa-regular fa-eye"></i> Show More</p>';
@@ -265,6 +318,8 @@ if (categoryForm) {
 // Function to fetch category-wise transactions
 function loadCategoryTransactions(category) {
   const username = getUsername();
+  dateRangePaginationCall = false;
+  catWisePaginationCall = true;
   // console.log(`Fetching transactions for category: ${category}`); // Log category fetch
   fetch(`/api/cattransactions?username=${username}&category=${category}`)
     .then(response => response.json())
@@ -275,19 +330,36 @@ function loadCategoryTransactions(category) {
       if (data.transactions.length === 0) {
         transactionList.innerHTML = '<li>No Transactions Available</li>';
       } else {
-        let transactionsToDisplay=data.transactions;
-        if(!showingall){
-        transactionsToDisplay = data.transactions.length > 6
-          ? data.transactions.slice(-6) // Get the last 6 transactions
-          : data.transactions; // If 6 or fewer, display all
+        let transactionsToDisplay = data.transactions;
+        if (!showingall) {
+          transactionsToDisplay = data.transactions.length > 6
+            ? data.transactions.slice(-6) // Get the last 6 transactions
+            : data.transactions; // If 6 or fewer, display all
         }
         // Render the transactions
-        transactionsToDisplay.forEach(transaction => {
-          const transactionparams = transaction.split(',');
+        if (!showingall) {
+          transactionsToDisplay.forEach(transaction => {
+            const transactionparams = transaction.split(',');
             const li = document.createElement('li');
             li.innerHTML = transactionparams.join('<br>');
             transactionList.appendChild(li);
-        });
+          });
+        }
+        else {
+          const totalPages = Math.ceil(transactionsToDisplay.length / transactionsPerPage);
+          if (currentPage < 1) currentPage = 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+          const startIndex = (currentPage - 1) * transactionsPerPage; //transactionspp=16 fixed
+          const endIndex = startIndex + transactionsPerPage;
+          const paginatedTransactions = transactionsToDisplay.slice(startIndex, endIndex);
+          paginatedTransactions.forEach(transaction => {
+            const transactionparams = transaction.split(',');
+            const li = document.createElement('li');
+            li.innerHTML = transactionparams.join('<br>');
+            transactionList.appendChild(li);
+          });
+          updatePaginationControls(transactionsToDisplay.length);
+        }
       }
     })
     .catch(error => {
@@ -312,6 +384,8 @@ if (dateRangeForm) {
 // Function to fetch transactions within a date range
 function loadDateRangeTransactions(fromDate, toDate) {
   const username = getUsername();
+  dateRangePaginationCall = true;
+  catWisePaginationCall = false;
   // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
   fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`)
     .then(response => response.json())
@@ -322,11 +396,36 @@ function loadDateRangeTransactions(fromDate, toDate) {
       if (data.transactions.length === 0) {
         transactionList.innerHTML = '<li>No Transactions Available</li>';
       } else {
-        data.transactions.forEach(transaction => {
-          const li = document.createElement('li');
-          li.textContent = transaction;
-          transactionList.appendChild(li);
-        });
+        let transactionsToDisplay = data.transactions;
+        if (!showingall) {
+          transactionsToDisplay = data.transactions.length > 6
+            ? data.transactions.slice(0, 6) // Get the first 6 transactions
+            : data.transactions; // If 6 or fewer, display all
+        }
+        // Render the transactions
+        if (!showingall) {
+          transactionsToDisplay.forEach(transaction => {
+            const transactionparams = transaction.split(',');
+            const li = document.createElement('li');
+            li.innerHTML = transactionparams.join('<br>');
+            transactionList.appendChild(li);
+          });
+        }
+        else {
+          const totalPages = Math.ceil(transactionsToDisplay.length / transactionsPerPage);
+          if (currentPage < 1) currentPage = 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+          const startIndex = (currentPage - 1) * transactionsPerPage; //transactionspp=16 fixed
+          const endIndex = startIndex + transactionsPerPage;
+          const paginatedTransactions = transactionsToDisplay.slice(startIndex, endIndex);
+          paginatedTransactions.forEach(transaction => {
+            const transactionparams = transaction.split(',');
+            const li = document.createElement('li');
+            li.innerHTML = transactionparams.join('<br>');
+            transactionList.appendChild(li);
+          });
+          updatePaginationControls(transactionsToDisplay.length);
+        }
       }
     })
     .catch(error => {
@@ -334,10 +433,10 @@ function loadDateRangeTransactions(fromDate, toDate) {
     });
 }
 
-const getalltrans = document.getElementById('getalltrans');
-document.addEventListener('click', () => {
-  loadTransactions();
-})
+// const getalltrans = document.getElementById('getalltrans');
+// document.addEventListener('click', () => {
+//   loadTransactions();
+// })
 
 // Get buttons and form elements
 const showTransactionFormButton = document.getElementById('showTransactionForm');
@@ -352,6 +451,12 @@ const budgetForm = document.getElementById('budgetForm');
 showTransactionFormButton.addEventListener('click', () => {
   document.getElementById("left-column").classList.remove("hidden");
   document.getElementById("right-column").classList.remove("hidden");
+  if (!getTransactionsForm.classList.contains("hidden")) {
+    catWisePaginationCall = false;
+    dateRangePaginationCall = false;
+    loadTransactions();
+  }
+  currentPage = 1;
   aboutpage.classList.add("hidden");
   transactionForm.classList.toggle('hidden');
   getTransactionsForm.classList.add('hidden'); // Hide the other form
@@ -369,6 +474,12 @@ showGetTransactionsFormButton.addEventListener('click', () => {
   document.getElementById("left-column").classList.remove("hidden");
   document.getElementById("right-column").classList.remove("hidden");
   aboutpage.classList.add("hidden");
+  if (!getTransactionsForm.classList.contains("hidden")) {
+    catWisePaginationCall = false;
+    dateRangePaginationCall = false;
+    loadTransactions();
+  }
+  currentPage = 1;
   getTransactionsForm.classList.toggle('hidden');
   if (!allTransactionspage.classList.contains("hidden")) {
     allTransactionspage.classList.toggle("hidden");
@@ -385,6 +496,13 @@ showSetBudgetFormButton.addEventListener('click', () => {
   document.getElementById("right-column").classList.remove("hidden");
   aboutpage.classList.add("hidden");
   budgetForm.classList.toggle('hidden');
+  if (!getTransactionsForm.classList.contains("hidden")) {
+    catWisePaginationCall = false;
+    dateRangePaginationCall = false;
+    loadTransactions();
+  }
+  currentPage = 1;
+
   if (!allTransactionspage.classList.contains("hidden")) {
     allTransactionspage.classList.toggle("hidden");
     displayalltransactions = false;
@@ -513,6 +631,12 @@ const aboutButton = document.getElementById("aboutButton");
 const aboutpage = document.getElementById("page-about");
 aboutButton.addEventListener(("click"), () => {
   aboutpage.classList.toggle("hidden");
+  if (!getTransactionsForm.classList.contains("hidden")) {
+    catWisePaginationCall = false;
+    dateRangePaginationCall = false;
+    loadTransactions();
+  }
+  currentPage = 1;
   if (!allTransactionspage.classList.contains("hidden")) {
     allTransactionspage.classList.toggle("hidden");
     displayalltransactions = false;
@@ -543,6 +667,12 @@ const showAllTransactionsButton = document.getElementById("showAllTransactions")
 const allTransactionspage = document.getElementById("all-transactions");
 var displayalltransactions = false;
 showAllTransactionsButton.addEventListener(("click"), () => {
+  if (!getTransactionsForm.classList.contains("hidden")) {
+    catWisePaginationCall = false;
+    dateRangePaginationCall = false;
+    loadTransactions();
+  }
+  currentPage = 1;
   if (!(aboutpage.classList.contains("hidden"))) aboutpage.classList.toggle("hidden");
   else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
   else {
@@ -704,6 +834,13 @@ const statpage = document.getElementById("user-stats");
 const statpageButton = document.getElementById("showStats");
 statpageButton.addEventListener(("click"), () => {
   statpage.classList.toggle("hidden");
+  if (!getTransactionsForm.classList.contains("hidden")) {
+    catWisePaginationCall = false;
+    dateRangePaginationCall = false;
+    loadTransactions();
+  }
+  currentPage = 1;
+
   if (!allTransactionspage.classList.contains("hidden")) {
     allTransactionspage.classList.toggle("hidden");
     displayalltransactions = false;
@@ -745,16 +882,17 @@ function loadStatistics(month, year) {
     })
     .then(data => {
       const statList = document.getElementById("stat-list");
-
       // Clear previous list items
       statList.innerHTML = "";
       const catvalues = [];
+      let anytransaction = false;
       // Iterate over each key-value pair in data
       Object.entries(data).forEach(([key, value]) => {
         // Create a new list item
         const listItem = document.createElement("li");
         // console.log(key);
         if (key == "Total_Spend" || key == "Month_Average" || key == "Month_Standard_Deviation") {
+          anytransaction = true;
           // Set the text content to key-value pairs
           listItem.textContent = `${key.replace(/_/g, ' ')}: ${value}`;
 
@@ -765,6 +903,18 @@ function loadStatistics(month, year) {
           catvalues.push({ cat: key, spend: value });
         }
       });
+
+      if (!anytransaction) {
+        const listItem1 = document.createElement("li");
+        listItem1.textContent = `Total Spend: Nil`;
+        statList.appendChild(listItem1);
+        const listItem2 = document.createElement("li");
+        listItem2.textContent = `Month Average: Nil`;
+        statList.appendChild(listItem2);
+        const listItem3 = document.createElement("li");
+        listItem3.textContent = `Month Standard Deviation: Nil`;
+        statList.appendChild(listItem3);
+      }
 
       if (statBarGraph) {
         statBarGraph.destroy(); // Destroy the existing chart
