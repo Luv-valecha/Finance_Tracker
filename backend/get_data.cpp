@@ -89,21 +89,21 @@ vector<string> Transaction_history::PrintDateRange(string from, string to, strin
             curr = curr->next;
             continue;
         }
-        if (credentials[1] < from_credentials[1])
+        if (credentials[2] == from_credentials[2] && credentials[1] < from_credentials[1])
         {
             curr = curr->next;
             continue;
         }
-        if (credentials[0] < from_credentials[0])
+        if (credentials[2] == from_credentials[2] && credentials[1] == from_credentials[1] && credentials[0] < from_credentials[0])
         {
             curr = curr->next;
             continue;
         }
         if (credentials[2] > to_credentials[2])
             break;
-        if (credentials[1] > to_credentials[1])
+        if (credentials[2]==to_credentials[2] && credentials[1] > to_credentials[1])
             break;
-        if (credentials[0] > to_credentials[0])
+        if (credentials[2]==to_credentials[2] && credentials[1] == to_credentials[1] && credentials[0] > to_credentials[0])
             break;
         std::stringstream ss;
         ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
