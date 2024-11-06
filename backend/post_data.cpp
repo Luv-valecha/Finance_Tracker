@@ -11,18 +11,7 @@
 
 using namespace std;
 
-// This class maintains a doubly linked list of transactions for efficient transaction management.
-/*
-Features:
--Add transaction
--Remove last transaction ***
--Summary of last n transactions
--Summary filtered by category
--Summary for range of date
--Statistical summary
--Graphical Report
-*/
-
+// class constructor
 Transaction_history::Transaction_history()
 {
     // dummy head and tail
@@ -41,15 +30,10 @@ Transaction_history::Transaction_history()
         {"Miscellaneous", 0}};
 }
 
+// adding a new transaction in the doubly linked list
 void Transaction_history::new_transaction(Transaction *transaction, std::string username)
 {
     Transaction_node *temp = new Transaction_node(transaction); // Creating a new node
-    // // Ensure correct linking
-    // temp->next = tail;
-    // temp->prev = tail->prev;
-    // (tail->prev)->next = temp;
-    // (tail->prev) = temp;
-    // // number_of_transactions++;
     categoryspend[transaction->category] += transaction->amount;
     std::string directory = "user_transaction_details";
 // Create the directory if it doesn't exist
@@ -100,6 +84,7 @@ void Transaction_history::new_transaction(Transaction *transaction, std::string 
         curr = curr->next;
     }
 
+    // add the transaction in the DLL
     temp->next = curr;
     (curr->prev)->next = temp;
     temp->prev = curr->prev;
@@ -116,6 +101,7 @@ void Transaction_history::new_transaction(Transaction *transaction, std::string 
     file.close();
 }
 
+// function to add transaction in the DLL as transactions loads from the file
 void Transaction_history::makedll(Transaction *transaction)
 {
     Transaction_node *temp = new Transaction_node(transaction); // Creating a new node
@@ -125,11 +111,13 @@ void Transaction_history::makedll(Transaction *transaction)
     (tail->prev) = temp;
 }
 
+// function to check if the DLL is empty
 bool Transaction_history::empty()
 {
     return head->next == tail;
 }
 
+// function to load transactions from the file as an user logins
 bool Transaction_history::bringtransactions(std::string username)
 {
     std::string directory = "user_transaction_details";
@@ -153,6 +141,7 @@ bool Transaction_history::bringtransactions(std::string username)
     return true;
 }
 
+// function to get data category wise for dashboard pie chart
 unordered_map<string, double> Transaction_history::piechartvalues(string username)
 {
     std::string directory = "user_transaction_details";
@@ -175,6 +164,7 @@ unordered_map<string, double> Transaction_history::piechartvalues(string usernam
     return categoryspend;
 }
 
+// helper function to separate date month and year from a date string
 vector<int> Transaction_history::extract(string currdate)
 {
     int date = 0, month = 0, year = 0;

@@ -1,5 +1,6 @@
 #include "Transhist.h"
 
+// function to display all the transactions by a user
 vector<string> Transaction_history::PrintAllTransactions(string username)
 {
     vector<string> transactions;
@@ -26,6 +27,7 @@ vector<string> Transaction_history::PrintAllTransactions(string username)
     return transactions;
 }
 
+// functions to get all transactions in a particular category
 vector<string> Transaction_history::PrintCategoryWise(string target, string username)
 {
     vector<string> transactions;
@@ -61,7 +63,8 @@ vector<string> Transaction_history::PrintCategoryWise(string target, string user
     return transactions;
 }
 
-// YYYY-MM-DD format
+// function to get the transactions in a given date range
+//  YYYY-MM-DD format
 vector<string> Transaction_history::PrintDateRange(string from, string to, string username)
 {
     vector<string> transactions;
@@ -101,9 +104,9 @@ vector<string> Transaction_history::PrintDateRange(string from, string to, strin
         }
         if (credentials[2] > to_credentials[2])
             break;
-        if (credentials[2]==to_credentials[2] && credentials[1] > to_credentials[1])
+        if (credentials[2] == to_credentials[2] && credentials[1] > to_credentials[1])
             break;
-        if (credentials[2]==to_credentials[2] && credentials[1] == to_credentials[1] && credentials[0] > to_credentials[0])
+        if (credentials[2] == to_credentials[2] && credentials[1] == to_credentials[1] && credentials[0] > to_credentials[0])
             break;
         std::stringstream ss;
         ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount

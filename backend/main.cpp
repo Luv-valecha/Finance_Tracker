@@ -8,6 +8,8 @@
 
 using namespace std;
 
+//                                                 Main file connecting frontend and backend
+
 LoginSystem loginSystem;
 Transaction_history transactionHistory;
 
@@ -191,12 +193,12 @@ int main(int argc, char *argv[])
         }
 
         std::string username = argv[2];
-        int month= stoi(argv[3]);
-        int year= stoi(argv[4]);
-        unordered_map<std::string,double> stats= transactionHistory.monthlysummary(month,year,username);
+        int month = stoi(argv[3]);
+        int year = stoi(argv[4]);
+        unordered_map<std::string, double> stats = transactionHistory.monthlysummary(month, year, username);
         for (const auto &it : stats)
         {
-            std::cout << it.first << " " <<  it.second << endl;
+            std::cout << it.first << " " << it.second << endl;
         }
     }
 

@@ -1,6 +1,6 @@
 #include "Transhist.h"
 
-
+// function to save the budget set by a user
 void Transaction_history::setbudget(std::string username, std::unordered_map<std::string, double> &budget)
 {
     std::string directory = "user_transaction_details";
@@ -37,6 +37,7 @@ void Transaction_history::setbudget(std::string username, std::unordered_map<std
     std::cout << "Budget successfully set for user: " << username << std::endl;
 }
 
+// function to create the priority queue for recommendation generating
 priority_queue<pair<double, string>> Transaction_history::create_recommender(unordered_map<string, double> budget, std::string username)
 {
     priority_queue<pair<double, string>> recommend;
@@ -53,7 +54,7 @@ priority_queue<pair<double, string>> Transaction_history::create_recommender(uno
     return recommend;
 }
 
-
+// function to process the priority queue and generate recommendations for the frontend
 vector<string> Transaction_history::give_recommendation(std::string username)
 {
     // std::cout << "Function called " << std::endl;
@@ -75,9 +76,12 @@ vector<string> Transaction_history::give_recommendation(std::string username)
     {
         double over = recommender.top().first;
         std::string category = recommender.top().second;
-        if(over>0) recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over));
-        else if(over<0) recommendations.emplace_back("You are close to the budget limit in " + category + " by " + std::to_string(abs(over)));
-        else recommendations.emplace_back("You have reached the budeget limit in " + category);
+        if (over > 0)
+            recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over));
+        else if (over < 0)
+            recommendations.emplace_back("You are close to the budget limit in " + category + " by " + std::to_string(abs(over)));
+        else
+            recommendations.emplace_back("You have reached the budeget limit in " + category);
         recommender.pop();
     }
 
@@ -85,6 +89,7 @@ vector<string> Transaction_history::give_recommendation(std::string username)
     return recommendations;
 }
 
+// function to retrieve the saved budget of a user
 std::unordered_map<std::string, double> Transaction_history::getbudget(std::string username)
 {
     std::unordered_map<std::string, double> budget;
