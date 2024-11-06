@@ -1,3 +1,4 @@
+//function to handle form submission
 function handleSubmit(event, url, successCallback) {
   event.preventDefault();
   const formData = new FormData(event.target);
@@ -32,6 +33,7 @@ function handleSubmit(event, url, successCallback) {
     });
 }
 
+//function for error display
 function showError(message) {
   Swal.fire({
     icon: 'error',
@@ -54,8 +56,6 @@ if (registerForm) {
       if (result.message === "User registered successfully") {
         alert(result.message);
       } else {
-        // alert(result.error || "Error registering");
-        // Example usage
         showError(result.error);
       }
     });
@@ -81,14 +81,15 @@ if (loginForm) {
 function getUsername() {
   const urlParams = new URLSearchParams(window.location.search);
   const username = urlParams.get('username');
-  // console.log(`Retrieved username from URL: ${username}`);
   return username || "";  // Return empty string if username is not found
 }
 
+//display the username on the main dashboard
 const userHeader = document.getElementById("User_detail_heading");
 const username = getUsername();
 userHeader.innerHTML = `<p> <i class="fa-solid fa-user"></i> User: ${username}</p>`;
 
+//main dashboard transactions "show more" button working
 var showingall = false;
 const showallbutton = document.getElementById('ShowFullList');
 showallbutton.addEventListener('click', () => {
@@ -111,6 +112,7 @@ let currentPage = 1;
 let dateRangePaginationCall = false;
 let catWisePaginationCall = false;
 
+//enable or disable pagination buttons
 function updatePaginationControls(totalTransactions) {
   const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
   document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
@@ -123,6 +125,7 @@ function updatePaginationControls(totalTransactions) {
   document.getElementById("nextPage").disabled = currentPage === totalPages;
 }
 
+//change page function
 function changePage(direction) {
   const totalPages = Math.ceil(totalTransactions / transactionsPerPage);
   // Update current page within range
@@ -136,7 +139,7 @@ function changePage(direction) {
   else loadTransactions();
 }
 
-
+//function to load transactions to display
 function loadTransactions() {
   dateRangePaginationCall = false;
   catWisePaginationCall = false;
@@ -282,8 +285,6 @@ if (addTransactionForm) {
 // Load transactions when the main app page loads
 if (window.location.pathname === '/app') {
   loadTransactions();
-  // get_recommendations();
-  // fetchCategorySpendData();
 }
 
 // Logout functionality
@@ -433,11 +434,6 @@ function loadDateRangeTransactions(fromDate, toDate) {
     });
 }
 
-// const getalltrans = document.getElementById('getalltrans');
-// document.addEventListener('click', () => {
-//   loadTransactions();
-// })
-
 // Get buttons and form elements
 const showTransactionFormButton = document.getElementById('showTransactionForm');
 const showGetTransactionsFormButton = document.getElementById('showGetTransactionsForm');
@@ -447,7 +443,7 @@ const transactionForm = document.getElementById('transactionForm');
 const getTransactionsForm = document.getElementById('getTransactionsForm');
 const budgetForm = document.getElementById('budgetForm');
 
-// Show Add Transaction Form on button click
+// Show Add Transaction Form on button click and hide others
 showTransactionFormButton.addEventListener('click', () => {
   document.getElementById("left-column").classList.remove("hidden");
   document.getElementById("right-column").classList.remove("hidden");
@@ -469,7 +465,7 @@ showTransactionFormButton.addEventListener('click', () => {
   else if (!(statpage.classList.contains("hidden"))) statpage.classList.toggle("hidden");
 });
 
-// Show Get Transactions Form on button click
+// Show Get Transactions Form on button click and hide others
 showGetTransactionsFormButton.addEventListener('click', () => {
   document.getElementById("left-column").classList.remove("hidden");
   document.getElementById("right-column").classList.remove("hidden");
@@ -491,6 +487,7 @@ showGetTransactionsFormButton.addEventListener('click', () => {
   budgetForm.classList.add('hidden');
 });
 
+//Show set budget form on button click and hide others
 showSetBudgetFormButton.addEventListener('click', () => {
   document.getElementById("left-column").classList.remove("hidden");
   document.getElementById("right-column").classList.remove("hidden");
@@ -513,6 +510,7 @@ showSetBudgetFormButton.addEventListener('click', () => {
   getTransactionsForm.classList.add('hidden');
 });
 
+//set budget form submission
 const setBudgetForm = document.getElementById('setBudgetForm');
 if (setBudgetForm) {
   setBudgetForm.addEventListener('submit', (event) => {
@@ -538,7 +536,7 @@ if (setBudgetForm) {
 }
 
 
-// Set budget function
+// Set budget function api call
 function setBudget(username, budget) {
   // console.log('Sending username:', username);
   // console.log('Sending budget:', budget);
@@ -572,6 +570,7 @@ function setBudget(username, budget) {
   location.reload();
 }
 
+//api call to get recommendations
 function get_recommendations() {
   const recommendationListForm = document.getElementById("recommendationList");
   const recommendationList = document.getElementById("recommendations");
@@ -615,6 +614,7 @@ function get_recommendations() {
     });
 }
 
+//Hide recommendations button working
 var ShowingRecommendations = true;
 var anyrecommendation = false;
 const HideRecommendationButton = document.getElementById("ShowRecommendations");
@@ -627,6 +627,7 @@ HideRecommendationButton.addEventListener("click", () => {
     : '<p><i class="fa-regular fa-eye"></i> Show Recommendations</p>';
 });
 
+//about page button working and page display
 const aboutButton = document.getElementById("aboutButton");
 const aboutpage = document.getElementById("page-about");
 aboutButton.addEventListener(("click"), () => {
@@ -663,6 +664,7 @@ dateinput3.addEventListener('click', function () {
   dateinput3.showPicker(); // Show the date picker
 });
 
+//transaction history tab working
 const showAllTransactionsButton = document.getElementById("showAllTransactions");
 const allTransactionspage = document.getElementById("all-transactions");
 var displayalltransactions = false;
@@ -684,6 +686,7 @@ showAllTransactionsButton.addEventListener(("click"), () => {
   loadTransactions();
 })
 
+//generating monthly bar graph on the main dashboard
 async function getmonthlygraphvalues(fromDate, toDate) {
   //getting transactions
   const username = getUsername();
@@ -710,11 +713,12 @@ async function getmonthlygraphvalues(fromDate, toDate) {
   return totalspend;
 }
 
-
+//function to get total days in a month
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate(); // Correctly returns the last day of the month
 }
 
+//function to get the name of the month from its number
 function getMonthName(monthNumber) {
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -726,6 +730,7 @@ function getMonthName(monthNumber) {
   return monthNames[monthNumber - 1];
 }
 
+//function to create the main dashboard bar graph
 async function create_bar_graph() {
   const now = new Date();
 
@@ -830,6 +835,7 @@ async function create_bar_graph() {
   });
 }
 
+//monthly stat page display and working
 const statpage = document.getElementById("user-stats");
 const statpageButton = document.getElementById("showStats");
 statpageButton.addEventListener(("click"), () => {
@@ -857,6 +863,7 @@ statpageButton.addEventListener(("click"), () => {
   }
 })
 
+//monthly stats month input form
 const statdateRangeForm = document.getElementById('statdateRangeForm');
 if (statdateRangeForm) {
   statdateRangeForm.addEventListener('submit', (event) => {
@@ -869,6 +876,7 @@ if (statdateRangeForm) {
   });
 }
 
+//getting the month stat as requested and generating the bar graph
 let statBarGraph;
 function loadStatistics(month, year) {
   const username = getUsername();

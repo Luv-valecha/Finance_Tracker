@@ -4,28 +4,27 @@ const { exec } = require('child_process');
 const path = require('path');
 const execPath = path.resolve(__dirname, '../../../backend/finance_tracker');
 
+//                     This file handles the frontend api calls executing the backend and returning the result
+
 // Handle user registration
 router.post('/register', (req, res) => {
     const { username, password } = req.body;
     console.log(`Registering user: ${username}`);
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
+    
     exec(`"${execPath}" register "${username}" "${password}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Exec error: ${error.message}`);
             return res.status(500).json({ error: error.message });
-        }
-        if (stderr) {
+        } else if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ error: stderr });
-        }
-        if (stdout.trim() === "User registered successfully") {
+        } else  {
             return res.json({ message: "User registered successfully", redirect: "/login" });
-        } else {
-            console.log("Unexpected output:", stdout.trim());
-            return res.status(400).json({ message: stdout.trim() });
         }
     });
 });
+
 
 // Handle user login
 router.post('/login', (req, res) => {
@@ -166,6 +165,7 @@ router.get('/categorywisespend', (req, res) => {
     })
 });
 
+// Handle budget setting
 router.post('/setbudget', (req, res) => {
     const { username, budget } = req.body;  // Ensure data is extracted from req.body
 
@@ -202,10 +202,9 @@ router.post('/setbudget', (req, res) => {
     });
 });
 
+// Handle recommendation generation
 router.get('/getrecommendation', (req, res) => {
     const { username } = req.query;
-    // console.log("getting recommendations.......");
-    // console.log(`recommendation username: ${username}`);
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" fetch_recommendation "${username}"`, (error, stdout, stderr) => {
         if (error) {
@@ -221,9 +220,9 @@ router.get('/getrecommendation', (req, res) => {
     });
 });
 
-router.get('/getstats', (req,res)=>{
-    const {username, month, year}=req.query;
-    // console.log(`received month: ${month} year: ${year}`);
+// Handle monthly statistics
+router.get('/getstats', (req, res) => {
+    const { username, month, year } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_statistics "${username}" "${month}" "${year}"`, (error, stdout, stderr) => {
         if (error) {
@@ -234,13 +233,11 @@ router.get('/getstats', (req,res)=>{
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ error: stderr });
         }
-        const stats={};
+        const stats = {};
         const details = stdout.split('\n');
-        details.forEach(deet=>{
-            // console.log(`deet: ${deet}`);
-            currdeet=deet.split(" ");
-            stats[currdeet[0]]=parseFloat(currdeet[1]);
-            // console.log(`Value for ${currdeet[0]} is ${currdeet[1]}`);
+        details.forEach(deet => {
+            currdeet = deet.split(" ");
+            stats[currdeet[0]] = parseFloat(currdeet[1]);
         })
         res.json(stats);
     });
