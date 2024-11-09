@@ -14,5 +14,7 @@ User Navigation Flow
 |           |   ├── View Category-wise
 |           |   └── View in a Range of Date
 │           ├── Add Transaction
-│           └── Set Budget
-|               └── Generate Recommendations
+│           ├── Set Budget
+|           |   └── Generate Recommendations
+│           ├── Monthly Summary
+│           └── History
