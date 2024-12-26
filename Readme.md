@@ -1,6 +1,6 @@
 # Finance Tracker
 
-A full-stack personal finance management application combining a C++ backend with a Node.js/Express web interface. Track expenses, manage budgets, and get personalized spending recommendations.
+A full-stack personal finance management application combining a C++ backend with a Node.js/Express web interface using RESTful APIs. Track expenses, manage budgets, and get personalized spending recommendations.
 
 ## Screenshots
 
