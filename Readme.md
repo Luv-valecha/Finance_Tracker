@@ -47,12 +47,13 @@ A full-stack personal finance management application combining a C++ backend wit
 - File-based data persistence
 - Custom data structures (doubly linked lists)
 - Priority queue for recommendations
-
-### Frontend 
 - Node.js
 - Express.js
+- JWT (JSON Web Tokens) for user authentication and authorization
+
+### Frontend 
 - HTML/CSS
-- Session management
+- Javascript
 - REST APIs
 
 ## Installation
@@ -91,8 +92,8 @@ node server.js
 ### Authentication
 ```bash
 POST /api/register - Register new user
-POST /api/login - Login user
-GET /api/logout - Logout user
+POST /api/login - Login user (JWT generated on success)
+GET /api/logout - Logout user (invalidate JWT on client-side)
 ```
 
 ### Transactions
@@ -138,7 +139,8 @@ GET /api/getrecommendation - Get spending recommendations
 
 1. Register a new account at `/register`
 
-2. Login at `/login` 
+2. Login at `/login`
+   - JWT token will be returned upon successful login. Store it securely (e.g., in a cookie or localStorage)
 
 3. Add transactions:
    - Enter date
@@ -163,7 +165,7 @@ GET /api/getrecommendation - Get spending recommendations
 
 ## Security
 - Password hashing
-- Session-based auth
+- JWT authentication (using tokens for secure user authentication and session management)
 - Input validation
 - Secure file operations
 
