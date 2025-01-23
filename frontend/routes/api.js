@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { exec } = require('child_process');
 const path = require('path');
+const { generateToken } = require('../utils/token.utils.js');
+const { protectRoute } = require('../middleware/auth.middleware.js');
 const execPath = path.resolve(__dirname, '../../../backend/finance_tracker');
 
 //                     This file handles the frontend api calls executing the backend and returning the result
@@ -44,6 +46,7 @@ router.post('/login', (req, res) => {
 
         if (firstLine === "Login successful") {
             console.log(`${username} logged in`);
+            generateToken(username,res);
             return res.json({ message: "Login successful", username: username, redirect: `/app?username=${username}` });
         } else {
             console.log("Unexpected output:", firstLine);
@@ -55,17 +58,16 @@ router.post('/login', (req, res) => {
 // Handle logout
 router.get('/logout', (req, res) => {
     console.log("Logging out user");
-    req.session.destroy((err) => {
-        if (err) {
-            res.status(500).json({ error: "Could not log out" });
-        } else {
-            res.json({ message: "Logged out successfully" });
-        }
-    });
+    try {
+        res.cookie("jwt", "", {maxAge: 0});
+        res.json({ message: "Logged out successfully" });
+    } catch (error) {
+        res.status(500).json({error:error});
+    }
 });
 
 // Handle adding a new transaction
-router.post('/add-transaction', (req, res) => {
+router.post('/add-transaction',protectRoute, (req, res) => {
     const { date, amount, category, description, username } = req.body;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" add_transaction "${username}" "${date}" ${amount} "${category}" "${description.replace(/"/g, '\\"')}"`, (error, stdout, stderr) => {
@@ -83,7 +85,7 @@ router.post('/add-transaction', (req, res) => {
 });
 
 // Handle getting all transactions
-router.get('/transactions', (req, res) => {
+router.get('/transactions',protectRoute, (req, res) => {
     const { username } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_transactions "${username}"`, (error, stdout, stderr) => {
@@ -102,7 +104,7 @@ router.get('/transactions', (req, res) => {
 });
 
 // Handle getting category-wise transactions
-router.get('/cattransactions', (req, res) => {
+router.get('/cattransactions',protectRoute, (req, res) => {
     const { username, category } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_category_transactions "${username}" "${category}"`, (error, stdout, stderr) => {
@@ -121,7 +123,7 @@ router.get('/cattransactions', (req, res) => {
 });
 
 // Handle getting transactions within a date range
-router.get('/daterangetransactions', (req, res) => {
+router.get('/daterangetransactions',protectRoute, (req, res) => {
     const { username, from, to } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_date_transactions "${username}" "${from}" "${to}"`, (error, stdout, stderr) => {
@@ -140,7 +142,7 @@ router.get('/daterangetransactions', (req, res) => {
 });
 
 //making pie-chart
-router.get('/categorywisespend', (req, res) => {
+router.get('/categorywisespend',protectRoute, (req, res) => {
     const { username } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_piechart_values "${username}"`, (error, stdout, stderr) => {
@@ -166,7 +168,7 @@ router.get('/categorywisespend', (req, res) => {
 });
 
 // Handle budget setting
-router.post('/setbudget', (req, res) => {
+router.post('/setbudget',protectRoute, (req, res) => {
     const { username, budget } = req.body;  // Ensure data is extracted from req.body
 
     console.log('Received request to set budget for:', username);
@@ -203,7 +205,7 @@ router.post('/setbudget', (req, res) => {
 });
 
 // Handle recommendation generation
-router.get('/getrecommendation', (req, res) => {
+router.get('/getrecommendation',protectRoute, (req, res) => {
     const { username } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" fetch_recommendation "${username}"`, (error, stdout, stderr) => {
@@ -221,7 +223,7 @@ router.get('/getrecommendation', (req, res) => {
 });
 
 // Handle monthly statistics
-router.get('/getstats', (req, res) => {
+router.get('/getstats',protectRoute, (req, res) => {
     const { username, month, year } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_statistics "${username}" "${month}" "${year}"`, (error, stdout, stderr) => {

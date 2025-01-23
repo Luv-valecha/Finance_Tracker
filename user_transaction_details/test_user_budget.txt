@@ -1,0 +1,3 @@
+Personal 8000
+Food 1000
+Shopping 241

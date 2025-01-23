@@ -1,14 +1,15 @@
 const express = require('express');
 const { exec } = require('child_process');
 const path = require('path');
-const session = require('express-session');
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res, filePath) => {
@@ -18,14 +19,8 @@ app.use(express.static(path.join(__dirname, 'public'), {
   }
 }));
 
-// Add session middleware
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-}));
-
 const apiRoutes= require('./routes/api');
+const { protectRoute } = require('./middleware/auth.middleware');
 app.use('/api', apiRoutes);
 
 // Serve the login page
@@ -39,7 +34,7 @@ app.get('/register', (req, res) => {
 });
 
 // Serve the main app page
-app.get('/app', (req, res) => {
+app.get('/app',protectRoute, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 

@@ -15,7 +15,12 @@ function handleSubmit(event, url, successCallback) {
     },
     body: JSON.stringify(data),
   })
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 401) {
+        window.location.href = '/login';
+      }
+      return response.json()
+    })
     .then(result => {
       if (result.redirect) {
         // alert(result.message || 'Operation completed successfully');
@@ -145,7 +150,12 @@ function loadTransactions() {
   catWisePaginationCall = false;
   const username = getUsername();
   fetch(`/api/transactions?username=${username}`)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 401) {
+        window.location.href = '/login';
+      }
+      return response.json()
+    })
     .then(data => {
       // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
@@ -221,7 +231,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function fetchCategorySpendData() {
   const username = getUsername();
   fetch(`/api/categorywisespend?username=${username}`)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 401) {
+        window.location.href = '/login';
+      }
+      return response.json()
+    })
     .then(data => {
       createPieChart(data);
     })
@@ -292,7 +307,12 @@ const logoutButton = document.getElementById('logoutButton');
 if (logoutButton) {
   logoutButton.addEventListener('click', () => {
     fetch('/api/logout')
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 401) {
+          window.location.href = '/login';
+        }
+        return response.json()
+      })
       .then(result => {
         // alert(result.message);
         window.location.href = '/login';
@@ -323,7 +343,12 @@ function loadCategoryTransactions(category) {
   catWisePaginationCall = true;
   // console.log(`Fetching transactions for category: ${category}`); // Log category fetch
   fetch(`/api/cattransactions?username=${username}&category=${category}`)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 401) {
+        window.location.href = '/login';
+      }
+      return response.json()
+    })
     .then(data => {
       // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
@@ -389,7 +414,12 @@ function loadDateRangeTransactions(fromDate, toDate) {
   catWisePaginationCall = false;
   // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
   fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 401) {
+        window.location.href = '/login';
+      }
+      return response.json()
+    })
     .then(data => {
       // console.log(data.transactions);  // Log fetched transactions for debugging
       const transactionList = document.getElementById('transactions');
@@ -550,10 +580,10 @@ function setBudget(username, budget) {
     body: JSON.stringify({ username, budget }),  // Correctly structure the JSON body
   })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not OK');
+      if (response.status === 401) {
+        window.location.href = '/login';
       }
-      return response.json();
+      return response.json()
     })
     .then(data => {
       // console.log('Response from server:', data);
@@ -580,10 +610,10 @@ function get_recommendations() {
 
   fetch(`/api/getrecommendation?username=${username}`)
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not OK');
+      if (response.status === 401) {
+        window.location.href = '/login';
       }
-      return response.json();
+      return response.json()
     })
     .then(data => {
       const dataarray = data.recommendation || [];
@@ -694,6 +724,9 @@ async function getmonthlygraphvalues(fromDate, toDate) {
   // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
   try {
     const response = await fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`);
+    if (response.status === 401) {
+      window.location.href = '/login';
+    }
     const data = await response.json();
 
     data.transactions.forEach(transaction => {
@@ -883,10 +916,10 @@ function loadStatistics(month, year) {
   // console.log("Loadin statistics....");
   fetch(`/api/getstats?username=${username}&month=${month}&year=${year}`)
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not OK');
+      if (response.status === 401) {
+        window.location.href = '/login';
       }
-      return response.json();
+      return response.json()
     })
     .then(data => {
       const statList = document.getElementById("stat-list");
