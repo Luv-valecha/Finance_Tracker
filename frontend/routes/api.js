@@ -104,10 +104,10 @@ router.get('/transactions',protectRoute, (req, res) => {
 });
 
 // Handle getting category-wise transactions
-router.get('/cattransactions',protectRoute, (req, res) => {
-    const { username, category } = req.query;
+router.get('/filtertransactions',protectRoute, (req, res) => {
+    const { username, category, type, from, to } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
-    exec(`"${execPath}" get_category_transactions "${username}" "${category}"`, (error, stdout, stderr) => {
+    exec(`"${execPath}" get_filter_transactions "${username}" "${category}" "${type}" "${from}" "${to}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Exec error: ${error.message}`);
             return res.status(500).json({ error: error.message });
@@ -122,24 +122,24 @@ router.get('/cattransactions',protectRoute, (req, res) => {
     });
 });
 
-// Handle getting transactions within a date range
-router.get('/daterangetransactions',protectRoute, (req, res) => {
-    const { username, from, to } = req.query;
-    const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
-    exec(`"${execPath}" get_date_transactions "${username}" "${from}" "${to}"`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Exec error: ${error.message}`);
-            return res.status(500).json({ error: error.message });
-        }
-        if (stderr) {
-            console.error(`Stderr: ${stderr}`);
-            return res.status(500).json({ error: stderr });
-        }
-        // console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
-        const transactions = stdout.split('\n').filter(line => line.trim() !== '');
-        res.json({ transactions: transactions });
-    });
-});
+// // Handle getting transactions within a date range
+// router.get('/daterangetransactions',protectRoute, (req, res) => {
+//     const { username, from, to } = req.query;
+//     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
+//     exec(`"${execPath}" get_date_transactions "${username}" "${from}" "${to}"`, (error, stdout, stderr) => {
+//         if (error) {
+//             console.error(`Exec error: ${error.message}`);
+//             return res.status(500).json({ error: error.message });
+//         }
+//         if (stderr) {
+//             console.error(`Stderr: ${stderr}`);
+//             return res.status(500).json({ error: stderr });
+//         }
+//         // console.log(`stdout: ${stdout}`); // Log stdout to ensure all transactions are fetched
+//         const transactions = stdout.split('\n').filter(line => line.trim() !== '');
+//         res.json({ transactions: transactions });
+//     });
+// });
 
 //making pie-chart
 router.get('/categorywisespend',protectRoute, (req, res) => {

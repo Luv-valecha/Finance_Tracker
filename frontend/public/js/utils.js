@@ -82,8 +82,9 @@ function updatePaginationControls(totalTransactions) {
     if (currentPage > totalPages) currentPage = totalPages;
   
     // Re-render transactions for the new page
-    if (dateRangePaginationCall) loadDateRangeTransactions(document.getElementById('fromDate').value, document.getElementById('toDate').value);
-    else if (catWisePaginationCall) loadCategoryTransactions(document.getElementById('categoryinput').value);
+    // if (dateRangePaginationCall) loadDateRangeTransactions(document.getElementById('fromDate').value, document.getElementById('toDate').value);
+    // else if (catWisePaginationCall) loadCategoryTransactions(document.getElementById('categoryinput').value);
+    if(FilteredPaginationCall) loadFilterTransactions(document.getElementById('categoryinput').value,document.getElementById('typeinput').value,document.getElementById('fromDate').value, document.getElementById('toDate').value)
     else loadTransactions();
   }
   
@@ -91,6 +92,7 @@ function updatePaginationControls(totalTransactions) {
   function loadTransactions() {
     dateRangePaginationCall = false;
     catWisePaginationCall = false;
+    FilteredPaginationCall=false;
     const username = getUsername();
     fetch(`/api/transactions?username=${username}`)
       .then(response => {
@@ -100,7 +102,7 @@ function updatePaginationControls(totalTransactions) {
         return response.json()
       })
       .then(data => {
-        console.log(data.transactions);  // Log fetched transactions for debugging
+        // console.log(data.transactions);  // Log fetched transactions for debugging
         const transactionList = document.getElementById('transactions');
         const alltransactionList = document.getElementById('alltransactions');
         transactionList.innerHTML = ''; // Clear previous transactions
@@ -221,12 +223,13 @@ function fetchCategorySpendData() {
   }
 
 // Function to fetch category-wise transactions
-function loadCategoryTransactions(category) {
+function loadFilterTransactions(category,type,fromDate,toDate) {
     const username = getUsername();
-    dateRangePaginationCall = false;
-    catWisePaginationCall = true;
+    // dateRangePaginationCall = false;
+    // catWisePaginationCall = true;
+    FilteredPaginationCall=true;
     // console.log(`Fetching transactions for category: ${category}`); // Log category fetch
-    fetch(`/api/cattransactions?username=${username}&category=${category}`)
+    fetch(`/api/filtertransactions?username=${username}&category=${category}&type=${type}&from=${fromDate}&to=${toDate}`)
       .then(response => {
         if (response.status === 401) {
           window.location.href = '/login';
@@ -270,6 +273,8 @@ function loadCategoryTransactions(category) {
             });
             updatePaginationControls(transactionsToDisplay.length);
           }
+          showallbutton.innerHTML = showingall ? '<p><i class="fa-regular fa-eye-slash"></i> Show Less</p>'
+            : '<p><i class="fa-regular fa-eye"></i> Show More</p>';
         }
       })
       .catch(error => {
@@ -278,62 +283,62 @@ function loadCategoryTransactions(category) {
   }
   
 
-// Function to fetch transactions within a date range
-function loadDateRangeTransactions(fromDate, toDate) {
-    const username = getUsername();
-    dateRangePaginationCall = true;
-    catWisePaginationCall = false;
-    // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
-    fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`)
-      .then(response => {
-        if (response.status === 401) {
-          window.location.href = '/login';
-        }
-        return response.json()
-      })
-      .then(data => {
-        // console.log(data.transactions);  // Log fetched transactions for debugging
-        const transactionList = document.getElementById('transactions');
-        transactionList.innerHTML = ''; // Clear previous transactions
-        if (data.transactions.length === 0) {
-          transactionList.innerHTML = '<li>No Transactions Available</li>';
-        } else {
-          let transactionsToDisplay = data.transactions;
-          if (!showingall) {
-            transactionsToDisplay = data.transactions.length > 6
-              ? data.transactions.slice(0, 6) // Get the first 6 transactions
-              : data.transactions; // If 6 or fewer, display all
-          }
-          // Render the transactions
-          if (!showingall) {
-            transactionsToDisplay.forEach(transaction => {
-              const transactionparams = transaction.split(',');
-              const li = document.createElement('li');
-              li.innerHTML = transactionparams.join('<br>');
-              transactionList.appendChild(li);
-            });
-          }
-          else {
-            const totalPages = Math.ceil(transactionsToDisplay.length / transactionsPerPage);
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-            const startIndex = (currentPage - 1) * transactionsPerPage; //transactionspp=16 fixed
-            const endIndex = startIndex + transactionsPerPage;
-            const paginatedTransactions = transactionsToDisplay.slice(startIndex, endIndex);
-            paginatedTransactions.forEach(transaction => {
-              const transactionparams = transaction.split(',');
-              const li = document.createElement('li');
-              li.innerHTML = transactionparams.join('<br>');
-              transactionList.appendChild(li);
-            });
-            updatePaginationControls(transactionsToDisplay.length);
-          }
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching transactions:', error);
-      });
-  }
+// // Function to fetch transactions within a date range
+// function loadDateRangeTransactions(fromDate, toDate) {
+//     const username = getUsername();
+//     dateRangePaginationCall = true;
+//     catWisePaginationCall = false;
+//     // console.log(`Fetching transactions from ${fromDate} to ${toDate}`); // Log date fetch
+//     fetch(`/api/daterangetransactions?username=${username}&from=${fromDate}&to=${toDate}`)
+//       .then(response => {
+//         if (response.status === 401) {
+//           window.location.href = '/login';
+//         }
+//         return response.json()
+//       })
+//       .then(data => {
+//         // console.log(data.transactions);  // Log fetched transactions for debugging
+//         const transactionList = document.getElementById('transactions');
+//         transactionList.innerHTML = ''; // Clear previous transactions
+//         if (data.transactions.length === 0) {
+//           transactionList.innerHTML = '<li>No Transactions Available</li>';
+//         } else {
+//           let transactionsToDisplay = data.transactions;
+//           if (!showingall) {
+//             transactionsToDisplay = data.transactions.length > 6
+//               ? data.transactions.slice(0, 6) // Get the first 6 transactions
+//               : data.transactions; // If 6 or fewer, display all
+//           }
+//           // Render the transactions
+//           if (!showingall) {
+//             transactionsToDisplay.forEach(transaction => {
+//               const transactionparams = transaction.split(',');
+//               const li = document.createElement('li');
+//               li.innerHTML = transactionparams.join('<br>');
+//               transactionList.appendChild(li);
+//             });
+//           }
+//           else {
+//             const totalPages = Math.ceil(transactionsToDisplay.length / transactionsPerPage);
+//             if (currentPage < 1) currentPage = 1;
+//             if (currentPage > totalPages) currentPage = totalPages;
+//             const startIndex = (currentPage - 1) * transactionsPerPage; //transactionspp=16 fixed
+//             const endIndex = startIndex + transactionsPerPage;
+//             const paginatedTransactions = transactionsToDisplay.slice(startIndex, endIndex);
+//             paginatedTransactions.forEach(transaction => {
+//               const transactionparams = transaction.split(',');
+//               const li = document.createElement('li');
+//               li.innerHTML = transactionparams.join('<br>');
+//               transactionList.appendChild(li);
+//             });
+//             updatePaginationControls(transactionsToDisplay.length);
+//           }
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Error fetching transactions:', error);
+//       });
+//   }
 
 
 // Set budget function api call

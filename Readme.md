@@ -8,6 +8,7 @@ A full-stack personal finance management application combining a C++ backend wit
 ![Screenshot 2](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss2.png?raw=true)
 ![Screenshot 3](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss3.png?raw=true)
 ![Screenshot 4](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss4.png?raw=true)
+![Screenshot 5](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss5.png?raw=true)
 
 ## Navigation
 - [Features](#features)
@@ -38,6 +39,8 @@ A full-stack personal finance management application combining a C++ backend wit
 - Personal
 - Health
 - Travel
+- Rent
+- Income
 - Miscellaneous
 
 ## Tech Stack
@@ -127,7 +130,13 @@ GET /api/getrecommendation - Get spending recommendations
 │   ├── public/
 │   │   ├── index.html
 │   │   ├── register.html 
-│   │   └── dashboard.html
+│   │   ├── dashboard.html
+|   |   ├── css/
+|   |   |   ├──images/
+|   |   |   └──style.css
+|   |   └──js/
+|   |   |   ├──app.js
+|   |   |   └──utils.js
 │   ├── routes/
 │   │   └── api.js
 │   └── server.js
@@ -151,6 +160,7 @@ GET /api/getrecommendation - Get spending recommendations
 4. View transactions:
    - See all transactions
    - Filter by category
+   - Filter by type
    - Filter by date range
 
 5. Manage budget:

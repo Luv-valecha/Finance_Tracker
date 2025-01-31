@@ -37,8 +37,8 @@ public:
     bool empty();
     vector<string> PrintAllTransactions(std::string username);
     // vector<string> PrintNTransactions(int n);
-    vector<string> PrintCategoryWise(std::string target,std::string username);
-    vector<string> PrintDateRange(std::string from, std::string to, std::string username);
+    vector<string> PrintFiltered(std::string targetcat,std::string targettype,std::string from,std::string to,std::string username);
+    // vector<string> PrintDateRange(std::string from, std::string to, std::string username);
     vector<int> extract(std::string currdate);
     bool bringtransactions(std::string username);
     void makedll(Transaction* transaction);

@@ -181,7 +181,7 @@ unordered_map<string, double> Transaction_history::monthlysummary(int month, int
         str_month = to_string(month);
     std::string from = to_string(year) + "-" + str_month + "-" + "01";
     std::string to = to_string(year) + "-" + str_month + "-" + to_string(getDaysInMonth(month, year));
-    vector<std::string> transaction_data = PrintDateRange(from, to, username);
+    vector<std::string> transaction_data = PrintFiltered("","",from, to, username);
     if (transaction_data[0] == "No Transactions Available")
         return stats;
     stats["Total_Spend"] = getTotalSpend(transaction_data);

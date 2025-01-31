@@ -1,5 +1,4 @@
-
-                                                 <!-- Main Dashboard HTML -->
+<!-- Main Dashboard HTML -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +62,8 @@
                             <option value="Income">Income</option>
                             <option value="Miscellaneous">Miscellaneous</option>
                         </select>
-                        <label for="transaction_type"><i class="fa-regular fa-rectangle-list"></i> Transaction Type</label>
+                        <label for="transaction_type"><i class="fa-regular fa-rectangle-list"></i> Transaction
+                            Type</label>
                         <select id="transaction_type" name="transaction_type" required>
                             <option value="" disabled selected>Select the Transaction Type</option>
                             <option value="Credit">Credit</option>
@@ -77,11 +77,13 @@
 
                 <!-- Hidden Get Transactions Form -->
                 <div id="getTransactionsForm" class="form-container hidden">
-                    <h2>Get Category-Wise Transactions</h2>
-                    <form id="categoryForm">
+                    <h2>Get Filtered Transactions</h2>
+                    <form id="filterTransactions">
+                        <h3>Get Category-Wise Transactions</h3>
                         <label for="category"><i class="fa-regular fa-rectangle-list"></i> Transaction Category</label>
-                        <select id="categoryinput" name="category" required>
+                        <select id="categoryinput" name="category">
                             <option value="" disabled selected>Select a category</option>
+                            <option value="">None</option>
                             <option value="Food">Food</option>
                             <option value="Shopping">Shopping</option>
                             <option value="Entertainment">Entertainment</option>
@@ -92,15 +94,23 @@
                             <option value="Income">Income</option>
                             <option value="Miscellaneous">Miscellaneous</option>
                         </select>
-                        <button type="submit">Get Transactions</button>
-                    </form>
 
-                    <h2>Get Date Range Transactions</h2>
-                    <form id="dateRangeForm">
+                        <h3>Filter Credit/Debit Transactions</h3>
+                        <label for="transaction_type"><i class="fa-regular fa-rectangle-list"></i> Transaction
+                            Type</label>
+                        <select id="typeinput" name="transaction_type">
+                            <option value="" disabled selected>Select the type</option>
+                            <option value="">Both</option>
+                            <option value="Credit">Credit</option>
+                            <option value="Debit">Debit</option>
+                        </select>
+
+                        <h3>Get Date Range Transactions</h3>
                         <label for="date"><i class="fa-regular fa-calendar"></i> Select Starting Date:</label>
-                        <input type="date" id="fromDate" name="fromDate" required>
+                        <input type="date" id="fromDate" name="fromDate">
                         <label for="date"><i class="fa-regular fa-calendar"></i> Select Ending Date:</label>
-                        <input type="date" id="toDate" name="toDate" required>
+                        <input type="date" id="toDate" name="toDate">
+
                         <button type="submit">Get Transactions</button>
                     </form>
                 </div>
@@ -220,12 +230,12 @@
                 across devices.<br>
                 <br><span style="font-weight: bold;"><u>Backend:</u></span> Our backend system is powered by C++,
                 offering optimized performance for managing user authentication and transaction data. It's connected to
-                the frontend using Express.js, a fast and flexible web framework for handling API requests.<br>
+                the frontend using Express.js, a fast and flexible web framework for handling API requests and JWT for authenticated login.<br>
                 <br><span style="font-weight: bold;"><u>Database:</u></span> User and transaction data is securely
                 stored and managed using file-based storage in the backend, with plans to integrate more scalable
                 solutions in future updates.<br>
                 <br><span style="font-weight: bold;"><u>Authentication:</u></span> We ensure user security with a login
-                system that protects your credentials and data, offering a smooth and secure experience.<br>
+                system that protects your credentials and data by using a Json Web Token in the cookies used for authorization, offering a smooth and secure experience.<br>
                 <br><br>
                 At Financely, we believe in simplicity and efficiency, helping you keep your finances organized without
                 the hassle. Whether you're saving for a big goal or just trying to stay on top of daily spending, our

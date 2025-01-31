@@ -28,7 +28,8 @@ p {
 }
 
 h1,
-h2 {
+h2,
+h3 {
     color: aliceblue;
     text-align: center;
 }

@@ -33,13 +33,14 @@ const username = getUsername();
 userHeader.innerHTML = `<p> <i class="fa-solid fa-user"></i> User: ${username}</p>`;
 
 //main dashboard transactions "show more" button working
-var showingall = false;
+let showingall = false;
 const showallbutton = document.getElementById('ShowFullList');
 showallbutton.addEventListener('click', () => {
   showingall = !showingall;
   document.getElementById("MainPagePaginationControls").classList.toggle("hidden");
-  if (dateRangePaginationCall) loadDateRangeTransactions(document.getElementById('fromDate').value, document.getElementById('toDate').value);
-  else if (catWisePaginationCall) loadCategoryTransactions(document.getElementById('categoryinput').value);
+  // if (dateRangePaginationCall) loadDateRangeTransactions(document.getElementById('fromDate').value, document.getElementById('toDate').value);
+  // else if (catWisePaginationCall) loadCategoryTransactions(document.getElementById('categoryinput').value);
+  if (FilteredPaginationCall) loadFilterTransactions(document.getElementById('categoryinput').value, document.getElementById('typeinput').value, document.getElementById('fromDate').value, document.getElementById('toDate').value)
   else loadTransactions();
 })
 
@@ -54,6 +55,7 @@ let totalTransactions = 0;
 let currentPage = 1;
 let dateRangePaginationCall = false;
 let catWisePaginationCall = false;
+let FilteredPaginationCall = false;
 
 // Automatically load transactions when the page loads
 document.addEventListener('DOMContentLoaded', () => {
@@ -102,30 +104,53 @@ if (logoutButton) {
   });
 }
 
-// Handle category form submission
-const categoryForm = document.getElementById('categoryForm');
-if (categoryForm) {
-  categoryForm.addEventListener('submit', (event) => {
+// Handle filter transactions form submission
+const filterTransactions = document.getElementById('filterTransactions');
+
+if (filterTransactions) {
+  filterTransactions.addEventListener('submit', (event) => {
     event.preventDefault();
     // console.log('Category form submitted'); // Log form submission
     const category = document.getElementById('categoryinput').value;
-    // console.log(`Category: ${category}`); // Log category value
-    loadCategoryTransactions(category);
+    const type = document.getElementById('typeinput').value;
+    let fromDate = document.getElementById('fromDate').value || "";
+    let toDate = document.getElementById('toDate').value || "";
+
+    if (fromDate != "" && toDate == "") toDate = new Date().toISOString().split("T")[0];
+    else if (toDate != "" && fromDate == "") {
+      fromDate = new Date();
+      fromDate.setFullYear(fromDate.getFullYear() - 500); // Go 500 years back
+      fromDate = fromDate.toISOString().split("T")[0];
+    }
+    console.log(`Category: ${category} Type: ${type}, From: ${fromDate}, To: ${toDate}`); // Log category value
+    loadFilterTransactions(category, type, fromDate, toDate);
   });
 }
 
-// Handle date range form submission
-const dateRangeForm = document.getElementById('dateRangeForm');
-if (dateRangeForm) {
-  dateRangeForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    // console.log('Date range form submitted'); // Log form submission
-    const fromDate = document.getElementById('fromDate').value;
-    const toDate = document.getElementById('toDate').value;
-    // console.log(`From Date: ${fromDate}, To Date: ${toDate}`); // Log dates
-    loadDateRangeTransactions(fromDate, toDate);
-  });
-}
+// // Handle type form submission
+// const typeForm = document.getElementById('typeForm');
+// if (typeForm) {
+//   typeForm.addEventListener('submit', (event) => {
+//     event.preventDefault();
+//     // console.log('Category form submitted'); // Log form submission
+//     const category = document.getElementById('typeinput').value;
+//     // console.log(`Category: ${category}`); // Log category value
+//     loadTypeTransactions(category);
+//   });
+// }
+
+// // Handle date range form submission
+// const dateRangeForm = document.getElementById('dateRangeForm');
+// if (dateRangeForm) {
+//   dateRangeForm.addEventListener('submit', (event) => {
+//     event.preventDefault();
+//     // console.log('Date range form submitted'); // Log form submission
+//     const fromDate = document.getElementById('fromDate').value;
+//     const toDate = document.getElementById('toDate').value;
+//     // console.log(`From Date: ${fromDate}, To Date: ${toDate}`); // Log dates
+//     loadDateRangeTransactions(fromDate, toDate);
+//   });
+// }
 
 // Get buttons and form elements
 const showTransactionFormButton = document.getElementById('showTransactionForm');
@@ -143,6 +168,7 @@ showTransactionFormButton.addEventListener('click', () => {
   if (!getTransactionsForm.classList.contains("hidden")) {
     catWisePaginationCall = false;
     dateRangePaginationCall = false;
+    FilteredPaginationCall = false;
     loadTransactions();
   }
   currentPage = 1;
@@ -166,6 +192,7 @@ showGetTransactionsFormButton.addEventListener('click', () => {
   if (!getTransactionsForm.classList.contains("hidden")) {
     catWisePaginationCall = false;
     dateRangePaginationCall = false;
+    FilteredPaginationCall = false;
     loadTransactions();
   }
   currentPage = 1;
@@ -189,6 +216,7 @@ showSetBudgetFormButton.addEventListener('click', () => {
   if (!getTransactionsForm.classList.contains("hidden")) {
     catWisePaginationCall = false;
     dateRangePaginationCall = false;
+    FilteredPaginationCall = false;
     loadTransactions();
   }
   currentPage = 1;
@@ -249,6 +277,7 @@ aboutButton.addEventListener(("click"), () => {
   if (!getTransactionsForm.classList.contains("hidden")) {
     catWisePaginationCall = false;
     dateRangePaginationCall = false;
+    FilteredPaginationCall = false;
     loadTransactions();
   }
   currentPage = 1;
@@ -286,6 +315,7 @@ showAllTransactionsButton.addEventListener(("click"), () => {
   if (!getTransactionsForm.classList.contains("hidden")) {
     catWisePaginationCall = false;
     dateRangePaginationCall = false;
+    FilteredPaginationCall = false;
     loadTransactions();
   }
   currentPage = 1;
@@ -308,6 +338,7 @@ statpageButton.addEventListener(("click"), () => {
   if (!getTransactionsForm.classList.contains("hidden")) {
     catWisePaginationCall = false;
     dateRangePaginationCall = false;
+    FilteredPaginationCall = false;
     loadTransactions();
   }
   currentPage = 1;

@@ -99,37 +99,40 @@ int main(int argc, char *argv[])
             cout << transaction << "\n";
         }
     }
-    else if (command == "get_category_transactions")
+    else if (command == "get_filter_transactions")
     {
-        if (argc != 4)
+        if (argc != 7)
         {
             cout << "Invalid number of arguments for get_category_transaction" << endl;
             return 1;
         }
         string username = argv[2];
         string targetcat = argv[3];
-        vector<string> transactions = transactionHistory.PrintCategoryWise(targetcat, username);
+        string targettype= argv[4];
+        string from = argv[5];
+        string to = argv[6];
+        vector<string> transactions = transactionHistory.PrintFiltered(targetcat,targettype,from,to, username);
         for (const auto &transaction : transactions)
         {
             cout << transaction << "\n";
         }
     }
-    else if (command == "get_date_transactions")
-    {
-        if (argc != 5)
-        {
-            cout << "Invalid number of arguments for get_date_transactions" << endl;
-            return 1;
-        }
-        string username = argv[2];
-        string from = argv[3];
-        string to = argv[4];
-        vector<string> transactions = transactionHistory.PrintDateRange(from, to, username);
-        for (const auto &transaction : transactions)
-        {
-            cout << transaction << "\n";
-        }
-    }
+    // else if (command == "get_date_transactions")
+    // {
+    //     if (argc != 5)
+    //     {
+    //         cout << "Invalid number of arguments for get_date_transactions" << endl;
+    //         return 1;
+    //     }
+    //     string username = argv[2];
+    //     string from = argv[3];
+    //     string to = argv[4];
+    //     vector<string> transactions = transactionHistory.PrintDateRange(from, to, username);
+    //     for (const auto &transaction : transactions)
+    //     {
+    //         cout << transaction << "\n";
+    //     }
+    // }
     else if (command == "get_piechart_values")
     {
         if (argc != 3)
