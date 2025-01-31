@@ -15,8 +15,8 @@ using namespace std;
 Transaction_history::Transaction_history()
 {
     // dummy head and tail
-    head = new Transaction_node(new Transaction("", -1, "", ""));
-    tail = new Transaction_node(new Transaction("", -1, "", ""));
+    head = new Transaction_node(new Transaction("", -1, "", "", ""));
+    tail = new Transaction_node(new Transaction("", -1, "", "", ""));
     head->next = tail;
     tail->prev = head;
     // number_of_transactions = 0;
@@ -95,7 +95,7 @@ void Transaction_history::new_transaction(Transaction *transaction, std::string 
     while (node != tail)
     {
         file << node->transaction->date << " " << node->transaction->amount << " "
-             << node->transaction->category << " " << node->transaction->description << "\n";
+             << node->transaction->category << " " << node->transaction->transaction_type << " " << node->transaction->description << "\n";
         node = node->next;
     }
     file.close();
@@ -128,13 +128,14 @@ bool Transaction_history::bringtransactions(std::string username)
 
     std::string date, category;
     double amount;
+    std::string transaction_type;
     std::string description;
 
-    while (file >> date >> amount >> category)
+    while (file >> date >> amount >> category >> transaction_type)
     {
         // Read the remaining line as the description
         std::getline(file >> std::ws, description); // Read the rest of the line including spaces
-        Transaction *temp = new Transaction(date, amount, category, description);
+        Transaction *temp = new Transaction(date, amount, category, transaction_type, description);
         makedll(temp);
     }
     file.close();
@@ -152,13 +153,16 @@ unordered_map<string, double> Transaction_history::piechartvalues(string usernam
 
     std::string date, category;
     double amount;
+    std::string transaction_type;
     std::string description;
 
-    while (file >> date >> amount >> category)
+    while (file >> date >> amount >> category >> transaction_type)
     {
         // Read the remaining line as the description
         std::getline(file >> std::ws, description); // Read the rest of the line including spaces
-        categoryspend[category] += amount;
+
+        // if it is debit then show in the graphs
+        if(transaction_type=="Debit") categoryspend[category] += amount;
     }
     file.close();
     return categoryspend;

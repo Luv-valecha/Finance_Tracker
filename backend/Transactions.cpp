@@ -4,8 +4,8 @@ using namespace std;
 
 // Transaction class
 
-Transaction::Transaction(string date, double amount, string category, string description)
-    : date(date), amount(amount), category(category), description(description)
+Transaction::Transaction(string date, double amount, string category, string transaction_type, string description)
+    : date(date), amount(amount), category(category), transaction_type(transaction_type), description(description)
 {
 }
 

@@ -68,9 +68,9 @@ router.get('/logout', (req, res) => {
 
 // Handle adding a new transaction
 router.post('/add-transaction',protectRoute, (req, res) => {
-    const { date, amount, category, description, username } = req.body;
+    const { date, amount, category, transaction_type, description, username } = req.body;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
-    exec(`"${execPath}" add_transaction "${username}" "${date}" ${amount} "${category}" "${description.replace(/"/g, '\\"')}"`, (error, stdout, stderr) => {
+    exec(`"${execPath}" add_transaction "${username}" "${date}" ${amount} "${category}" "${transaction_type}" "${description.replace(/"/g, '\\"')}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Exec error: ${error.message}`);
             return res.status(500).json({ error: error.message });

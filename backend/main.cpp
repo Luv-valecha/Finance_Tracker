@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     }
     else if (command == "add_transaction")
     {
-        if (argc != 7)
+        if (argc != 8)
         {
             cout << "Invalid number of arguments for add_transaction" << endl;
             return 1;
@@ -79,8 +79,9 @@ int main(int argc, char *argv[])
         string date = argv[3];
         double amount = stod(argv[4]);
         string category = argv[5];
-        string description = argv[6];
-        Transaction *transaction = new Transaction(date, amount, category, description);
+        string transaction_type = argv[6];
+        string description = argv[7];
+        Transaction *transaction = new Transaction(date, amount, category, transaction_type, description);
         transactionHistory.new_transaction(transaction, username);
         cout << "Transaction added successfully" << endl;
     }

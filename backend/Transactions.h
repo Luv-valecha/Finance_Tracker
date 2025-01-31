@@ -10,11 +10,12 @@ public:
     std::string date;      // DD-MM-YYYY
     double amount;
     std::string category;
+    std::string transaction_type;
     std::string description;
 
     // Constructors
     // Transaction(string date, double amount, string cat);
-    Transaction(string date, double amount, string cat, string desc);
+    Transaction(string date, double amount, string cat, string transaction_type, string desc);
 
     // Helper to display a transaction
     void printTransaction() const;

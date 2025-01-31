@@ -20,6 +20,7 @@ vector<string> Transaction_history::PrintAllTransactions(string username)
         std::stringstream ss;
         ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
            << " INR, Category: " << curr->transaction->category
+           << ", Type: " << curr->transaction->transaction_type
            << ", Description: " << curr->transaction->description;
         transactions.push_back(ss.str());
         curr = curr->next;
@@ -51,6 +52,7 @@ vector<string> Transaction_history::PrintCategoryWise(string target, string user
             std::stringstream ss;
             ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
                << " INR, Category: " << curr->transaction->category
+               << ", Type: " << curr->transaction->transaction_type
                << ", Description: " << curr->transaction->description;
             transactions.push_back(ss.str());
             nothing_printed = 0;
@@ -111,6 +113,7 @@ vector<string> Transaction_history::PrintDateRange(string from, string to, strin
         std::stringstream ss;
         ss << "Date: " << curr->transaction->date << ", Amount: " << curr->transaction->amount
            << " INR, Category: " << curr->transaction->category
+           << ", Type: " << curr->transaction->transaction_type
            << ", Description: " << curr->transaction->description;
         transactions.push_back(ss.str());
         nothing_printed = 0;

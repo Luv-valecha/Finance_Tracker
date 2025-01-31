@@ -88,7 +88,16 @@ int Transaction_history::KMPSearch(std::string &text, std::string &pattern)
 double Transaction_history::extractAmountHelper(std::string &transaction)
 {
     std::string pattern = "Amount: ";
+    std::string transaction_type_pattern= "transaction_type: ";
     int pos = KMPSearch(transaction, pattern);
+    int typ_pos= KMPSearch(transaction, transaction_type_pattern);
+
+    if(typ_pos!=-1){
+        typ_pos+=transaction_type_pattern.size();
+        
+        // if it is credit do not display in statistics
+        if(transaction[typ_pos]=='C') return 0.0;
+    }
 
     if (pos != -1)
     {
