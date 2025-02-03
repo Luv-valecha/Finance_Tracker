@@ -206,6 +206,14 @@ int main(int argc, char *argv[])
         }
     }
 
+    else if(command== "get_training_data"){
+        vector<string> alldata;
+        transactionHistory.fetchAllData(alldata);
+        for(auto it:alldata){
+            cout<<it<<endl;
+        }
+    }
+
     else
     {
         cout << "Unknown command: " << command << endl;
