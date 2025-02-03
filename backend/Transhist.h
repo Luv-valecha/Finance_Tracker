@@ -47,6 +47,8 @@ public:
     priority_queue<pair<double,string>> create_recommender(unordered_map<string,double> budget,std::string username);
     void setbudget(std::string username,unordered_map<string,double>& budget);
     vector<string> give_recommendation(std::string username);
+    unordered_map<string, double> recommenderValues(string username,int month,int year);
+    void fetchAllData(vector<string>& alldata);
 
     std::vector<int> computeLPSArray(std::string& pattern);
     int KMPSearch(std::string& text, std::string& pattern);

@@ -265,8 +265,8 @@ HideRecommendationButton.addEventListener("click", () => {
   const recommendationListForm = document.getElementById("recommendationList");
   ShowingRecommendations = !ShowingRecommendations;
   recommendationListForm.classList.toggle("hidden", !ShowingRecommendations);
-  HideRecommendationButton.innerHTML = ShowingRecommendations ? '<p> <i class="fa-regular fa-eye-slash"></i> Hide Recommendations </p>'
-    : '<p><i class="fa-regular fa-eye"></i> Show Recommendations</p>';
+  HideRecommendationButton.innerHTML = ShowingRecommendations ? '<p> <i class="fa-regular fa-eye-slash"></i> Hide Warnings </p>'
+    : '<p><i class="fa-regular fa-eye"></i> Show Warnings</p>';
 });
 
 //about page button working and page display

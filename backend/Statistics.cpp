@@ -88,15 +88,27 @@ int Transaction_history::KMPSearch(std::string &text, std::string &pattern)
 double Transaction_history::extractAmountHelper(std::string &transaction)
 {
     std::string pattern = "Amount: ";
-    std::string transaction_type_pattern= "transaction_type: ";
+    std::string transaction_type_pattern = "Type: ";
     int pos = KMPSearch(transaction, pattern);
-    int typ_pos= KMPSearch(transaction, transaction_type_pattern);
+    int typ_pos = KMPSearch(transaction, transaction_type_pattern);
 
-    if(typ_pos!=-1){
-        typ_pos+=transaction_type_pattern.size();
-        
-        // if it is credit do not display in statistics
-        if(transaction[typ_pos]=='C') return 0.0;
+    if (typ_pos != -1)
+    {
+        typ_pos += transaction_type_pattern.size();
+        // Skip any whitespace after the marker.
+        while (typ_pos < transaction.size() && std::isspace(static_cast<unsigned char>(transaction[typ_pos])))
+        {
+            typ_pos++;
+        }
+        char transType = transaction[typ_pos];
+        if (transType == 'C')
+        {
+            return 0.0; // Ignore amount for Credit transactions
+        }
+    }
+    else
+    {
+        std::cout << "[DEBUG] Transaction type marker not found.\n";
     }
 
     if (pos != -1)
@@ -181,7 +193,7 @@ unordered_map<string, double> Transaction_history::monthlysummary(int month, int
         str_month = to_string(month);
     std::string from = to_string(year) + "-" + str_month + "-" + "01";
     std::string to = to_string(year) + "-" + str_month + "-" + to_string(getDaysInMonth(month, year));
-    vector<std::string> transaction_data = PrintFiltered("","",from, to, username);
+    vector<std::string> transaction_data = PrintFiltered("", "", from, to, username);
     if (transaction_data[0] == "No Transactions Available")
         return stats;
     stats["Total_Spend"] = getTotalSpend(transaction_data);

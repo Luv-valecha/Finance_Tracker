@@ -402,7 +402,7 @@ function setBudget(username, budget) {
             // Format the amount to two decimal places
             const formattedAmount = amount.toFixed(2);
             // Create a new recommendation string with the formatted amount
-            const updatedRecommendation = `${parts[0]} by ${formattedAmount}`;
+            const updatedRecommendation = `${parts[0]} by ${formattedAmount} this month`;
             // Create a list item for the updated recommendation
             const li = document.createElement('li');
             li.textContent = updatedRecommendation; // Use the updated recommendation text

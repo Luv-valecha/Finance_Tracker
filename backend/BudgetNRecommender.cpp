@@ -1,4 +1,6 @@
 #include "Transhist.h"
+#include <chrono>
+#include <iomanip>
 
 // function to save the budget set by a user
 void Transaction_history::setbudget(std::string username, std::unordered_map<std::string, double> &budget)
@@ -40,8 +42,14 @@ void Transaction_history::setbudget(std::string username, std::unordered_map<std
 // function to create the priority queue for recommendation generating
 priority_queue<pair<double, string>> Transaction_history::create_recommender(unordered_map<string, double> budget, std::string username)
 {
+    auto now = std::chrono::system_clock::now();
+    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    std::tm *localTime = std::localtime(&currentTime);
+    int month = localTime->tm_mon + 1;
+    int year = localTime->tm_year + 1900; 
+
     priority_queue<pair<double, string>> recommend;
-    unordered_map<string, double> spend = piechartvalues(username); // Ensure this function is defined and works correctly
+    unordered_map<string, double> spend = recommenderValues(username,month,year);
 
     // std::cout << "Spending values retrieved for user: " << username << std::endl;
     for (auto it : budget)
@@ -77,11 +85,11 @@ vector<string> Transaction_history::give_recommendation(std::string username)
         double over = recommender.top().first;
         std::string category = recommender.top().second;
         if (over > 0)
-            recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over));
+            recommendations.emplace_back("You have overspent in " + category + " by " + std::to_string(over) + " this month");
         else if (over < 0)
-            recommendations.emplace_back("You are close to the budget limit in " + category + " by " + std::to_string(abs(over)));
+            recommendations.emplace_back("You are close to the budget limit in " + category + " by " + std::to_string(abs(over)) + " for this month");
         else
-            recommendations.emplace_back("You have reached the budeget limit in " + category);
+            recommendations.emplace_back("You have reached the budget limit in " + category + " this month");
         recommender.pop();
     }
 

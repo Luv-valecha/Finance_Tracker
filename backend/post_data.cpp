@@ -168,6 +168,38 @@ unordered_map<string, double> Transaction_history::piechartvalues(string usernam
     return categoryspend;
 }
 
+unordered_map<string, double> Transaction_history::recommenderValues(string username,int month,int year)
+{
+    std::string directory = "user_transaction_details";
+    std::string filename = directory + "/" + username + ".txt";
+    std::ifstream file(filename);
+    if (!file.is_open())
+        return {};
+
+    std::string date, category;
+    double amount;
+    std::string transaction_type;
+    std::string description;
+
+    while (file >> date >> amount >> category >> transaction_type)
+    {
+        // Read the remaining line as the description
+        std::getline(file >> std::ws, description); // Read the rest of the line including spaces
+
+        // if it is debit then show in the graphs
+        string tr_month=date.substr(5,2);
+        string tr_year=date.substr(0,4);
+
+        int transactionMonth=stoi(tr_month);
+        int transactionYear=stoi(tr_year);
+        
+        if(transaction_type=="Debit" && transactionMonth==month && transactionYear==year) categoryspend[category] += amount;
+        else if((transactionYear==year && transactionMonth>month) || (transactionYear>year)) break;
+    }
+    file.close();
+    return categoryspend;
+}
+
 // helper function to separate date month and year from a date string
 vector<int> Transaction_history::extract(string currdate)
 {

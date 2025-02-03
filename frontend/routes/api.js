@@ -13,7 +13,7 @@ router.post('/register', (req, res) => {
     const { username, password } = req.body;
     console.log(`Registering user: ${username}`);
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
-    
+
     exec(`"${execPath}" register "${username}" "${password}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Exec error: ${error.message}`);
@@ -21,7 +21,7 @@ router.post('/register', (req, res) => {
         } else if (stderr) {
             console.error(`Stderr: ${stderr}`);
             return res.status(500).json({ error: stderr });
-        } else  {
+        } else {
             return res.json({ message: "User registered successfully", redirect: "/login" });
         }
     });
@@ -46,7 +46,7 @@ router.post('/login', (req, res) => {
 
         if (firstLine === "Login successful") {
             console.log(`${username} logged in`);
-            generateToken(username,res);
+            generateToken(username, res);
             return res.json({ message: "Login successful", username: username, redirect: `/app?username=${username}` });
         } else {
             console.log("Unexpected output:", firstLine);
@@ -59,15 +59,15 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
     console.log("Logging out user");
     try {
-        res.cookie("jwt", "", {maxAge: 0});
+        res.cookie("jwt", "", { maxAge: 0 });
         res.json({ message: "Logged out successfully" });
     } catch (error) {
-        res.status(500).json({error:error});
+        res.status(500).json({ error: error });
     }
 });
 
 // Handle adding a new transaction
-router.post('/add-transaction',protectRoute, (req, res) => {
+router.post('/add-transaction', protectRoute, (req, res) => {
     const { date, amount, category, transaction_type, description, username } = req.body;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" add_transaction "${username}" "${date}" ${amount} "${category}" "${transaction_type}" "${description.replace(/"/g, '\\"')}"`, (error, stdout, stderr) => {
@@ -85,7 +85,7 @@ router.post('/add-transaction',protectRoute, (req, res) => {
 });
 
 // Handle getting all transactions
-router.get('/transactions',protectRoute, (req, res) => {
+router.get('/transactions', protectRoute, (req, res) => {
     const { username } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_transactions "${username}"`, (error, stdout, stderr) => {
@@ -104,7 +104,7 @@ router.get('/transactions',protectRoute, (req, res) => {
 });
 
 // Handle getting category-wise transactions
-router.get('/filtertransactions',protectRoute, (req, res) => {
+router.get('/filtertransactions', protectRoute, (req, res) => {
     const { username, category, type, from, to } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_filter_transactions "${username}" "${category}" "${type}" "${from}" "${to}"`, (error, stdout, stderr) => {
@@ -142,7 +142,7 @@ router.get('/filtertransactions',protectRoute, (req, res) => {
 // });
 
 //making pie-chart
-router.get('/categorywisespend',protectRoute, (req, res) => {
+router.get('/categorywisespend', protectRoute, (req, res) => {
     const { username } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_piechart_values "${username}"`, (error, stdout, stderr) => {
@@ -168,7 +168,7 @@ router.get('/categorywisespend',protectRoute, (req, res) => {
 });
 
 // Handle budget setting
-router.post('/setbudget',protectRoute, (req, res) => {
+router.post('/setbudget', protectRoute, (req, res) => {
     const { username, budget } = req.body;  // Ensure data is extracted from req.body
 
     console.log('Received request to set budget for:', username);
@@ -205,7 +205,7 @@ router.post('/setbudget',protectRoute, (req, res) => {
 });
 
 // Handle recommendation generation
-router.get('/getrecommendation',protectRoute, (req, res) => {
+router.get('/getrecommendation', protectRoute, (req, res) => {
     const { username } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" fetch_recommendation "${username}"`, (error, stdout, stderr) => {
@@ -223,7 +223,7 @@ router.get('/getrecommendation',protectRoute, (req, res) => {
 });
 
 // Handle monthly statistics
-router.get('/getstats',protectRoute, (req, res) => {
+router.get('/getstats', protectRoute, (req, res) => {
     const { username, month, year } = req.query;
     const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
     exec(`"${execPath}" get_statistics "${username}" "${month}" "${year}"`, (error, stdout, stderr) => {
@@ -236,13 +236,52 @@ router.get('/getstats',protectRoute, (req, res) => {
             return res.status(500).json({ error: stderr });
         }
         const stats = {};
-        const details = stdout.split('\n');
+        console.log(stdout);
         details.forEach(deet => {
             currdeet = deet.split(" ");
             stats[currdeet[0]] = parseFloat(currdeet[1]);
         })
         res.json(stats);
     });
+})
+
+const formatDate = (stringdate) => {
+    const date= new Date(stringdate);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;  // getMonth() returns 0-based month (0 = January)
+    let day = date.getDate();
+
+    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? '0' + day : day;
+
+    const formattedDate = `${year}-${month}-${day}`
+    return formattedDate;
+}
+
+router.get("/past_transactions", (req, res) => {
+    const execPath = path.resolve(__dirname, '../../backend/finance_tracker');
+    exec(`"${execPath}" get_training_data`, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`Exec error in past_transactions: ${error.message}`);
+            return res.status(500).json({ error: error.message });
+        }
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).json({ error: stderr });
+        }
+        const data = [];
+        const deets = stdout.split("\n");
+        deets.forEach(deet => {
+            currdata = {}
+            currdeet = deet.split(" ");
+            currdata["Date"] = formatDate(currdeet[0]);
+            currdata["Amount"] = parseInt(currdeet[1]);
+            currdata["Category"] = currdeet[2];
+            currdata["Type"] = currdeet[3];
+            data.push(currdata);
+        })
+        res.json(data);
+    })
 })
 
 module.exports = router;
