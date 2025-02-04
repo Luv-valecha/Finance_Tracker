@@ -1,6 +1,6 @@
 # Finance Tracker
 
-A full-stack personal finance management application combining a C++ backend with a Node.js/Express web interface using RESTful APIs. Track expenses, manage budgets, and get personalized spending recommendations.
+A full-stack personal finance management application combining a C++ backend with a Node.js/Express web interface using RESTful APIs. Track expenses, manage budgets, get personalized spending recommendations, and with anomaly detection to flag unusual transactions.
 
 ## Screenshots
 
@@ -9,6 +9,7 @@ A full-stack personal finance management application combining a C++ backend wit
 ![Screenshot 3](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss3.png?raw=true)
 ![Screenshot 4](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss4.png?raw=true)
 ![Screenshot 5](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss5.png?raw=true)
+![Screenshot 6](https://github.com/Luv-valecha/Finance_Tracker/blob/main/project_ss/ss6.png?raw=true)
 
 ## Navigation
 - [Features](#features)
@@ -31,6 +32,7 @@ A full-stack personal finance management application combining a C++ backend wit
 - View spending analytics
 - Get personalized recommendations
 - Category-wise expense breakdown
+- **Anomaly Detection**: Detects unusual spending patterns and alerts the user for confirmation before adding suspicious transactions.
 
 ### Available Categories
 - Food
@@ -53,6 +55,9 @@ A full-stack personal finance management application combining a C++ backend wit
 - Node.js
 - Express.js
 - JWT (JSON Web Tokens) for user authentication and authorization
+- **Python Backend** for Anomaly Detection:
+  - Isolation Forest Model
+  - Flask API for anomaly detection
 
 ### Frontend 
 - HTML/CSS
@@ -64,7 +69,7 @@ A full-stack personal finance management application combining a C++ backend wit
 1. Clone the repository
 ```bash
 git clone https://github.com/Luv-valecha/Finance_Tracker.git
-cd financetracker
+cd Finance_Tracker
 ```
 
 2. Install Node.js dependencies
@@ -78,13 +83,33 @@ cd .\backend\
 g++ -o finance_tracker main.cpp Login_system.cpp Transactions.cpp post_data.cpp get_data.cpp BudgetNRecommender.cpp Statistics.cpp
 ```
 
-4. Create environment file
+4. Set up the Anomaly Detection Python server:
+
+- Navigate to the "Anomaly_Detection_Model" folder:
+```bash
+cd ./backend/Anomaly_Detection_Model
+```
+
+- Install required Python dependencies (ensure Python 3.x is installed):
+```bash
+Install required Python dependencies (ensure Python 3.x is installed):
+```
+
+- Run the Python server:
+```bash
+python anomaly_detector.py
+```
+
+This will start a Flask server that listens for anomaly detection requests.
+
+
+5. Create environment file
 ```bash
 # .env
 PORT=3000
 ```
 
-5. Start the server
+6. Start the Node.js server
 ```bash
 cd .\frontend\
 node server.js
@@ -105,6 +130,7 @@ POST /api/add-transaction - Add new transaction
 GET /api/transactions - Get all transactions
 GET /api/cattransactions - Get transactions by category
 GET /api/daterangetransactions - Get transactions by date range
+POST /api/detect-anomaly - Detect anomalies in a new transaction
 ```
 
 ### Budget & Analytics
@@ -125,7 +151,13 @@ GET /api/getrecommendation - Get spending recommendations
 │   ├── post_data.cpp
 │   ├── get_data.cpp
 │   ├── BudgetNRecommender.cpp
-│   └── Statistics.cpp
+│   ├── Statistics.cpp
+│   └── Anomaly_Detection_Model/
+│       ├── anomaly_detector.py
+│       ├── requirements.txt
+│       ├── encoder.pkl
+│       ├── scaler.pkl
+│       └── anomaly_detection_model.pkl
 ├── frontend/
 │   ├── public/
 │   │   ├── index.html
@@ -168,10 +200,19 @@ GET /api/getrecommendation - Get spending recommendations
    - Track spending vs budget
    - View recommendations
 
+6. Anomaly Detection:
+   - When a user adds a new transaction, the system sends the transaction data to the Python backend.
+   - The Python server uses an Isolation Forest model, trained on the user’s past transactions, to detect anomalies in the new transaction.
+   - If an anomaly is detected, the user is alerted to confirm the transaction details.
+   - The transaction is either confirmed and added to the system or rejected based on the user's input.
+   - **Note:** To use the anomaly detection feature, ensure the Python server is running separately.
+
 ### Prerequisites
 - Node.js
 - C++ compiler
 - npm
+- Python 3.x
+- Required Python dependencies (pip install -r requirements.txt)
 
 ## Security
 - Password hashing
