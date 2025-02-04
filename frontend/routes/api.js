@@ -274,10 +274,9 @@ router.get("/past_transactions", (req, res) => {
         deets.forEach(deet => {
             currdata = {}
             currdeet = deet.split(" ");
-            currdata["Date"] = formatDate(currdeet[0]);
-            currdata["Amount"] = parseInt(currdeet[1]);
-            currdata["Category"] = currdeet[2];
-            currdata["Type"] = currdeet[3];
+            currdata["date"] = formatDate(currdeet[0]);
+            currdata["amount"] = parseInt(currdeet[1]);
+            currdata["category"] = currdeet[2];
             data.push(currdata);
         })
         res.json(data);

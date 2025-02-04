@@ -68,7 +68,27 @@ document.addEventListener('DOMContentLoaded', () => {
 // Add transaction form submission
 const addTransactionForm = document.getElementById('addTransactionForm');
 if (addTransactionForm) {
-  addTransactionForm.addEventListener('submit', (event) => {
+  addTransactionForm.addEventListener('submit', async (event) => {
+    const anomaly = await detect_anomaly(event);
+    if (anomaly["prediction"] === "Anomaly") {
+      // Prompt user if they want to ignore the anomaly
+      // const userDecision = confirm("This transaction seems like an anomaly and does not align with your past spending patterns, do you wish to proceed?");
+      const { value: userDecision } = await Swal.fire({
+        title: 'Anomaly Detected',
+        text: "This transaction seems like an anomaly and does not align with your past spending patterns. Do you wish to proceed?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Proceed',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+      });
+      
+      if (!userDecision) {
+        // If user selects 'Cancel' (i.e., does not ignore the anomaly), stop the function
+        event.preventDefault();  // This prevents form submission
+        return; // Terminate the function
+      }
+    }
     handleSubmit(event, '/api/add-transaction', () => {
       loadTransactions();
       get_recommendations();
