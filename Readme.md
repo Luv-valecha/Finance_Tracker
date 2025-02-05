@@ -32,7 +32,7 @@ A full-stack personal finance management application combining a C++ backend wit
 - View spending analytics
 - Get personalized recommendations
 - Category-wise expense breakdown
-- **Anomaly Detection**: Detects unusual spending patterns and alerts the user for confirmation before adding suspicious transactions.
+- **Anomaly Detection**: Detects unusual spending patterns and alerts the user for confirmation before adding suspicious transactions with an achieved accuracy of 94.63% .
 
 ### Available Categories
 - Food
@@ -163,12 +163,12 @@ GET /api/getrecommendation - Get spending recommendations
 │   │   ├── index.html
 │   │   ├── register.html 
 │   │   ├── dashboard.html
-|   |   ├── css/
-|   |   |   ├──images/
-|   |   |   └──style.css
-|   |   └──js/
-|   |   |   ├──app.js
-|   |   |   └──utils.js
+│   │   ├── css/
+│   │   │   ├──images/
+│   │   │   └──style.css
+│   │   └──js/
+│   │   │   ├──app.js
+│   │   │   └──utils.js
 │   ├── routes/
 │   │   └── api.js
 │   └── server.js
@@ -205,6 +205,7 @@ GET /api/getrecommendation - Get spending recommendations
    - The Python server uses an Isolation Forest model, trained on the user’s past transactions, to detect anomalies in the new transaction.
    - If an anomaly is detected, the user is alerted to confirm the transaction details.
    - The transaction is either confirmed and added to the system or rejected based on the user's input.
+   - Achieved an accuracy of 94.63%
    - **Note:** To use the anomaly detection feature, ensure the Python server is running separately.
 
 ### Prerequisites
