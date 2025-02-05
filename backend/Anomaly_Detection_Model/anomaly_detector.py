@@ -7,10 +7,10 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from datetime import datetime
 from flask_cors import CORS
 
-# load the model,scaler and encoder ssaved during training
-modelfile= open("anomaly_detection_model.pkl",'rb')
+# load the model,scaler and encoder saved during training
+modelfile= open("Isolation_Forest/anomaly_detection_model.pkl",'rb')
 model=pickle.load(modelfile)
-encoderfile= open("onehot_encoder.pkl", "rb")
+encoderfile= open("encoder.pkl", "rb")
 ohe=pickle.load(encoderfile)
 scalerfile=open("scaler.pkl", "rb")
 scaler=pickle.load(scalerfile)
